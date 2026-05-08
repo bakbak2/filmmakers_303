@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>필름메이커스 기능 명세서 v1</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f4f6f9;
+      color: #1a1a2e;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── 페이지 헤더 ── */
+    .page-header {
+      max-width: 900px;
+      margin: 0 auto 48px;
+      border-left: 5px solid #2e86c1;
+      padding-left: 20px;
+    }
+    .page-header .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2e86c1;
+      margin-bottom: 6px;
+    }
+    .page-header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12px;
+      color: #777;
+    }
+    .meta-row span strong { color: #444; }
+
+    /* ── 목차 ── */
+    .toc {
+      max-width: 900px;
+      margin: 0 auto 40px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .toc h2 { font-size: 12px; font-weight: 700; color: #888; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .toc ol { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+    .toc li { font-size: 13.5px; }
+    .toc a { color: #2e86c1; text-decoration: none; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── 섹션 카드 ── */
+    .spec-section {
+      max-width: 900px;
+      margin: 0 auto 36px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .feat-f1 .section-header { background: linear-gradient(135deg, #ebf5fb, #d6eaf8); }
+    .feat-f2 .section-header { background: linear-gradient(135deg, #eafaf1, #d5f5e3); }
+    .feat-f3 .section-header { background: linear-gradient(135deg, #fef9e7, #fdebd0); }
+
+    .feat-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .feat-f1 .feat-icon { background: #2e86c1; }
+    .feat-f2 .feat-icon { background: #27ae60; }
+    .feat-f3 .feat-icon { background: #e67e22; }
+
+    .section-title-wrap { flex: 1; }
+    .feat-id {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 3px;
+    }
+    .feat-f1 .feat-id { color: #2e86c1; }
+    .feat-f2 .feat-id { color: #27ae60; }
+    .feat-f3 .feat-id { color: #e67e22; }
+
+    .feat-name { font-size: 18px; font-weight: 800; color: #1a1a2e; }
+
+    .priority-badge {
+      font-size: 11px; font-weight: 700; padding: 4px 12px;
+      border-radius: 20px; flex-shrink: 0;
+    }
+    .p-high { background: #fdedec; color: #c0392b; }
+    .p-mid  { background: #fef9e7; color: #b7770d; }
+
+    /* ── 섹션 본문 ── */
+    .section-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 22px; }
+
+    .spec-block-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #aaa; margin-bottom: 10px;
+    }
+
+    /* 개요 */
+    .overview-text { font-size: 14px; line-height: 1.8; color: #333; }
+
+    /* 퍼소나 태그 */
+    .persona-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ptag {
+      font-size: 12px; font-weight: 600; padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .ptag-p1 { background: #ebf5fb; color: #1a5276; }
+    .ptag-p2 { background: #fef5ec; color: #784212; }
+
+    /* 테이블 */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead tr { background: #f8f9fa; }
+    th {
+      text-align: left; padding: 10px 14px;
+      font-size: 11px; font-weight: 700; color: #888;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      border-bottom: 1px solid #eee;
+    }
+    td {
+      padding: 10px 14px; color: #333; line-height: 1.6;
+      border-bottom: 1px solid #f2f2f2; vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    /* 플로우 스텝 */
+    .flow-steps { display: flex; flex-direction: column; gap: 0; }
+    .flow-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px dashed #eee;
+    }
+    .flow-step:last-child { border-bottom: none; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .feat-f1 .step-num { background: #2e86c1; }
+    .feat-f2 .step-num { background: #27ae60; }
+    .feat-f3 .step-num { background: #e67e22; }
+
+    .step-content { flex: 1; }
+    .step-title { font-size: 13.5px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .step-desc { font-size: 12.5px; color: #555; line-height: 1.6; }
+    .step-note {
+      display: inline-block; margin-top: 5px;
+      font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    }
+    .note-req  { background: #fdedec; color: #c0392b; }
+    .note-opt  { background: #eafaf1; color: #1e8449; }
+    .note-warn { background: #fef9e7; color: #b7770d; }
+
+    /* 예외 처리 */
+    .exception-list { display: flex; flex-direction: column; gap: 8px; }
+    .ex-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 13px; padding: 10px 14px;
+      background: #fffbf0; border-radius: 8px;
+      border-left: 3px solid #f0b429;
+    }
+    .ex-case { font-weight: 700; color: #b7770d; flex-shrink: 0; }
+    .ex-action { color: #444; line-height: 1.6; }
+
+    /* 인터뷰 근거 */
+    .evidence-list { display: flex; flex-direction: column; gap: 8px; }
+    .ev-item {
+      font-size: 12px; font-style: italic; color: #666;
+      padding: 8px 12px; background: #f8f9fa; border-radius: 8px;
+      border-left: 3px solid #ccc;
+      line-height: 1.6;
+    }
+    .ev-source { font-weight: 700; color: #999; font-style: normal; }
+
+    /* 구분선 */
+    .divider { height: 1px; background: #f0f0f0; }
+
+    /* ── 푸터 ── */
+    .page-footer {
+      max-width: 900px;
+      margin: 48px auto 0;
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 페이지 헤더 -->
+  <div class="page-header">
+    <div class="eyebrow">Feature Specification · v1</div>
+    <h1>필름메이커스 핵심 기능 명세서</h1>
+    <div class="meta-row">
+      <span><strong>서비스</strong> 필름메이커스 UX/UI 개선</span>
+      <span><strong>작성일</strong> 2026-04-24</span>
+      <span><strong>대상 기능</strong> 온보딩 플로우 · 공고 카드 UI · 퀵 필터 바</span>
+      <span><strong>기준 문서</strong> strategy_v1.md · Persona1.md · Persona2.md</span>
+    </div>
+  </div>
+
+  <!-- 목차 -->
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li><a href="#f1">F-01 · 역할 기반 온보딩 플로우</a></li>
+      <li><a href="#f2">F-02 · 공고 카드 UI</a></li>
+      <li><a href="#f3">F-03 · 홈 퀵 필터 바</a></li>
+    </ol>
+  </div>
+
+  <!-- ────────── F-01 온보딩 ────────── -->
+  <div class="spec-section feat-f1" id="f1">
+    <div class="section-header">
+      <div class="feat-icon">🚀</div>
+      <div class="section-title-wrap">
+        <div class="feat-id">F-01</div>
+        <div class="feat-name">역할 기반 온보딩 플로우</div>
+      </div>
+      <span class="priority-badge p-high">우선순위 HIGH</span>
+    </div>
+
+    <div class="section-body">
+
+      <div>
+        <div class="spec-block-title">개요</div>
+        <div class="overview-text">
+          신규 가입 또는 첫 로그인 사용자에게 역할·직군·지역을 3단계로 선택하게 하여,
+          각자에게 최적화된 홈 피드를 자동으로 구성한다.
+          "들어오면 뭘 눌러야 할지 모르겠다"는 입문자 허들을 온보딩 단계에서 차단하는 것이 핵심 목적이다.
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">연결 퍼소나</div>
+        <div class="persona-tags">
+          <span class="ptag ptag-p1">Persona 1 · 박지훈 — 입문자, 역할·카테고리 이해 어려움</span>
+          <span class="ptag ptag-p2">Persona 2 · 이수연 — 직군 맞춤 피드 빠른 진입 필요</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="spec-block-title">입력 · 출력</div>
+        <table>
+          <thead>
+            <tr><th>항목</th><th>내용</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>진입 조건</strong></td><td>신규 가입 완료 직후 / 기존 회원 최초 앱 업데이트 후 첫 로그인</td></tr>
+            <tr><td><strong>입력값</strong></td><td>역할 (복수 선택 허용) · 관심 직군 (복수 선택) · 활동 지역 (단일/전국)</td></tr>
+            <tr><td><strong>출력값</strong></td><td>역할·직군·지역 기반으로 필터링된 홈 피드 구성 + 마이페이지 프로필 초기값 저장</td></tr>
+            <tr><td><strong>건너뛰기</strong></td><td>각 단계에서 "건너뛰기" 버튼 제공 → 전국/전체 직군 기본값 적용</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="spec-block-title">화면 플로우 (3 Step)</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">역할 선택</div>
+              <div class="step-desc">
+                "찍는 사람(스태프·감독)", "나오는 사람(배우·모델)", "지금 알아보는 중(입문자)" 3가지 옵션.
+                복수 선택 가능 — 겸업자를 위해 2개 이상 선택 시 통합 피드 구성.
+              </div>
+              <span class="step-note note-req">필수 선택 (건너뛰기 시 전체 기본값)</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">관심 직군 선택</div>
+              <div class="step-desc">
+                역할에 따라 직군 목록 다이나믹 노출.
+                스태프 선택 시: 연출부 · 촬영부 · 조명부 · 편집·색보정 · 사운드 · 제작부 등.
+                배우 선택 시: 배우(연기) · 모델 · 나레이션 등.
+                최대 3개 선택 권장, 제한은 없음.
+              </div>
+              <span class="step-note note-opt">선택 사항 (건너뛰기 시 전체 직군 노출)</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">활동 지역 선택</div>
+              <div class="step-desc">
+                시·도 단위 선택 (서울 · 경기 · 부산 · 대구 · 전국 등).
+                "전국" 선택 시 지역 필터 미적용.
+                이후 홈 퀵 필터 바에서 언제든 변경 가능.
+              </div>
+              <span class="step-note note-opt">선택 사항</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">예외 처리</div>
+        <div class="exception-list">
+          <div class="ex-item">
+            <span class="ex-case">건너뛰기 남용</span>
+            <span class="ex-action">온보딩 건너뛴 사용자가 첫 공고 탐색 후 30초 이상 체류 시, 하단 넛지 토스트 표시 — "역할을 설정하면 맞춤 공고를 볼 수 있어요"</span>
+          </div>
+          <div class="ex-item">
+            <span class="ex-case">역할 오선택</span>
+            <span class="ex-action">마이페이지 → "내 역할·직군 수정" 메뉴 상시 노출. 변경 즉시 홈 피드 재구성.</span>
+          </div>
+          <div class="ex-item">
+            <span class="ex-case">네트워크 오류</span>
+            <span class="ex-action">온보딩 데이터 로컬 임시 저장 후 재시도. 저장 실패 시 다음 진입 때 온보딩 재진행 유도.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">인터뷰 근거</div>
+        <div class="evidence-list">
+          <div class="ev-item">"업계 전문용어를 모르는 초보 사용자가 이용하기엔 진입장벽이 높다" <span class="ev-source">— SeungYoon Hong</span></div>
+          <div class="ev-item">"'만드는 사람', '나오는 사람' 이런 식으로 되어있어서 구별하기 어려움" <span class="ev-source">— 김가루</span></div>
+          <div class="ev-item">"사이트를 새로 접하거나 오랜만에 접하는 사람한테 보기 어려운 구성이다" <span class="ev-source">— SeungYoon Hong</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ────────── F-02 공고 카드 UI ────────── -->
+  <div class="spec-section feat-f2" id="f2">
+    <div class="section-header">
+      <div class="feat-icon">🃏</div>
+      <div class="section-title-wrap">
+        <div class="feat-id">F-02</div>
+        <div class="feat-name">공고 카드 UI</div>
+      </div>
+      <span class="priority-badge p-high">우선순위 HIGH</span>
+    </div>
+
+    <div class="section-body">
+
+      <div>
+        <div class="spec-block-title">개요</div>
+        <div class="overview-text">
+          공고 리스트에서 상세 페이지 진입 없이 핵심 조건을 한눈에 스캔할 수 있는 카드형 UI.
+          "하나하나 다 눌러봐야 아는 불편함"을 리스트 단계에서 해소하는 것이 목표다.
+          구인자 측 공고 작성 시 핵심 필드를 필수 입력으로 강제하여 카드 정보의 품질을 보장한다.
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">연결 퍼소나</div>
+        <div class="persona-tags">
+          <span class="ptag ptag-p1">Persona 1 · 박지훈 — 조건 확인에 소요 시간 최소화 필요</span>
+          <span class="ptag ptag-p2">Persona 2 · 이수연 — 30초 내 지원 여부 판단 목표</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="spec-block-title">카드 노출 정보 명세</div>
+        <table>
+          <thead>
+            <tr><th>필드명</th><th>표시 위치</th><th>입력 주체</th><th>필수 여부</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>공고 제목</td><td>카드 상단 (Bold)</td><td>구인자</td><td>필수</td></tr>
+            <tr><td>역할 태그</td><td>제목 하단 칩</td><td>구인자 (선택형)</td><td>필수</td></tr>
+            <tr><td>촬영 지역</td><td>메타 정보 행</td><td>구인자</td><td>필수</td></tr>
+            <tr><td>촬영 기간</td><td>메타 정보 행</td><td>구인자</td><td>필수</td></tr>
+            <tr><td>페이 여부</td><td>우측 뱃지</td><td>구인자 (유료/무보수/협의)</td><td>필수</td></tr>
+            <tr><td>마감일</td><td>우측 하단</td><td>구인자</td><td>필수</td></tr>
+            <tr><td>경력 무관 여부</td><td>하단 초록 뱃지</td><td>구인자 (토글)</td><td>선택</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="spec-block-title">상태 뱃지 규칙</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-num">!</div>
+            <div class="step-content">
+              <div class="step-title">마감 임박 뱃지 (빨강)</div>
+              <div class="step-desc">마감일까지 3일 이하 남은 공고에 자동 표시. "D-3", "D-1" 형식.</div>
+              <span class="step-note note-req">자동 적용</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">✓</div>
+            <div class="step-content">
+              <div class="step-title">경력 무관 뱃지 (초록)</div>
+              <div class="step-desc">구인자가 "경력 무관" 토글 ON 시 카드에 뱃지 자동 표시 — 입문자 타겟 공고 식별 용이.</div>
+              <span class="step-note note-opt">구인자 설정값 연동</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">$</div>
+            <div class="step-content">
+              <div class="step-title">페이 표시 (색상 구분)</div>
+              <div class="step-desc">유료 → 파란 텍스트, 무보수 → 회색 텍스트, 협의 → 주황 텍스트로 시각적 구분.</div>
+              <span class="step-note note-req">자동 적용</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">구인자 측 필수 입력 강제 정책</div>
+        <table>
+          <thead>
+            <tr><th>필드</th><th>입력 형태</th><th>미입력 시 처리</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>역할 태그</td><td>칩 선택 (다중)</td><td>공고 등록 버튼 비활성화</td></tr>
+            <tr><td>촬영 지역</td><td>드롭다운 (시·도)</td><td>공고 등록 버튼 비활성화</td></tr>
+            <tr><td>촬영 기간</td><td>날짜 범위 피커</td><td>공고 등록 버튼 비활성화</td></tr>
+            <tr><td>페이 여부</td><td>라디오 (유료/무보수/협의)</td><td>공고 등록 버튼 비활성화</td></tr>
+            <tr><td>마감일</td><td>날짜 피커</td><td>공고 등록 버튼 비활성화</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="spec-block-title">예외 처리</div>
+        <div class="exception-list">
+          <div class="ex-item">
+            <span class="ex-case">구인자 입력 부담</span>
+            <span class="ex-action">필수 필드는 모두 선택형(칩·토글·드롭다운)으로 제공. 자유 텍스트 입력 최소화하여 작성 시간 30초 이내 목표.</span>
+          </div>
+          <div class="ex-item">
+            <span class="ex-case">기존 공고 마이그레이션</span>
+            <span class="ex-action">기존 공고 중 필수 필드 미입력 건은 "정보 미기재" 뱃지 표시. 구인자에게 수정 유도 알림 발송.</span>
+          </div>
+          <div class="ex-item">
+            <span class="ex-case">이미지 없는 공고</span>
+            <span class="ex-action">직군에 따라 기본 일러스트 자동 적용 (역할 아이콘 기반).</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">인터뷰 근거</div>
+        <div class="evidence-list">
+          <div class="ev-item">"상세 페이지에 들어가야만 성명, 나이제한 등을 알 수 있어서 하나하나 다 눌러봐야 하는 불편함" <span class="ev-source">— SeungYoon Hong</span></div>
+          <div class="ev-item">"첫 화면에 8~9번 스크롤해야 보이는 정보들이 있어서 한 눈에 알아보기 쉽게 바뀌면 좋겠다" <span class="ev-source">— 김가루</span></div>
+          <div class="ev-item">"촬영 기간 등 특별한 이유 없으면 들어가지 않음" <span class="ev-source">— 김가루</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ────────── F-03 퀵 필터 바 ────────── -->
+  <div class="spec-section feat-f3" id="f3">
+    <div class="section-header">
+      <div class="feat-icon">🔍</div>
+      <div class="section-title-wrap">
+        <div class="feat-id">F-03</div>
+        <div class="feat-name">홈 퀵 필터 바</div>
+      </div>
+      <span class="priority-badge p-mid">우선순위 MID</span>
+    </div>
+
+    <div class="section-body">
+
+      <div>
+        <div class="spec-block-title">개요</div>
+        <div class="overview-text">
+          홈 화면 상단에 고정된 원탭 필터 칩 모음.
+          "매일 전체 리스트를 수동으로 훑는" 헤비유저의 반복 비효율을 줄이고,
+          지방 거주 입문자가 자신에게 해당하는 공고를 즉시 추려볼 수 있도록 한다.
+          필터 과부하 방지를 위해 기본 노출은 4개 이하로 제한한다.
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">연결 퍼소나</div>
+        <div class="persona-tags">
+          <span class="ptag ptag-p1">Persona 1 · 박지훈 — "내 지역" 필터로 지방 공고 즉시 추출</span>
+          <span class="ptag ptag-p2">Persona 2 · 이수연 — 직군·마감 필터로 매일 탐색 시간 단축</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="spec-block-title">기본 노출 필터 항목 (4개)</div>
+        <table>
+          <thead>
+            <tr><th>필터명</th><th>동작</th><th>기본값</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>내 지역</td><td>온보딩에서 설정한 지역 기준 자동 적용 / 미설정 시 현재 위치 제안</td><td>OFF</td></tr>
+            <tr><td>이번 주 마감</td><td>마감일이 오늘 기준 7일 이내인 공고만 노출</td><td>OFF</td></tr>
+            <tr><td>경력 무관</td><td>"경력 무관" 뱃지가 있는 공고만 노출</td><td>OFF</td></tr>
+            <tr><td>무보수 제외</td><td>페이 여부가 "무보수"인 공고 제외</td><td>OFF</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="spec-block-title">확장 필터 항목 ("더 보기" 클릭 시)</div>
+        <table>
+          <thead>
+            <tr><th>필터명</th><th>입력 형태</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>직군 선택</td><td>칩 다중 선택 (온보딩 직군값 기본 적용)</td></tr>
+            <tr><td>페이 범위</td><td>라디오 (유료 / 무보수 / 협의 / 전체)</td></tr>
+            <tr><td>지역 직접 선택</td><td>시·도 드롭다운</td></tr>
+            <tr><td>촬영 기간</td><td>날짜 범위 피커</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="spec-block-title">필터 동작 규칙</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">복수 필터 AND 조합</div>
+              <div class="step-desc">여러 필터를 동시에 ON 하면 모든 조건을 만족하는 공고만 노출 (교집합).</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">필터 적용 상태 고정</div>
+              <div class="step-desc">앱을 닫아도 마지막 필터 설정값 유지. 다음 진입 시 동일 필터 자동 적용.</div>
+              <span class="step-note note-warn">세션 종료 후에도 로컬 저장 필요</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">결과 0건 처리</div>
+              <div class="step-desc">필터 조합 결과가 0건일 때 "해당 조건의 공고가 없어요. 필터를 조정해보세요" 안내 + 필터 초기화 버튼 제공.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">예외 처리</div>
+        <div class="exception-list">
+          <div class="ex-item">
+            <span class="ex-case">필터 과부하</span>
+            <span class="ex-action">기본 노출 4개 고정. 추가 필터는 "더 보기" 뒤에 격리. 동시 활성 필터 수 상단에 뱃지로 표시 (예: "필터 3개 적용 중").</span>
+          </div>
+          <div class="ex-item">
+            <span class="ex-case">온보딩 미완료 사용자</span>
+            <span class="ex-action">"내 지역" 필터 탭 시 "지역을 설정하면 내 주변 공고를 볼 수 있어요" 바텀시트로 온보딩 지역 설정 유도.</span>
+          </div>
+          <div class="ex-item">
+            <span class="ex-case">위치 권한 거부</span>
+            <span class="ex-action">현재 위치 기반 지역 제안 불가 시 드롭다운 직접 선택 화면으로 폴백.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-block-title">인터뷰 근거</div>
+        <div class="evidence-list">
+          <div class="ev-item">"홈 화면에 기본적인 검색창이 없고 게시판 내부 검색기능도 복잡하게 되어있다" <span class="ev-source">— SeungYoon Hong</span></div>
+          <div class="ev-item">"타 플랫폼처럼 지역별 카테고리 세분화, AI 추천 시스템이 필요하다" <span class="ev-source">— u3in</span></div>
+          <div class="ev-item">"검색 기능을 개선하고 함께 지역 설정 필터 기능이 도입되면 좋겠다" <span class="ev-source">— u3in</span></div>
+          <div class="ev-item">"매일 자기 전에 습관적으로 들어가서 스태프 공고를 확인한다" <span class="ev-source">— 김가루</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    필름메이커스 UX/UI 개선 프로젝트 · Feature Specification v1 · 2026-04-24
+  </div>
+
+</body>
+</html>
