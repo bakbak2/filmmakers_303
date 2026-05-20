@@ -8,30 +8,30 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     :root {
-      --bg: #FFFFFF;
+      --bg: #F8F7F4;
       --surface: #FFFFFF;
-      --navy: #191F28;
-      --navy-mid: #F9FAFB;
-      --blue: #E8899A;
-      --blue-light: #F0C0CA;
-      --green: #52B788;
-      --green-light: #D8F3DC;
-      --red: #E05070;
-      --red-light: #F8D8E0;
-      --orange: #FFB07C;
-      --orange-light: #FFF0E6;
-      --gray-50: #FAFAFA;
-      --gray-100: #FDE8EC;
-      --gray-200: #F0C0CA;
-      --gray-400: #B89099;
-      --gray-500: #9E7A84;
-      --gray-700: #3D2530;
-      --gray-900: #1A0F15;
+      --navy: #1B2D4E;
+      --navy-mid: #F2F0EC;
+      --blue: #2D4A7A;
+      --blue-light: #E8EEF8;
+      --green: #3D7A5E;
+      --green-light: #DCF0E8;
+      --red: #9B4040;
+      --red-light: #F5E0E0;
+      --orange: #A07040;
+      --orange-light: #F5EBE0;
+      --gray-50: #FAFAF8;
+      --gray-100: #EEF2F8;
+      --gray-200: #E0DCD4;
+      --gray-400: #8A9AB0;
+      --gray-500: #5A6A80;
+      --gray-700: #2D3D52;
+      --gray-900: #1B2D4E;
       --font: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Pretendard', sans-serif;
       --radius: 20px;
       --radius-sm: 14px;
-      --shadow: 0 2px 8px rgba(232,137,154,.12), 0 4px 20px rgba(232,137,154,.10);
-      --shadow-md: 0 6px 24px rgba(232,137,154,.20);
+      --shadow: 0 2px 8px rgba(27,45,78,.07), 0 4px 20px rgba(27,45,78,.05);
+      --shadow-md: 0 6px 24px rgba(27,45,78,.12);
     }
 
     html, body {
@@ -57,8 +57,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: #ffffff;
-      border-bottom: 1px solid #EDD5DA;
+      background: #F8F7F4;
+      border-bottom: 1px solid #DDD8D0;
       padding: 0 20px;
       padding-top: env(safe-area-inset-top);
     }
@@ -86,8 +86,8 @@
     .logo-text {
       font-size: 18px;
       font-weight: 900;
-      color: var(--gray-900);
-      letter-spacing: -0.5px;
+      color: var(--navy);
+      letter-spacing: -0.8px;
     }
     .header-actions {
       display: flex;
@@ -123,12 +123,12 @@
 
     /* ── 히어로 섹션 ── */
     .hero {
-      background: linear-gradient(180deg, #FDE8EC 0%, #F0D0D8 100%);
+      background: linear-gradient(180deg, #EEF2FA 0%, #E4EAF5 100%);
       padding: 0 20px 24px;
     }
     .greeting {
       font-size: 13px;
-      color: rgba(25,31,40,0.5);
+      color: rgba(27,45,78,0.5);
       margin-bottom: 14px;
       padding-top: 4px;
     }
@@ -136,8 +136,8 @@
 
     /* 공고 수 스탯 카드 */
     .hero-stat-card {
-      background: rgba(255,255,255,0.75);
-      border: 1px solid rgba(232,137,154,0.25);
+      background: #FFFFFF;
+      border: 1px solid rgba(27,45,78,0.10);
       border-radius: 18px;
       padding: 20px 22px;
       margin-bottom: 20px;
@@ -145,7 +145,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(27,45,78,.08);
     }
     .hero-stat-left { flex: 1; }
     .hero-stat-eyebrow {
@@ -172,7 +172,7 @@
       font-size: 24px;
       font-weight: 700;
       letter-spacing: -0.5px;
-      color: rgba(25,31,40,0.5);
+      color: rgba(27,45,78,0.5);
     }
     .hero-stat-trend {
       display: flex;
@@ -180,7 +180,7 @@
       gap: 5px;
       font-size: 12px;
       font-weight: 600;
-      color: #D0607A;
+      color: #2D4A7A;
     }
     .hero-stat-trend svg { width: 14px; height: 14px; flex-shrink: 0; }
     .hero-stat-deco {
@@ -199,23 +199,23 @@
       width: 100%;
       height: 48px;
       border-radius: 14px;
-      border: none;
-      background: rgba(255,255,255,0.8);
+      border: 1.5px solid rgba(27,45,78,0.12);
+      background: rgba(255,255,255,0.9);
       color: var(--gray-900);
       font-size: 14px;
       font-family: var(--font);
       padding: 0 48px 0 46px;
       outline: none;
-      transition: background 0.2s;
+      transition: background 0.2s, border-color 0.2s;
     }
-    .search-bar input::placeholder { color: rgba(25,31,40,0.35); }
-    .search-bar input:focus { background: #ffffff; }
+    .search-bar input::placeholder { color: rgba(27,45,78,0.35); }
+    .search-bar input:focus { background: #ffffff; border-color: var(--blue); }
     .search-icon {
       position: absolute;
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(25,31,40,0.35);
+      color: rgba(27,45,78,0.35);
     }
     .search-icon svg { width: 18px; height: 18px; display: block; }
     .search-clear {
@@ -226,9 +226,9 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: rgba(25,31,40,0.08);
+      background: rgba(27,45,78,0.08);
       border: none;
-      color: rgba(25,31,40,0.4);
+      color: rgba(27,45,78,0.4);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -257,7 +257,7 @@
       height: 34px;
       padding: 0 14px;
       border-radius: 100px;
-      border: 1.5px solid #EDD5DA;
+      border: 1.5px solid #DDD8D0;
       background: transparent;
       color: var(--gray-500);
       font-size: 13px;
@@ -273,7 +273,7 @@
     .filter-chip.active {
       background: var(--blue);
       border-color: var(--blue);
-      color: var(--navy);
+      color: #ffffff;
     }
     .filter-chip svg { width: 13px; height: 13px; }
     .filter-more {
@@ -281,7 +281,7 @@
       height: 34px;
       padding: 0 14px;
       border-radius: 100px;
-      border: 1.5px solid #EDD5DA;
+      border: 1.5px solid #DDD8D0;
       background: transparent;
       color: var(--gray-400);
       font-size: 13px;
@@ -771,8 +771,8 @@
       height: 50px;
       border-radius: 14px;
       border: none;
-      background: var(--blue);
-      color: var(--navy);
+      background: var(--navy);
+      color: #ffffff;
       font-size: 14px;
       font-weight: 700;
       font-family: var(--font);
@@ -817,7 +817,7 @@
       max-width: 430px;
       transform: translateX(-50%);
       z-index: 500;
-      background: #FFFFFF;
+      background: #F8F7F4;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -836,7 +836,7 @@
       justify-content: space-between;
       padding: 16px 20px;
       padding-top: calc(16px + env(safe-area-inset-top));
-      border-bottom: 1px solid #EDD5DA;
+      border-bottom: 1px solid #DDD8D0;
     }
     .ob-logo {
       display: flex;
@@ -873,11 +873,11 @@
       flex: 1;
       height: 3px;
       border-radius: 100px;
-      background: #EDD5DA;
+      background: #DDD8D0;
       transition: background 0.3s;
     }
     .ob-progress-bar.done { background: var(--blue); }
-    .ob-progress-bar.active { background: #E8899A; }
+    .ob-progress-bar.active { background: #2D4A7A; }
 
     /* 슬라이드 컨테이너 */
     .ob-slides {
@@ -930,7 +930,7 @@
     }
     .ob-role-item {
       background: #FAFAFA;
-      border: 1.5px solid #EDD5DA;
+      border: 1.5px solid #DDD8D0;
       border-radius: 16px;
       padding: 20px 20px;
       display: flex;
@@ -942,20 +942,20 @@
     }
     .ob-role-item:active { transform: scale(0.98); }
     .ob-role-item.selected {
-      background: #FDE8EC;
+      background: #EEF2F8;
       border-color: var(--blue);
     }
     .ob-role-icon {
       width: 52px; height: 52px;
       border-radius: 14px;
-      background: #FDE8EC;
+      background: #EEF2F8;
       display: flex; align-items: center; justify-content: center;
       font-size: 26px;
       flex-shrink: 0;
       transition: background 0.15s;
     }
     .ob-role-item.selected .ob-role-icon {
-      background: #F0C0CA;
+      background: #C8D8F0;
     }
     .ob-role-text { flex: 1; }
     .ob-role-name {
@@ -972,7 +972,7 @@
     .ob-role-check {
       width: 22px; height: 22px;
       border-radius: 50%;
-      border: 2px solid #EDD5DA;
+      border: 2px solid #C8D8EC;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       transition: all 0.15s;
@@ -993,7 +993,7 @@
     .ob-genre-chip {
       padding: 11px 16px;
       border-radius: 12px;
-      border: 1.5px solid #EDD5DA;
+      border: 1.5px solid #DDD8D0;
       background: #FAFAFA;
       color: var(--gray-700);
       font-size: 13px;
@@ -1004,7 +1004,7 @@
     }
     .ob-genre-chip:active { transform: scale(0.96); }
     .ob-genre-chip.selected {
-      background: #FDE8EC;
+      background: #EEF2F8;
       border-color: var(--blue);
       color: var(--gray-900);
     }
@@ -1023,7 +1023,7 @@
     .ob-region-item {
       padding: 14px 8px;
       border-radius: 12px;
-      border: 1.5px solid #EDD5DA;
+      border: 1.5px solid #DDD8D0;
       background: #FAFAFA;
       color: var(--gray-700);
       font-size: 13px;
@@ -1035,17 +1035,17 @@
     }
     .ob-region-item:active { transform: scale(0.96); }
     .ob-region-item.selected {
-      background: #FDE8EC;
+      background: #EEF2F8;
       border-color: var(--blue);
       color: var(--gray-900);
     }
     .ob-region-item.wide {
       grid-column: span 3;
       font-size: 14px;
-      background: #FDE8EC;
+      background: #EEF2F8;
     }
     .ob-region-item.wide.selected {
-      background: #F0C0CA;
+      background: #C8D8F0;
     }
 
     /* 하단 액션 */
@@ -1061,8 +1061,8 @@
       height: 54px;
       border-radius: 16px;
       border: none;
-      background: var(--blue);
-      color: var(--navy);
+      background: var(--navy);
+      color: #ffffff;
       font-size: 16px;
       font-weight: 800;
       font-family: var(--font);
@@ -1308,20 +1308,20 @@
       </div>
       <div class="hero-stat-deco">
         <svg viewBox="0 0 80 80" fill="none">
-          <circle cx="40" cy="40" r="36" stroke="#E8899A" stroke-width="3"/>
-          <circle cx="40" cy="40" r="12" fill="#E8899A"/>
-          <line x1="40" y1="4" x2="40" y2="28" stroke="#E8899A" stroke-width="3"/>
-          <line x1="40" y1="52" x2="40" y2="76" stroke="#E8899A" stroke-width="3"/>
-          <line x1="4" y1="40" x2="28" y2="40" stroke="#E8899A" stroke-width="3"/>
-          <line x1="52" y1="40" x2="76" y2="40" stroke="#E8899A" stroke-width="3"/>
-          <line x1="11" y1="11" x2="29" y2="29" stroke="#E8899A" stroke-width="3"/>
-          <line x1="51" y1="51" x2="69" y2="69" stroke="#E8899A" stroke-width="3"/>
-          <line x1="69" y1="11" x2="51" y2="29" stroke="#E8899A" stroke-width="3"/>
-          <line x1="29" y1="51" x2="11" y2="69" stroke="#E8899A" stroke-width="3"/>
-          <circle cx="28" cy="28" r="5" fill="none" stroke="#E8899A" stroke-width="2.5"/>
-          <circle cx="52" cy="28" r="5" fill="none" stroke="#E8899A" stroke-width="2.5"/>
-          <circle cx="28" cy="52" r="5" fill="none" stroke="#E8899A" stroke-width="2.5"/>
-          <circle cx="52" cy="52" r="5" fill="none" stroke="#E8899A" stroke-width="2.5"/>
+          <circle cx="40" cy="40" r="36" stroke="#2D4A7A" stroke-width="3"/>
+          <circle cx="40" cy="40" r="12" fill="#2D4A7A"/>
+          <line x1="40" y1="4" x2="40" y2="28" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="40" y1="52" x2="40" y2="76" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="4" y1="40" x2="28" y2="40" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="52" y1="40" x2="76" y2="40" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="11" y1="11" x2="29" y2="29" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="51" y1="51" x2="69" y2="69" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="69" y1="11" x2="51" y2="29" stroke="#2D4A7A" stroke-width="3"/>
+          <line x1="29" y1="51" x2="11" y2="69" stroke="#2D4A7A" stroke-width="3"/>
+          <circle cx="28" cy="28" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
+          <circle cx="52" cy="28" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
+          <circle cx="28" cy="52" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
+          <circle cx="52" cy="52" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
         </svg>
       </div>
     </div>
@@ -1387,14 +1387,14 @@
         <div class="role-card" onclick="selectRole(this)">
           <div class="role-icon">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="7" y="19" width="34" height="22" rx="3" fill="#F0C0CA" stroke="#E8899A" stroke-width="2"/>
-              <rect x="7" y="11" width="34" height="10" rx="2" fill="#E8899A"/>
-              <line x1="14" y1="11" x2="10" y2="21" stroke="#F0C0CA" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="21" y1="11" x2="17" y2="21" stroke="#F0C0CA" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="28" y1="11" x2="24" y2="21" stroke="#F0C0CA" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="35" y1="11" x2="31" y2="21" stroke="#F0C0CA" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="13" y1="28" x2="35" y2="28" stroke="#E8899A" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="13" y1="34" x2="26" y2="34" stroke="#F0C0CA" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="7" y="19" width="34" height="22" rx="3" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2"/>
+              <rect x="7" y="11" width="34" height="10" rx="2" fill="#2D4A7A"/>
+              <line x1="14" y1="11" x2="10" y2="21" stroke="#C8D8F0" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="21" y1="11" x2="17" y2="21" stroke="#C8D8F0" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="28" y1="11" x2="24" y2="21" stroke="#C8D8F0" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="35" y1="11" x2="31" y2="21" stroke="#C8D8F0" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="13" y1="28" x2="35" y2="28" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="13" y1="34" x2="26" y2="34" stroke="#C8D8F0" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
           <span class="role-label">연출부</span>
@@ -1405,12 +1405,12 @@
         <div class="role-card" onclick="selectRole(this)">
           <div class="role-icon">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="15" width="27" height="19" rx="4" fill="#F0C0CA" stroke="#E8899A" stroke-width="2"/>
-              <rect x="13" y="11" width="8" height="5" rx="1.5" fill="#E8899A"/>
-              <circle cx="17" cy="24" r="7" fill="#fff" stroke="#E8899A" stroke-width="2"/>
-              <circle cx="17" cy="24" r="4" fill="#E8899A"/>
+              <rect x="4" y="15" width="27" height="19" rx="4" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2"/>
+              <rect x="13" y="11" width="8" height="5" rx="1.5" fill="#2D4A7A"/>
+              <circle cx="17" cy="24" r="7" fill="#fff" stroke="#2D4A7A" stroke-width="2"/>
+              <circle cx="17" cy="24" r="4" fill="#2D4A7A"/>
               <circle cx="15.5" cy="22.5" r="1.2" fill="rgba(255,255,255,0.5)"/>
-              <path d="M31 19L44 14V35L31 30Z" fill="#F0C0CA" stroke="#E8899A" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M31 19L44 14V35L31 30Z" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2" stroke-linejoin="round"/>
             </svg>
           </div>
           <span class="role-label">촬영부</span>
@@ -1421,13 +1421,13 @@
         <div class="role-card" onclick="selectRole(this)">
           <div class="role-icon">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="24" y1="22" x2="24" y2="43" stroke="#E8899A" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="16" y1="43" x2="32" y2="43" stroke="#E8899A" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M11 8H37L31 21H17Z" fill="#F0C0CA" stroke="#E8899A" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="24" y1="22" x2="24" y2="43" stroke="#2D4A7A" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="16" y1="43" x2="32" y2="43" stroke="#2D4A7A" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M11 8H37L31 21H17Z" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2" stroke-linejoin="round"/>
               <path d="M15 9H33L29 19H19Z" fill="rgba(255,255,255,0.25)"/>
-              <line x1="17" y1="23" x2="11" y2="31" stroke="#F0C0CA" stroke-width="1.8" stroke-linecap="round"/>
-              <line x1="24" y1="23" x2="24" y2="33" stroke="#F0C0CA" stroke-width="1.8" stroke-linecap="round"/>
-              <line x1="31" y1="23" x2="37" y2="31" stroke="#F0C0CA" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="17" y1="23" x2="11" y2="31" stroke="#C8D8F0" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="24" y1="23" x2="24" y2="33" stroke="#C8D8F0" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="31" y1="23" x2="37" y2="31" stroke="#C8D8F0" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
           </div>
           <span class="role-label">조명부</span>
@@ -1439,15 +1439,15 @@
           <div class="role-icon">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- 비극 마스크(뒤) -->
-              <ellipse cx="30" cy="27" rx="12" ry="14" fill="#2D1520" stroke="#E8899A" stroke-width="2"/>
-              <circle cx="26" cy="24" r="1.5" fill="#F0C0CA"/>
-              <circle cx="34" cy="24" r="1.5" fill="#F0C0CA"/>
-              <path d="M25 32 Q30 27 35 32" stroke="#F0C0CA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <ellipse cx="30" cy="27" rx="12" ry="14" fill="#1B2D4E" stroke="#2D4A7A" stroke-width="2"/>
+              <circle cx="26" cy="24" r="1.5" fill="#C8D8F0"/>
+              <circle cx="34" cy="24" r="1.5" fill="#C8D8F0"/>
+              <path d="M25 32 Q30 27 35 32" stroke="#C8D8F0" stroke-width="1.8" stroke-linecap="round" fill="none"/>
               <!-- 희극 마스크(앞) -->
-              <ellipse cx="19" cy="23" rx="12" ry="14" fill="#F0C0CA" stroke="#E8899A" stroke-width="2"/>
-              <circle cx="15" cy="20" r="1.5" fill="#E8899A"/>
-              <circle cx="23" cy="20" r="1.5" fill="#E8899A"/>
-              <path d="M14 26 Q19 32 24 26" stroke="#E8899A" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <ellipse cx="19" cy="23" rx="12" ry="14" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2"/>
+              <circle cx="15" cy="20" r="1.5" fill="#2D4A7A"/>
+              <circle cx="23" cy="20" r="1.5" fill="#2D4A7A"/>
+              <path d="M14 26 Q19 32 24 26" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round" fill="none"/>
             </svg>
           </div>
           <span class="role-label">배우·모델</span>
@@ -1458,21 +1458,21 @@
         <div class="role-card" onclick="selectRole(this)">
           <div class="role-icon">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="16" width="42" height="16" rx="2.5" fill="#F0C0CA" stroke="#E8899A" stroke-width="2"/>
+              <rect x="3" y="16" width="42" height="16" rx="2.5" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2"/>
               <!-- 왼쪽 천공 -->
-              <rect x="3" y="18" width="5" height="5" rx="1" fill="#E8899A"/>
-              <rect x="3" y="27" width="5" height="5" rx="1" fill="#E8899A"/>
+              <rect x="3" y="18" width="5" height="5" rx="1" fill="#2D4A7A"/>
+              <rect x="3" y="27" width="5" height="5" rx="1" fill="#2D4A7A"/>
               <!-- 오른쪽 천공 -->
-              <rect x="40" y="18" width="5" height="5" rx="1" fill="#E8899A"/>
-              <rect x="40" y="27" width="5" height="5" rx="1" fill="#E8899A"/>
+              <rect x="40" y="18" width="5" height="5" rx="1" fill="#2D4A7A"/>
+              <rect x="40" y="27" width="5" height="5" rx="1" fill="#2D4A7A"/>
               <!-- 프레임들 -->
-              <rect x="11" y="18" width="8" height="12" rx="1" fill="#E8899A" opacity="0.25"/>
-              <rect x="21" y="18" width="8" height="12" rx="1" fill="#E8899A" opacity="0.25"/>
+              <rect x="11" y="18" width="8" height="12" rx="1" fill="#2D4A7A" opacity="0.25"/>
+              <rect x="21" y="18" width="8" height="12" rx="1" fill="#2D4A7A" opacity="0.25"/>
               <!-- 색보정 하이라이트 프레임 -->
-              <rect x="31" y="18" width="7" height="12" rx="1" fill="#F0C0CA" opacity="0.7"/>
+              <rect x="31" y="18" width="7" height="12" rx="1" fill="#C8D8F0" opacity="0.7"/>
               <!-- 색보정 색상 슬라이더 느낌 -->
-              <line x1="13" y1="36" x2="35" y2="36" stroke="#E8899A" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="22" cy="36" r="2.5" fill="#F0C0CA" stroke="#E8899A" stroke-width="1.5"/>
+              <line x1="13" y1="36" x2="35" y2="36" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="22" cy="36" r="2.5" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="1.5"/>
             </svg>
           </div>
           <span class="role-label">편집·색보정</span>
@@ -1484,22 +1484,22 @@
           <div class="role-icon">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- 외곽 프레임 -->
-              <rect x="4" y="6" width="40" height="36" rx="4" fill="#F0C0CA" stroke="#E8899A" stroke-width="2"/>
+              <rect x="4" y="6" width="40" height="36" rx="4" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2"/>
               <!-- 상단 필름 천공 바 -->
-              <rect x="4" y="6" width="40" height="8" rx="4" fill="#E8899A"/>
-              <rect x="4" y="10" width="40" height="4" fill="#E8899A"/>
-              <rect x="8"  y="8" width="3" height="4" rx="1" fill="#F0C0CA"/>
-              <rect x="15" y="8" width="3" height="4" rx="1" fill="#F0C0CA"/>
-              <rect x="22" y="8" width="3" height="4" rx="1" fill="#F0C0CA"/>
-              <rect x="29" y="8" width="3" height="4" rx="1" fill="#F0C0CA"/>
-              <rect x="36" y="8" width="3" height="4" rx="1" fill="#F0C0CA"/>
+              <rect x="4" y="6" width="40" height="8" rx="4" fill="#2D4A7A"/>
+              <rect x="4" y="10" width="40" height="4" fill="#2D4A7A"/>
+              <rect x="8"  y="8" width="3" height="4" rx="1" fill="#C8D8F0"/>
+              <rect x="15" y="8" width="3" height="4" rx="1" fill="#C8D8F0"/>
+              <rect x="22" y="8" width="3" height="4" rx="1" fill="#C8D8F0"/>
+              <rect x="29" y="8" width="3" height="4" rx="1" fill="#C8D8F0"/>
+              <rect x="36" y="8" width="3" height="4" rx="1" fill="#C8D8F0"/>
               <!-- 2×2 썸네일 프레임 -->
-              <rect x="8"  y="17" width="14" height="10" rx="1.5" fill="rgba(232,137,154,0.15)" stroke="#E8899A" stroke-width="1.2"/>
-              <rect x="26" y="17" width="14" height="10" rx="1.5" fill="rgba(232,137,154,0.15)" stroke="#E8899A" stroke-width="1.2"/>
-              <rect x="8"  y="30" width="14" height="8"  rx="1.5" fill="rgba(240,192,202,0.5)" stroke="#F0C0CA" stroke-width="1.2"/>
-              <rect x="26" y="30" width="14" height="8"  rx="1.5" fill="rgba(232,137,154,0.15)" stroke="#E8899A" stroke-width="1.2"/>
+              <rect x="8"  y="17" width="14" height="10" rx="1.5" fill="rgba(27,45,78,0.08)" stroke="#2D4A7A" stroke-width="1.2"/>
+              <rect x="26" y="17" width="14" height="10" rx="1.5" fill="rgba(27,45,78,0.08)" stroke="#2D4A7A" stroke-width="1.2"/>
+              <rect x="8"  y="30" width="14" height="8"  rx="1.5" fill="rgba(200,216,240,0.5)" stroke="#C8D8F0" stroke-width="1.2"/>
+              <rect x="26" y="30" width="14" height="8"  rx="1.5" fill="rgba(27,45,78,0.08)" stroke="#2D4A7A" stroke-width="1.2"/>
               <!-- 골드 프레임 안 작은 별 -->
-              <circle cx="15" cy="34" r="2.5" fill="#F0C0CA" opacity="0.8"/>
+              <circle cx="15" cy="34" r="2.5" fill="#C8D8F0" opacity="0.8"/>
             </svg>
           </div>
           <span class="role-label">전체 보기</span>
