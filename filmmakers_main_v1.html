@@ -123,20 +123,24 @@
 
     /* ── 히어로 섹션 ── */
     .hero {
-      background: linear-gradient(160deg, #1E3252 0%, #152540 100%);
-      padding: 0 20px 24px;
+      background:
+        radial-gradient(ellipse 90% 70% at 10% 0%,   rgba(55,100,190,0.22) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 90% 100%,  rgba(160,120,45,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 60% at 50% 50%,   rgba(20,50,100,0.12) 0%, transparent 60%),
+        #0B1A2E;
+      padding: 0 20px 28px;
     }
     .greeting {
       font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 14px;
-      padding-top: 4px;
+      color: rgba(200,218,248,0.65);
+      margin-bottom: 16px;
+      padding-top: 8px;
     }
     .greeting strong { color: #ffffff; font-weight: 700; }
 
     /* 공고 수 스탯 카드 */
     .hero-stat-card {
-      background: #FFFFFF;
+      background: rgba(255,255,255,0.97);
       border: none;
       border-radius: 18px;
       padding: 20px 22px;
@@ -145,7 +149,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.20);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.30), 0 1px 0 rgba(255,255,255,0.08) inset;
     }
     .hero-stat-left { flex: 1; }
     .hero-stat-eyebrow {
