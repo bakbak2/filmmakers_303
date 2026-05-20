@@ -123,7 +123,7 @@
 
     /* ── 히어로 섹션 ── */
     .hero {
-      background: linear-gradient(180deg, #EEF2FA 0%, #E4EAF5 100%);
+      background: linear-gradient(180deg, #EEEAE3 0%, #E4DFD7 100%);
       padding: 0 20px 24px;
     }
     .greeting {
@@ -158,11 +158,11 @@
       margin-bottom: 6px;
     }
     .hero-stat-num {
-      font-size: 54px;
-      font-weight: 900;
+      font-size: 52px;
+      font-weight: 700;
       color: var(--gray-900);
       line-height: 1;
-      letter-spacing: -3px;
+      letter-spacing: -2px;
       display: flex;
       align-items: baseline;
       gap: 4px;
@@ -408,15 +408,16 @@
       margin-bottom: 10px;
     }
     .recommend-thumb {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: var(--gray-100);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--navy);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      flex-shrink: 0;
     }
+    .recommend-thumb svg { width: 26px; height: 26px; }
     .pay-badge {
       font-size: 11px;
       font-weight: 700;
@@ -504,6 +505,30 @@
       align-items: flex-start;
       gap: 12px;
       margin-bottom: 10px;
+    }
+    /* 공고 카드 상단 일러스트 영역 */
+    .job-card-illust {
+      width: 100%;
+      height: 90px;
+      border-radius: 12px;
+      background: var(--navy);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .job-card-illust svg { width: 100%; height: 100%; }
+    .job-card-illust .illust-label {
+      position: absolute;
+      bottom: 8px;
+      left: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
     .job-title {
       font-size: 15px;
@@ -1307,21 +1332,36 @@
         </div>
       </div>
       <div class="hero-stat-deco">
+        <!-- 영화 프로젝터 일러스트 -->
         <svg viewBox="0 0 80 80" fill="none">
-          <circle cx="40" cy="40" r="36" stroke="#2D4A7A" stroke-width="3"/>
-          <circle cx="40" cy="40" r="12" fill="#2D4A7A"/>
-          <line x1="40" y1="4" x2="40" y2="28" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="40" y1="52" x2="40" y2="76" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="4" y1="40" x2="28" y2="40" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="52" y1="40" x2="76" y2="40" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="11" y1="11" x2="29" y2="29" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="51" y1="51" x2="69" y2="69" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="69" y1="11" x2="51" y2="29" stroke="#2D4A7A" stroke-width="3"/>
-          <line x1="29" y1="51" x2="11" y2="69" stroke="#2D4A7A" stroke-width="3"/>
-          <circle cx="28" cy="28" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
-          <circle cx="52" cy="28" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
-          <circle cx="28" cy="52" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
-          <circle cx="52" cy="52" r="5" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
+          <!-- 투사 빔 -->
+          <path d="M52 40 L78 20 L78 60Z" fill="rgba(27,45,78,0.08)"/>
+          <!-- 프로젝터 몸체 -->
+          <rect x="6" y="28" width="48" height="24" rx="6" fill="#C8D8F0" stroke="#2D4A7A" stroke-width="2.5"/>
+          <!-- 렌즈 하우징 -->
+          <rect x="46" y="33" width="10" height="14" rx="2" fill="#2D4A7A"/>
+          <!-- 렌즈 앞면 -->
+          <circle cx="51" cy="40" r="7.5" fill="#E8EEF8" stroke="#1B2D4E" stroke-width="2"/>
+          <circle cx="51" cy="40" r="4" fill="#1B2D4E"/>
+          <circle cx="49.5" cy="38.5" r="1.6" fill="rgba(255,255,255,0.5)"/>
+          <!-- 상단 필름 릴 -->
+          <circle cx="18" cy="20" r="10" fill="none" stroke="#2D4A7A" stroke-width="2.5"/>
+          <circle cx="18" cy="20" r="3.5" fill="#2D4A7A"/>
+          <line x1="18" y1="10" x2="18" y2="16" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/>
+          <line x1="18" y1="24" x2="18" y2="30" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/>
+          <line x1="8"  y1="20" x2="14" y2="20" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/>
+          <line x1="22" y1="20" x2="28" y2="20" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/>
+          <!-- 릴 대각선 살 -->
+          <line x1="11" y1="13" x2="14" y2="16" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="25" y1="13" x2="22" y2="16" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="11" y1="27" x2="14" y2="24" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="25" y1="27" x2="22" y2="24" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/>
+          <!-- 필름 테이프 -->
+          <path d="M18 30 Q18 36 28 36" stroke="#2D4A7A" stroke-width="1.5" fill="none" stroke-dasharray="2 2" stroke-linecap="round"/>
+          <!-- 몸체 통풍구 -->
+          <line x1="16" y1="34" x2="16" y2="46" stroke="#2D4A7A" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
+          <line x1="22" y1="34" x2="22" y2="46" stroke="#2D4A7A" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
+          <line x1="28" y1="34" x2="28" y2="46" stroke="#2D4A7A" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
         </svg>
       </div>
     </div>
@@ -1523,7 +1563,16 @@
       <div class="recommend-scroll">
         <div class="recommend-card">
           <div class="recommend-card-top">
-            <div class="recommend-thumb">🎬</div>
+            <div class="recommend-thumb">
+              <!-- 카메라 -->
+              <svg viewBox="0 0 26 26" fill="none">
+                <rect x="2" y="8" width="18" height="13" rx="3" fill="#C8D8F0" stroke="#E8EEF8" stroke-width="1.5"/>
+                <rect x="7" y="5" width="6" height="4" rx="1" fill="#C8D8F0"/>
+                <circle cx="11" cy="14" r="4.5" fill="none" stroke="#E8EEF8" stroke-width="1.5"/>
+                <circle cx="11" cy="14" r="2.5" fill="#E8EEF8"/>
+                <path d="M20 11L25 8V18L20 15Z" fill="#C8D8F0" stroke="#E8EEF8" stroke-width="1.2" stroke-linejoin="round"/>
+              </svg>
+            </div>
             <span class="pay-badge paid">유료</span>
           </div>
           <div class="recommend-title">단편영화 &lt;밤의 끝&gt; 촬영부 스태프 모집</div>
@@ -1542,7 +1591,21 @@
         </div>
         <div class="recommend-card">
           <div class="recommend-card-top">
-            <div class="recommend-thumb">🎭</div>
+            <div class="recommend-thumb">
+              <!-- 스포트라이트 -->
+              <svg viewBox="0 0 26 26" fill="none">
+                <!-- 빛 기둥 -->
+                <path d="M13 10 L5 24 L21 24Z" fill="rgba(200,216,240,0.25)"/>
+                <!-- 조명 하우징 -->
+                <path d="M7 4 L19 4 L16 11 L10 11Z" fill="#C8D8F0" stroke="#E8EEF8" stroke-width="1.5" stroke-linejoin="round"/>
+                <!-- 렌즈 -->
+                <ellipse cx="13" cy="11" rx="3.5" ry="2" fill="#E8EEF8"/>
+                <!-- 스탠드 -->
+                <line x1="13" y1="2" x2="13" y2="4" stroke="#E8EEF8" stroke-width="1.8" stroke-linecap="round"/>
+                <!-- 바닥 원형 조명 -->
+                <ellipse cx="13" cy="24" rx="5" ry="1.5" fill="rgba(200,216,240,0.45)"/>
+              </svg>
+            </div>
             <span class="pay-badge negotiable">협의</span>
           </div>
           <div class="recommend-title">독립영화 주연 배우 오디션 — 20대 남성</div>
@@ -1561,7 +1624,24 @@
         </div>
         <div class="recommend-card">
           <div class="recommend-card-top">
-            <div class="recommend-thumb">💡</div>
+            <div class="recommend-thumb">
+              <!-- 소프트박스 -->
+              <svg viewBox="0 0 26 26" fill="none">
+                <!-- 소프트박스 몸체 -->
+                <path d="M4 3 L22 3 L17 12 L9 12Z" fill="#C8D8F0" stroke="#E8EEF8" stroke-width="1.5" stroke-linejoin="round"/>
+                <!-- 내부 패널 -->
+                <path d="M7 4 L19 4 L15 10 L11 10Z" fill="rgba(232,238,248,0.3)"/>
+                <!-- 스탠드 -->
+                <line x1="13" y1="12" x2="13" y2="22" stroke="#E8EEF8" stroke-width="2" stroke-linecap="round"/>
+                <!-- 다리 -->
+                <line x1="8"  y1="22" x2="18" y2="22" stroke="#E8EEF8" stroke-width="2" stroke-linecap="round"/>
+                <line x1="8"  y1="22" x2="5"  y2="26" stroke="#E8EEF8" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="18" y1="22" x2="21" y2="26" stroke="#E8EEF8" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- 빛 레이 -->
+                <line x1="4"  y1="16" x2="7"  y2="14" stroke="#C8D8F0" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+                <line x1="22" y1="16" x2="19" y2="14" stroke="#C8D8F0" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+              </svg>
+            </div>
             <span class="pay-badge paid">유료</span>
           </div>
           <div class="recommend-title">뮤직비디오 조명팀 어시스턴트</div>
@@ -1595,6 +1675,36 @@
 
         <!-- 카드 1 -->
         <div class="job-card">
+          <!-- 편집·색보정 — 필름 스트립 + 타임라인 -->
+          <div class="job-card-illust">
+            <svg viewBox="0 0 360 90" fill="none" preserveAspectRatio="xMidYMid slice">
+              <!-- 배경 그라디언트 느낌 -->
+              <rect width="360" height="90" fill="#1B2D4E"/>
+              <rect width="360" height="90" fill="url(#g1)" opacity="0.3"/>
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="360" y2="90"><stop offset="0%" stop-color="#2D4A7A"/><stop offset="100%" stop-color="#0F1B30"/></linearGradient></defs>
+              <!-- 필름 스트립 -->
+              <rect x="0" y="18" width="360" height="54" fill="#0F1B30" opacity="0.6"/>
+              <!-- 왼쪽 천공 -->
+              <rect x="6"  y="24" width="10" height="14" rx="2" fill="#2D4A7A"/>
+              <rect x="6"  y="52" width="10" height="14" rx="2" fill="#2D4A7A"/>
+              <!-- 프레임들 -->
+              <rect x="24" y="22" width="44" height="46" rx="2" fill="#2D4A7A" opacity="0.4"/>
+              <rect x="74" y="22" width="44" height="46" rx="2" fill="#2D4A7A" opacity="0.6"/>
+              <rect x="124" y="22" width="44" height="46" rx="2" fill="#C8D8F0" opacity="0.25"/>
+              <rect x="174" y="22" width="44" height="46" rx="2" fill="#2D4A7A" opacity="0.5"/>
+              <rect x="224" y="22" width="44" height="46" rx="2" fill="#C8D8F0" opacity="0.15"/>
+              <rect x="274" y="22" width="44" height="46" rx="2" fill="#2D4A7A" opacity="0.4"/>
+              <!-- 오른쪽 천공 -->
+              <rect x="344" y="24" width="10" height="14" rx="2" fill="#2D4A7A"/>
+              <rect x="344" y="52" width="10" height="14" rx="2" fill="#2D4A7A"/>
+              <!-- 색보정 슬라이더 (하단) -->
+              <line x1="24" y1="78" x2="336" y2="78" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+              <circle cx="110" cy="78" r="4" fill="#C8D8F0" stroke="#E8EEF8" stroke-width="1.5"/>
+              <circle cx="200" cy="78" r="4" fill="#2D4A7A" stroke="#C8D8F0" stroke-width="1.5"/>
+              <circle cx="280" cy="78" r="4" fill="#C8D8F0" stroke="#E8EEF8" stroke-width="1.5"/>
+            </svg>
+            <span class="illust-label">편집 · 색보정</span>
+          </div>
           <div class="job-card-header">
             <h3 class="job-title">장편 독립영화 &lt;푸른 봄&gt; 편집·색보정 담당자 모집</h3>
             <span class="job-pay paid">유료</span>
@@ -1629,6 +1739,34 @@
 
         <!-- 카드 2 -->
         <div class="job-card">
+          <!-- 연출부 — 클래퍼보드 + 콘티 -->
+          <div class="job-card-illust">
+            <svg viewBox="0 0 360 90" fill="none" preserveAspectRatio="xMidYMid slice">
+              <rect width="360" height="90" fill="#1B2D4E"/>
+              <defs><linearGradient id="g2" x1="360" y1="0" x2="0" y2="90"><stop offset="0%" stop-color="#2D4A7A"/><stop offset="100%" stop-color="#0F1B30"/></linearGradient></defs>
+              <rect width="360" height="90" fill="url(#g2)" opacity="0.4"/>
+              <!-- 콘티 시트 (배경) -->
+              <rect x="200" y="10" width="140" height="70" rx="4" fill="#2D4A7A" opacity="0.3"/>
+              <line x1="210" y1="22" x2="330" y2="22" stroke="#C8D8F0" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+              <line x1="210" y1="32" x2="300" y2="32" stroke="#C8D8F0" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+              <rect x="210" y="40" width="55" height="32" rx="2" fill="#2D4A7A" opacity="0.4"/>
+              <rect x="272" y="40" width="55" height="32" rx="2" fill="#2D4A7A" opacity="0.3"/>
+              <!-- 클래퍼보드 메인 -->
+              <rect x="30" y="22" width="110" height="55" rx="4" fill="#E8EEF8" opacity="0.95"/>
+              <!-- 클래퍼 상단 바 -->
+              <rect x="30" y="22" width="110" height="22" rx="4" fill="#1B2D4E"/>
+              <rect x="30" y="34" width="110" height="10" fill="#1B2D4E"/>
+              <!-- 줄무늬 -->
+              <line x1="50"  y1="22" x2="43"  y2="44" stroke="#C8D8F0" stroke-width="4" stroke-linecap="butt"/>
+              <line x1="68"  y1="22" x2="61"  y2="44" stroke="#C8D8F0" stroke-width="4" stroke-linecap="butt"/>
+              <line x1="86"  y1="22" x2="79"  y2="44" stroke="#C8D8F0" stroke-width="4" stroke-linecap="butt"/>
+              <line x1="104" y1="22" x2="97"  y2="44" stroke="#C8D8F0" stroke-width="4" stroke-linecap="butt"/>
+              <!-- 텍스트 라인 -->
+              <line x1="42" y1="56" x2="128" y2="56" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="42" y1="64" x2="100" y2="64" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+            <span class="illust-label">연출부</span>
+          </div>
           <div class="job-card-header">
             <h3 class="job-title">단편영화 연출부 스태프 (조감독 1명)</h3>
             <span class="job-pay negotiable">협의</span>
@@ -1664,6 +1802,33 @@
 
         <!-- 카드 3 -->
         <div class="job-card">
+          <!-- 촬영부 — 카메라 + 렌즈 -->
+          <div class="job-card-illust">
+            <svg viewBox="0 0 360 90" fill="none" preserveAspectRatio="xMidYMid slice">
+              <rect width="360" height="90" fill="#1B2D4E"/>
+              <defs><linearGradient id="g3" x1="0" y1="90" x2="360" y2="0"><stop offset="0%" stop-color="#0F1B30"/><stop offset="100%" stop-color="#2D4A7A"/></linearGradient></defs>
+              <rect width="360" height="90" fill="url(#g3)" opacity="0.5"/>
+              <!-- 카메라 몸체 -->
+              <rect x="30" y="20" width="160" height="55" rx="8" fill="#C8D8F0" opacity="0.15" stroke="#C8D8F0" stroke-width="1.5"/>
+              <!-- 렌즈 마운트 -->
+              <circle cx="110" cy="47" r="28" fill="none" stroke="#2D4A7A" stroke-width="3"/>
+              <circle cx="110" cy="47" r="20" fill="#0F1B30" stroke="#C8D8F0" stroke-width="1.5"/>
+              <circle cx="110" cy="47" r="13" fill="#1B2D4E" stroke="#2D4A7A" stroke-width="1"/>
+              <circle cx="110" cy="47" r="6"  fill="#2D4A7A"/>
+              <circle cx="106" cy="43" r="2.5" fill="rgba(200,216,240,0.4)"/>
+              <!-- 뷰파인더 -->
+              <rect x="185" y="24" width="30" height="18" rx="3" fill="#2D4A7A" opacity="0.7"/>
+              <!-- 핫슈 -->
+              <rect x="80" y="14" width="40" height="8" rx="2" fill="#2D4A7A" opacity="0.6"/>
+              <!-- 그립부 -->
+              <rect x="185" y="42" width="28" height="30" rx="4" fill="#C8D8F0" opacity="0.1" stroke="#C8D8F0" stroke-width="1"/>
+              <!-- 배경 원형 패턴 -->
+              <circle cx="300" cy="45" r="50" fill="none" stroke="#2D4A7A" stroke-width="1" opacity="0.2"/>
+              <circle cx="300" cy="45" r="35" fill="none" stroke="#2D4A7A" stroke-width="1" opacity="0.2"/>
+              <circle cx="300" cy="45" r="20" fill="none" stroke="#C8D8F0" stroke-width="1" opacity="0.2"/>
+            </svg>
+            <span class="illust-label">촬영부</span>
+          </div>
           <div class="job-card-header">
             <h3 class="job-title">광고 영상 촬영 오퍼레이터 · B캠 경력자</h3>
             <span class="job-pay paid">유료</span>
