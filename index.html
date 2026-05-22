@@ -2267,6 +2267,12 @@
     if (this.value.length > 0) showToast('검색 기능은 데모 버전에서 지원되지 않아요');
   });
 
+  // ── AI 추천 카드 클릭 → 상세 페이지 ──
+  document.querySelectorAll('.recommend-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => window.location.href = 'filmmakers_detail_v1.html');
+  });
+
   // ── 공고 카드 클릭 → 상세 페이지 ──
   document.querySelectorAll('.job-card').forEach(card => {
     card.style.cursor = 'pointer';
