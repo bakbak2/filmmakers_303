@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>필름메이커스 — 마이페이지</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      /* ── 팔레트 ── */
+      --bg: #F8F7F4;
+      --surface: #FFFFFF;
+      --surface-alt: #F2F0EC;
+      --navy: #1A2B48;
+      --blue: #1A2B48;
+      --blue-light: #EBF0F8;
+      --blue-mid: #3A5C8E;
+      --orange: #A07040;
+      --orange-light: #F5EBE0;
+      --red: #C0392B;
+      --red-light: #FDECEA;
+      --gray-50: #F8F9FA;
+      --gray-100: #F1F3F5;
+      --gray-200: #E5E8EC;
+      --gray-300: #C8C2B8;
+      --gray-400: #8A9BB0;
+      --gray-500: #5A6A80;
+      --gray-700: #2D3D52;
+      --gray-900: #1A2B48;
+      --font: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Pretendard', sans-serif;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --shadow-sm: 0 2px 8px rgba(26,43,72,.06), 0 4px 16px rgba(26,43,72,.04);
+      --shadow: 0 6px 24px rgba(26,43,72,.10);
+      /* ── 공통 규격 토큰 ── */
+      --badge-pad: 4px 10px;   /* 모든 뱃지/태그 공통 padding */
+      --badge-r: 100px;        /* 모든 뱃지/태그 공통 border-radius */
+      --input-h: 48px;         /* 모든 입력창 공통 높이 */
+      --input-r: 12px;         /* 모든 입력창 공통 border-radius */
+      --border: 1.5px;         /* 모든 테두리 두께 */
+      --thumb-size: 44px;      /* 카드 썸네일 아이콘 공통 크기 */
+      --thumb-r: 12px;         /* 카드 썸네일 아이콘 공통 border-radius */
+    }
+
+    html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--gray-900); -webkit-font-smoothing: antialiased; }
+    .app { max-width: 430px; margin: 0 auto; min-height: 100dvh; background: var(--bg); overflow-x: hidden; }
+    @media (min-width: 430px) { .app { box-shadow: 0 0 60px rgba(27,45,78,.15); } }
+
+    /* ── 헤더 ── */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 0 20px; padding-top: env(safe-area-inset-top);
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-icon { width: 30px; height: 30px; background: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon svg { width: 17px; height: 17px; }
+    .logo-text { font-size: 20px; font-weight: 900; color: #1A2B48; letter-spacing: -0.5px; font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; }
+    .header-actions { display: flex; align-items: center; gap: 2px; }
+    .icon-btn { width: 38px; height: 38px; border: none; background: none; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: background 0.15s; }
+    .icon-btn:active { background: var(--gray-100); }
+    .icon-btn svg { width: 22px; height: 22px; }
+
+    /* ── 프로필 섹션 ── */
+    .profile-section { background: var(--surface); padding: 24px 20px 20px; border-bottom: 1px solid var(--gray-100); }
+    .profile-card-inner { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+
+    /* 원형 프로그레스 아바타 */
+    .avatar-wrap { position: relative; flex-shrink: 0; width: 78px; height: 78px; }
+    .progress-ring { position: absolute; inset: 0; transform: rotate(-90deg); }
+    .progress-ring-bg { fill: none; stroke: var(--gray-100); stroke-width: 3; }
+    .progress-ring-fill { fill: none; stroke: var(--blue); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 219; stroke-dashoffset: 77; }
+    .avatar { position: absolute; inset: 6px; border-radius: 50%; background: linear-gradient(135deg, #253C62 0%, #1B2D4E 100%); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -1px; }
+    .progress-pct { position: absolute; bottom: -3px; left: 50%; transform: translateX(-50%); background: var(--blue); color: #fff; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: var(--badge-r); white-space: nowrap; }
+
+    .profile-info { flex: 1; min-width: 0; padding-top: 3px; }
+    .profile-name-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .profile-name { font-size: 21px; font-weight: 900; color: var(--navy); letter-spacing: -0.5px; }
+    .verified-badge { width: 18px; height: 18px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .verified-badge svg { width: 10px; height: 10px; color: #fff; }
+    .profile-sub { font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500; }
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ── 뱃지·태그 공통 시스템 (border-radius, padding 모두 통일) ── */
+    /* 색상 규칙: 강조/임박 → Red, 정보/직군 → Blue, 대기 → Amber, 완료 → Gray */
+    .ghost-tag,
+    .role-tag,
+    .pay-badge,
+    .deadline-chip,
+    .apply-status {
+      display: inline-flex; align-items: center;
+      font-size: 11px; font-weight: 700;
+      padding: var(--badge-pad);
+      border-radius: var(--badge-r);
+      line-height: 1;
+    }
+
+    /* ghost-tag (프로필 직군 태그) */
+    .ghost-tag.primary { background: var(--blue-light); color: var(--blue); }
+    .ghost-tag.muted { background: var(--gray-100); color: var(--gray-700); }
+
+    /* role-tag (역할·직군 카드) — ghost-tag와 동일 규격 */
+    .role-tag.primary { background: var(--blue-light); color: var(--blue); }
+    .role-tag.secondary { background: var(--gray-100); color: var(--gray-700); }
+    .role-tag.soft { background: rgba(45,74,122,0.09); color: var(--navy); }
+
+    /* pay-badge (유료/협의) */
+    .pay-badge.paid { background: var(--blue-light); color: var(--blue); }
+    .pay-badge.negotiable { background: var(--orange-light); color: var(--orange); }
+
+    /* deadline-chip: 마감 3일 이내 → Red, 그 외 → Gray */
+    .deadline-chip.urgent { background: var(--red-light); color: var(--red); font-weight: 800; }
+    .deadline-chip.normal { background: var(--gray-100); color: var(--gray-500); }
+
+    /* apply-status: 3가지 상태를 명확히 구분 */
+    .apply-status.review { background: var(--orange-light); color: #7A4818; }
+    .apply-status.pass { background: var(--navy); color: #fff; font-weight: 800; }
+    .apply-status.done { background: var(--gray-100); color: var(--gray-400); font-weight: 600; }
+
+    /* 완성도 바 */
+    .completion-bar-wrap { margin-bottom: 14px; }
+    .completion-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .completion-label { font-size: 12px; font-weight: 700; color: var(--gray-700); }
+    .completion-pct { font-size: 15px; font-weight: 900; color: var(--navy); }
+    .bar-track { height: 5px; background: var(--gray-100); border-radius: var(--badge-r); overflow: hidden; margin-bottom: 5px; }
+    .bar-fill { height: 100%; width: 65%; background: linear-gradient(90deg, var(--navy), var(--blue)); border-radius: var(--badge-r); }
+    .completion-hint { font-size: 11px; color: var(--blue); font-weight: 600; cursor: pointer; }
+
+    /* 프로필 편집 버튼 — 입력창과 동일한 높이/규격 */
+    .profile-edit-btn { width: 100%; height: var(--input-h); border-radius: var(--input-r); border: var(--border) solid var(--gray-200); background: none; color: var(--gray-700); font-size: 13px; font-weight: 700; font-family: var(--font); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s; }
+    .profile-edit-btn:active { background: var(--gray-50); }
+    .profile-edit-btn svg { width: 14px; height: 14px; }
+
+    /* ── 스탯 타일 ── */
+    .stats-wrap { padding: 20px 20px 0; }
+    .stats-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .stat-tile { background: #FFFFFF; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 12px; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .stat-tile:active { transform: scale(0.97); }
+    .stat-tile-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+    .stat-tile-icon.a { background: var(--blue-light); } .stat-tile-icon.a svg { color: var(--blue); }
+    .stat-tile-icon.b { background: rgba(27,45,78,0.09); } .stat-tile-icon.b svg { color: var(--navy); }
+    .stat-tile-icon.c { background: rgba(45,74,122,0.10); } .stat-tile-icon.c svg { color: var(--blue); }
+    .stat-tile-icon svg { width: 15px; height: 15px; }
+    .stat-tile-num { font-size: 28px; font-weight: 900; color: var(--navy); letter-spacing: -1.5px; line-height: 1; margin-bottom: 4px; }
+    .stat-tile-num.accent { color: var(--blue); }
+    .stat-tile-label { font-size: 10px; font-weight: 600; color: var(--gray-400); white-space: nowrap; }
+
+    /* ── 콘텐츠 ── */
+    .content { padding: 16px 20px 100px; display: flex; flex-direction: column; gap: 24px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .section-title { font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+    .section-more { font-size: 12px; color: var(--gray-400); font-weight: 500; background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 2px; font-family: var(--font); }
+    .section-more svg { width: 13px; height: 13px; }
+
+    /* ── 역할 카드 ── */
+    .role-card { background: #FFFFFF; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 18px 16px; box-shadow: var(--shadow-sm); }
+    .role-chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .role-divider { height: 1px; background: var(--gray-200); margin: 0 -16px; width: calc(100% + 32px); margin-bottom: 14px; }
+    .region-row { display: flex; align-items: center; gap: 8px; }
+    .region-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--gray-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .region-icon svg { width: 16px; height: 16px; color: var(--gray-400); }
+    .region-info { flex: 1; }
+    .region-label { font-size: 11px; color: var(--gray-400); font-weight: 500; }
+    .region-val { font-size: 14px; font-weight: 700; color: var(--navy); }
+    .role-edit-btn { font-size: 12px; font-weight: 700; color: var(--blue); background: none; border: none; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 3px; }
+    .role-edit-btn svg { width: 12px; height: 12px; }
+
+    /* ── 지원 현황 ── */
+    .apply-list { display: flex; flex-direction: column; gap: 8px; }
+    .apply-card { background: #FFFFFF; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.1s; }
+    .apply-card:active { transform: scale(0.99); }
+    /* 공통 썸네일 규격: --thumb-size, --thumb-r 적용 */
+    .apply-thumb { width: var(--thumb-size); height: var(--thumb-size); border-radius: var(--thumb-r); background: var(--blue-mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .apply-thumb svg { width: 22px; height: 22px; color: rgba(255,255,255,0.9); }
+    .apply-info { flex: 1; min-width: 0; }
+    .apply-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .apply-meta { font-size: 11px; color: var(--gray-400); display: flex; align-items: center; gap: 4px; }
+    .apply-meta svg { width: 11px; height: 11px; }
+
+    /* ── 스크랩 ── */
+    .scrap-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 4px 4px 8px; margin: -4px -4px; }
+    .scrap-scroll::-webkit-scrollbar { display: none; }
+    /* scrap-card: apply-card와 동일한 border-radius(--radius-sm) 적용 */
+    .scrap-card { flex-shrink: 0; width: 196px; background: #FFFFFF; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s; }
+    .scrap-card:active { transform: scale(0.98); }
+    .scrap-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    /* 공통 썸네일 규격: apply-thumb과 동일 */
+    .scrap-thumb { width: var(--thumb-size); height: var(--thumb-size); border-radius: var(--thumb-r); background: var(--blue-mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .scrap-thumb svg { width: 22px; height: 22px; color: rgba(255,255,255,0.9); }
+    .scrap-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .scrap-meta { font-size: 11px; color: var(--gray-400); display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
+    .scrap-meta svg { width: 11px; height: 11px; }
+    .scrap-footer { display: flex; align-items: center; justify-content: space-between; }
+    .scrap-unsave { width: 26px; height: 26px; border-radius: 50%; border: none; background: var(--blue-light); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--blue); }
+    .scrap-unsave svg { width: 13px; height: 13px; }
+
+    /* ── 포트폴리오 ── */
+    .portfolio-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 4px 4px 8px; margin: -4px -4px; }
+    .portfolio-scroll::-webkit-scrollbar { display: none; }
+    .portfolio-thumb { flex-shrink: 0; width: 130px; height: 88px; border-radius: var(--radius-sm); overflow: hidden; position: relative; cursor: pointer; transition: transform 0.1s; }
+    .portfolio-thumb:active { transform: scale(0.97); }
+    .portfolio-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .portfolio-bg.c1 { background: linear-gradient(135deg,#253C62,#1B2D4E); }
+    .portfolio-bg.c2 { background: linear-gradient(135deg,#1E3358,#111E36); }
+    .portfolio-bg.c3 { background: linear-gradient(135deg,#2A3F60,#1B2D4E); }
+    .portfolio-bg svg { width: 30px; height: 30px; opacity: 0.2; }
+    .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.68) 0%, transparent 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 10px; }
+    .portfolio-title { font-size: 11px; font-weight: 700; color: #fff; line-height: 1.3; }
+    .portfolio-meta { font-size: 9px; color: rgba(255,255,255,.5); margin-top: 2px; }
+    .portfolio-add { flex-shrink: 0; width: 130px; height: 88px; border-radius: var(--radius-sm); border: var(--border) dashed var(--gray-300); background: var(--gray-50); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: background 0.15s; }
+    .portfolio-add:active { background: var(--gray-100); }
+    .portfolio-add-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--gray-100); display: flex; align-items: center; justify-content: center; }
+    .portfolio-add-icon svg { width: 14px; height: 14px; color: var(--gray-400); }
+    .portfolio-add span { font-size: 11px; font-weight: 700; color: var(--gray-400); }
+
+    /* ── 설정 ── */
+    .settings-group { background: #FFFFFF; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .settings-item { display: flex; align-items: center; padding: 14px 16px; gap: 12px; cursor: pointer; transition: background 0.1s; border: none; background: none; width: 100%; text-align: left; font-family: var(--font); }
+    .settings-item:not(:last-child) { border-bottom: 1px solid rgba(224,220,212,0.55); }
+    .settings-item:active { background: var(--gray-50); }
+    .si-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .si-icon.navy { background: var(--navy); } .si-icon.navy svg { color: #fff; }
+    .si-icon.blue { background: var(--blue); } .si-icon.blue svg { color: #fff; }
+    .si-icon.blue-mid { background: var(--blue-mid); } .si-icon.blue-mid svg { color: #fff; }
+    .si-icon.orange { background: var(--orange); } .si-icon.orange svg { color: #fff; }
+    .si-icon.gray { background: var(--gray-200); } .si-icon.gray svg { color: var(--gray-700); }
+    .si-icon svg { width: 17px; height: 17px; }
+    .si-body { flex: 1; min-width: 0; }
+    .si-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 1px; }
+    .si-title.danger { color: #8B3A3A; }
+    .si-desc { font-size: 11px; color: var(--gray-400); }
+    .si-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .si-right svg { width: 15px; height: 15px; color: var(--gray-200); }
+    .toggle-wrap { width: 44px; height: 26px; border-radius: var(--badge-r); background: var(--gray-200); position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .toggle-wrap.on { background: var(--blue); }
+    .toggle-knob { width: 20px; height: 20px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    .toggle-wrap.on .toggle-knob { transform: translateX(18px); }
+
+    .version-info { text-align: center; font-size: 11px; color: var(--gray-400); padding: 8px 0; }
+
+    /* ── 하단 내비게이션 ── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: rgba(248,247,244,0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,0,0,0.07);
+      padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom));
+      display: flex; z-index: 100;
+    }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 4px; cursor: pointer; color: var(--gray-400); font-size: 10px; font-weight: 600; border: none; background: none; font-family: var(--font); transition: color 0.15s; position: relative; }
+    .nav-item.active { color: var(--navy); }
+    .nav-item.active::after { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 24px; height: 3px; background: var(--navy); border-radius: 0 0 3px 3px; }
+    .nav-item svg { width: 22px; height: 22px; }
+    .nav-badge { position: absolute; top: 3px; right: calc(50% - 24px); background: var(--red); color: #fff; font-size: 9px; font-weight: 800; min-width: 15px; height: 15px; border-radius: var(--badge-r); display: flex; align-items: center; justify-content: center; padding: 0 4px; border: var(--border) solid var(--surface); }
+
+    /* ── 바텀 시트 ── */
+    .sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .sheet-overlay.open { opacity: 1; pointer-events: all; }
+    .sheet { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); width: 100%; max-width: 430px; background: var(--surface); border-radius: 24px 24px 0 0; z-index: 201; padding: 0 20px 40px; transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); max-height: 80dvh; overflow-y: auto; }
+    .sheet.open { transform: translateX(-50%) translateY(0); }
+    .sheet-handle { width: 40px; height: 4px; background: var(--gray-200); border-radius: var(--badge-r); margin: 12px auto 20px; }
+    .sheet-title { font-size: 17px; font-weight: 900; color: var(--navy); margin-bottom: 20px; letter-spacing: -0.3px; }
+    .sheet-section { margin-bottom: 24px; }
+    .sheet-label { font-size: 11px; font-weight: 700; color: var(--gray-400); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .select-chip { padding: 8px 14px; border-radius: var(--badge-r); border: var(--border) solid var(--gray-200); background: var(--gray-50); color: var(--gray-700); font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.15s; }
+    .select-chip.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+    .sheet-actions { display: flex; gap: 10px; margin-top: 28px; }
+    /* 버튼 규격: 높이 50px, border-radius 14px, border 1.5px 통일 */
+    .btn-reset { flex: 1; height: 50px; border-radius: 14px; border: var(--border) solid var(--gray-200); background: none; color: var(--gray-700); font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; }
+    .btn-apply { flex: 2; height: 50px; border-radius: 14px; border: none; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; }
+
+    /* ── 인풋 — 높이 48px, border-radius 12px, border 1.5px 완전 통일 ── */
+    .edit-input-wrap { margin-bottom: 16px; }
+    .edit-label { font-size: 12px; font-weight: 700; color: var(--gray-500); margin-bottom: 6px; display: block; }
+    .edit-input { width: 100%; height: var(--input-h); border-radius: var(--input-r); border: var(--border) solid var(--gray-200); background: var(--gray-50); padding: 0 14px; font-size: 14px; font-family: var(--font); color: var(--navy); outline: none; transition: border-color 0.15s; }
+    .edit-input:focus { border-color: var(--blue); }
+    .edit-textarea { width: 100%; min-height: 80px; border-radius: var(--input-r); border: var(--border) solid var(--gray-200); background: var(--gray-50); padding: 12px 14px; font-size: 14px; font-family: var(--font); color: var(--navy); outline: none; resize: none; transition: border-color 0.15s; line-height: 1.5; }
+    .edit-textarea:focus { border-color: var(--blue); }
+
+    /* ── 토스트 ── */
+    .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; padding: 12px 20px; border-radius: var(--badge-r); white-space: nowrap; z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; font-family: var(--font); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-text">Filmmakers</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="showToast('알림으로 이동합니다')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="icon-btn" onclick="openSheet('settingsSheet')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 프로필 -->
+  <div class="profile-section">
+    <div class="profile-card-inner">
+      <div class="avatar-wrap">
+        <svg class="progress-ring" viewBox="0 0 78 78">
+          <circle class="progress-ring-bg" cx="39" cy="39" r="34.8"/>
+          <circle class="progress-ring-fill" cx="39" cy="39" r="34.8"/>
+        </svg>
+        <div class="avatar">수연</div>
+        <div class="progress-pct">65%</div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name-row">
+          <span class="profile-name">이수연</span>
+          <div class="verified-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="profile-sub">편집 · 색보정 프리랜서 · 서울</div>
+        <div class="profile-tags">
+          <span class="ghost-tag primary">스태프</span>
+          <span class="ghost-tag primary">편집·색보정</span>
+          <span class="ghost-tag muted">촬영부</span>
+        </div>
+      </div>
+    </div>
+    <div class="completion-bar-wrap">
+      <div class="completion-row">
+        <span class="completion-label">프로필 완성도</span>
+        <span class="completion-pct">65%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill"></div></div>
+      <div class="completion-hint">소개글을 추가하면 공고 노출이 늘어납니다 →</div>
+    </div>
+    <button class="profile-edit-btn" onclick="openSheet('editSheet')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      프로필 편집
+    </button>
+  </div>
+
+  <!-- 스탯 타일 -->
+  <div class="stats-wrap">
+    <div class="stats-tiles">
+      <div class="stat-tile" onclick="showToast('지원한 공고 목록으로 이동합니다')">
+        <div class="stat-tile-icon a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+        <div class="stat-tile-num accent">12</div>
+        <div class="stat-tile-label">지원한 공고</div>
+      </div>
+      <div class="stat-tile" onclick="showToast('스크랩한 공고 목록으로 이동합니다')">
+        <div class="stat-tile-icon b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
+        <div class="stat-tile-num">8</div>
+        <div class="stat-tile-label">스크랩</div>
+      </div>
+      <div class="stat-tile" onclick="showToast('프로필 조회 기록을 확인합니다')">
+        <div class="stat-tile-icon c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="stat-tile-num">47</div>
+        <div class="stat-tile-label">프로필 조회</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 콘텐츠 -->
+  <div class="content">
+
+    <!-- 역할·직군 -->
+    <section>
+      <div class="section-header">
+        <span class="section-title">내 역할 · 직군</span>
+        <button class="section-more" onclick="openSheet('roleSheet')">수정 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="role-card">
+        <div class="role-chips-row">
+          <span class="role-tag primary">스태프</span>
+          <span class="role-tag secondary">편집·색보정</span>
+          <span class="role-tag secondary">촬영부</span>
+          <span class="role-tag soft">경력 2년</span>
+        </div>
+        <div class="role-divider"></div>
+        <div class="region-row">
+          <div class="region-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="region-info"><div class="region-label">활동 지역</div><div class="region-val">서울 · 경기</div></div>
+          <button class="role-edit-btn" onclick="openSheet('roleSheet')" style="margin-left:auto">변경 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 지원 현황 -->
+    <section>
+      <div class="section-header">
+        <span class="section-title">내 지원 현황</span>
+        <button class="section-more" onclick="showToast('전체 지원 목록으로 이동합니다')">전체보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="apply-list">
+        <div class="apply-card" onclick="showToast('공고 상세 페이지로 이동합니다')">
+          <div class="apply-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M2 7l3-4h14l3 4"/><line x1="9" y1="3" x2="7" y2="7"/><line x1="14" y1="3" x2="12" y2="7"/><line x1="19" y1="3" x2="17" y2="7"/></svg></div>
+          <div class="apply-info">
+            <div class="apply-title">단편영화 〈봄날의 기억〉 편집·색보정 스태프 모집</div>
+            <div class="apply-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>지원일 5.18 · 서울</div>
+          </div>
+          <span class="apply-status review">검토 중</span>
+        </div>
+        <div class="apply-card" onclick="showToast('공고 상세 페이지로 이동합니다')">
+          <div class="apply-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="13" height="10" rx="2"/><path d="M15 9l6-3v12l-6-3V9z"/></svg></div>
+          <div class="apply-info">
+            <div class="apply-title">뮤직비디오 촬영부 (B캠 오퍼레이터) 모집</div>
+            <div class="apply-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>지원일 5.15 · 경기</div>
+          </div>
+          <span class="apply-status pass">합격</span>
+        </div>
+        <div class="apply-card" onclick="showToast('공고 상세 페이지로 이동합니다')">
+          <div class="apply-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="2" y="8" width="20" height="8"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="10" y1="4" x2="10" y2="8"/><line x1="14" y1="4" x2="14" y2="8"/><line x1="18" y1="4" x2="18" y2="8"/></svg></div>
+          <div class="apply-info">
+            <div class="apply-title">광고 영상 DIT·데이터 매니저 단기 스태프</div>
+            <div class="apply-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>지원일 5.10 · 서울</div>
+          </div>
+          <span class="apply-status done">마감</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 스크랩 -->
+    <section>
+      <div class="section-header">
+        <span class="section-title">스크랩한 공고</span>
+        <button class="section-more" onclick="showToast('전체 스크랩 목록으로 이동합니다')">전체보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="scrap-scroll">
+        <div class="scrap-card" onclick="showToast('공고 상세 페이지로 이동합니다')">
+          <div class="scrap-card-top">
+            <div class="scrap-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg></div>
+            <span class="pay-badge paid">유료</span>
+          </div>
+          <div class="scrap-title">독립 장편영화 색보정(DI) 전문 인력 모집</div>
+          <div class="scrap-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 · 6.01 – 6.30</div>
+          <div class="scrap-footer"><span class="deadline-chip urgent">D-3</span><button class="scrap-unsave" onclick="event.stopPropagation();showToast('스크랩이 해제되었습니다')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button></div>
+        </div>
+        <div class="scrap-card" onclick="showToast('공고 상세 페이지로 이동합니다')">
+          <div class="scrap-card-top">
+            <div class="scrap-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="15" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="19" x2="12" y2="21"/><path d="M10 9l5 2.5-5 2.5V9z"/></svg></div>
+            <span class="pay-badge negotiable">협의</span>
+          </div>
+          <div class="scrap-title">웹드라마 편집 스태프 (경력 무관)</div>
+          <div class="scrap-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>경기 · 6.05 – 6.20</div>
+          <div class="scrap-footer"><span class="deadline-chip normal">D-8</span><button class="scrap-unsave" onclick="event.stopPropagation();showToast('스크랩이 해제되었습니다')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button></div>
+        </div>
+        <div class="scrap-card" onclick="showToast('공고 상세 페이지로 이동합니다')">
+          <div class="scrap-card-top">
+            <div class="scrap-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="12" height="8" rx="2"/><circle cx="8" cy="13" r="2.5"/><circle cx="3.5" cy="8" r="1.8"/><circle cx="9.5" cy="7.5" r="1.8"/><path d="M14 11.5l7-3.5v8L14 14.5"/></svg></div>
+            <span class="pay-badge paid">유료</span>
+          </div>
+          <div class="scrap-title">단편 애니메이션 포스트 프로덕션 편집</div>
+          <div class="scrap-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 · 6.10 – 7.10</div>
+          <div class="scrap-footer"><span class="deadline-chip normal">D-14</span><button class="scrap-unsave" onclick="event.stopPropagation();showToast('스크랩이 해제되었습니다')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 포트폴리오 -->
+    <section>
+      <div class="section-header">
+        <span class="section-title">나의 대표 작업물</span>
+        <button class="section-more" onclick="showToast('작업물 관리로 이동합니다')">관리 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="portfolio-scroll">
+        <div class="portfolio-thumb" onclick="showToast('작업물 상세 보기')">
+          <div class="portfolio-bg c1"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.874V15.126a1 1 0 01-1.447.943L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">단편영화 〈봄날의 기억〉</div><div class="portfolio-meta">편집·색보정 · 2024</div></div>
+        </div>
+        <div class="portfolio-thumb" onclick="showToast('작업물 상세 보기')">
+          <div class="portfolio-bg c2"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="15" rx="2"/><path d="M10 9l5 2.5-5 2.5V9z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">뮤직비디오 촬영 B캠</div><div class="portfolio-meta">촬영부 · 2025</div></div>
+        </div>
+        <div class="portfolio-thumb" onclick="showToast('작업물 상세 보기')">
+          <div class="portfolio-bg c3"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">광고 영상 DI 작업</div><div class="portfolio-meta">색보정 · 2025</div></div>
+        </div>
+        <div class="portfolio-add" onclick="showToast('작업물을 추가합니다')">
+          <div class="portfolio-add-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <span>작업물 추가</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 하단 내비게이션 -->
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showToast('홈으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>홈
+    </button>
+    <button class="nav-item" onclick="showToast('탐색으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>탐색
+    </button>
+    <button class="nav-item" onclick="showToast('저장 목록으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>저장
+    </button>
+    <button class="nav-item" onclick="showToast('커뮤니티로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>커뮤니티
+    </button>
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>마이페이지
+    </button>
+  </nav>
+</div>
+
+<!-- 시트: 프로필 편집 -->
+<div class="sheet-overlay" id="editOverlay" onclick="closeSheet('editSheet')"></div>
+<div class="sheet" id="editSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">프로필 편집</div>
+  <div class="edit-input-wrap"><label class="edit-label">이름</label><input class="edit-input" type="text" value="이수연"></div>
+  <div class="edit-input-wrap"><label class="edit-label">한 줄 소개</label><textarea class="edit-textarea" placeholder="나를 간단히 소개해보세요 (최대 80자)"></textarea></div>
+  <div class="edit-input-wrap"><label class="edit-label">연락처 (선택)</label><input class="edit-input" type="tel" placeholder="010-0000-0000"></div>
+  <div class="sheet-actions">
+    <button class="btn-reset" onclick="closeSheet('editSheet')">취소</button>
+    <button class="btn-apply" onclick="closeSheet('editSheet');showToast('프로필이 저장되었습니다')">저장하기</button>
+  </div>
+</div>
+
+<!-- 시트: 역할·직군 -->
+<div class="sheet-overlay" id="roleOverlay" onclick="closeSheet('roleSheet')"></div>
+<div class="sheet" id="roleSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">역할 · 직군 수정</div>
+  <div class="sheet-section">
+    <div class="sheet-label">나는 어떤 사람인가요?</div>
+    <div class="chip-group">
+      <button class="select-chip active" onclick="toggleChip(this)">스태프·감독</button>
+      <button class="select-chip" onclick="toggleChip(this)">배우·모델</button>
+      <button class="select-chip" onclick="toggleChip(this)">입문자</button>
+    </div>
+  </div>
+  <div class="sheet-section">
+    <div class="sheet-label">관심 직군 (최대 3개)</div>
+    <div class="chip-group">
+      <button class="select-chip active" onclick="toggleChip(this)">편집·색보정</button>
+      <button class="select-chip active" onclick="toggleChip(this)">촬영부</button>
+      <button class="select-chip" onclick="toggleChip(this)">연출부</button>
+      <button class="select-chip" onclick="toggleChip(this)">조명부</button>
+      <button class="select-chip" onclick="toggleChip(this)">사운드</button>
+      <button class="select-chip" onclick="toggleChip(this)">제작부</button>
+      <button class="select-chip" onclick="toggleChip(this)">DIT</button>
+      <button class="select-chip" onclick="toggleChip(this)">배우(연기)</button>
+    </div>
+  </div>
+  <div class="sheet-section">
+    <div class="sheet-label">활동 지역</div>
+    <div class="chip-group">
+      <button class="select-chip active" onclick="toggleChip(this)">서울</button>
+      <button class="select-chip active" onclick="toggleChip(this)">경기</button>
+      <button class="select-chip" onclick="toggleChip(this)">부산</button>
+      <button class="select-chip" onclick="toggleChip(this)">대구</button>
+      <button class="select-chip" onclick="toggleChip(this)">인천</button>
+      <button class="select-chip" onclick="toggleChip(this)">전국</button>
+    </div>
+  </div>
+  <div class="sheet-actions">
+    <button class="btn-reset" onclick="closeSheet('roleSheet')">취소</button>
+    <button class="btn-apply" onclick="closeSheet('roleSheet');showToast('역할·직군이 업데이트되었습니다')">저장하기</button>
+  </div>
+</div>
+
+<!-- 시트: 설정 -->
+<div class="sheet-overlay" id="settingsOverlay" onclick="closeSheet('settingsSheet')"></div>
+<div class="sheet" id="settingsSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">설정</div>
+
+  <div class="sheet-section">
+    <div class="sheet-label">알림 설정</div>
+    <div class="settings-group">
+      <div class="settings-item" onclick="toggleSwitch('sn1')">
+        <div class="si-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+        <div class="si-body"><div class="si-title">맞춤 공고 알림</div><div class="si-desc">내 직군·지역 신규 공고 알림</div></div>
+        <div class="si-right"><div class="toggle-wrap on" id="sn1"><div class="toggle-knob"></div></div></div>
+      </div>
+      <div class="settings-item" onclick="toggleSwitch('sn2')">
+        <div class="si-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="si-body"><div class="si-title">마감 임박 알림</div><div class="si-desc">스크랩 공고 D-3 자동 알림</div></div>
+        <div class="si-right"><div class="toggle-wrap on" id="sn2"><div class="toggle-knob"></div></div></div>
+      </div>
+      <div class="settings-item" onclick="toggleSwitch('sn3')">
+        <div class="si-icon blue-mid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="si-body"><div class="si-title">지원 결과 알림</div><div class="si-desc">합격·불합격 결과 즉시 알림</div></div>
+        <div class="si-right"><div class="toggle-wrap on" id="sn3"><div class="toggle-knob"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet-section">
+    <div class="sheet-label">계정</div>
+    <div class="settings-group">
+      <button class="settings-item" onclick="closeSheet('settingsSheet');showToast('이메일 변경 화면으로 이동합니다')">
+        <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="si-body"><div class="si-title">이메일</div><div class="si-desc">suyeon.lee@gmail.com</div></div>
+        <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+      <button class="settings-item" onclick="closeSheet('settingsSheet');showToast('비밀번호 변경 화면으로 이동합니다')">
+        <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="si-body"><div class="si-title">비밀번호 변경</div></div>
+        <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+      <button class="settings-item" onclick="closeSheet('settingsSheet');showToast('고객센터로 연결됩니다')">
+        <div class="si-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
+        <div class="si-body"><div class="si-title">고객센터 · 문의</div><div class="si-desc">운영시간 평일 10:00–18:00</div></div>
+        <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+      <button class="settings-item" onclick="closeSheet('settingsSheet');showToast('로그아웃 되었습니다')">
+        <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
+        <div class="si-body"><div class="si-title">로그아웃</div></div>
+        <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+      <button class="settings-item" onclick="closeSheet('settingsSheet');showToast('회원 탈퇴 전에 한 번 더 확인합니다')">
+        <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>
+        <div class="si-body"><div class="si-title danger">회원 탈퇴</div></div>
+        <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+    </div>
+  </div>
+  <div style="text-align:center; font-size:11px; color:var(--gray-400); padding: 4px 0 8px;">필름메이커스 v2.1.0</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+  function openSheet(id){document.getElementById(id).classList.add('open');document.getElementById(id.replace('Sheet','Overlay')).classList.add('open');document.body.style.overflow='hidden';}
+  function closeSheet(id){document.getElementById(id).classList.remove('open');document.getElementById(id.replace('Sheet','Overlay')).classList.remove('open');document.body.style.overflow='';}
+  function toggleChip(el){el.classList.toggle('active');}
+  function toggleSwitch(id){document.getElementById(id).classList.toggle('on');}
+  let tt;
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000);}
+</script>
+</body>
+</html>

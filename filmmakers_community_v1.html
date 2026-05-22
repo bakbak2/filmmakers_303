@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Filmmakers — 커뮤니티</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg: #F8F7F4;
+      --surface: #FFFFFF;
+      --navy: #1A2B48;
+      --gray-100: #F1F3F5;
+      --gray-200: #E5E8EC;
+      --gray-300: #CDD4DC;
+      --gray-400: #8A9BB0;
+      --gray-500: #5A6A80;
+      --gray-700: #2D3D52;
+      --gray-900: #1A2B48;
+      --red: #C0392B;
+      --font: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Pretendard', sans-serif;
+    }
+
+    html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--gray-900); -webkit-font-smoothing: antialiased; }
+    .app { max-width: 430px; margin: 0 auto; min-height: 100dvh; background: var(--bg); overflow-x: hidden; position: relative; }
+
+    /* ── 헤더 ── */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 0 20px; padding-top: env(safe-area-inset-top);
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .logo-text { font-size: 20px; font-weight: 900; color: #1A2B48; letter-spacing: -0.5px; font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; }
+    .header-actions { display: flex; align-items: center; gap: 4px; }
+    .icon-btn {
+      width: 38px; height: 38px; border: none; background: none;
+      cursor: pointer; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-500); transition: background 0.15s; position: relative;
+    }
+    .icon-btn:active { background: rgba(0,0,0,0.05); }
+    .icon-btn svg { width: 22px; height: 22px; }
+    .badge-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--red); border-radius: 50%; border: 2px solid var(--bg); }
+
+    /* ── 탭 바 ── */
+    .tab-bar {
+      position: sticky; top: 56px; z-index: 99;
+      background: rgba(248,247,244,0.95);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex; padding: 0 16px; gap: 2px;
+    }
+    .tab-btn {
+      flex: 1; height: 44px; border: none; background: none;
+      font-size: 13px; font-weight: 600; font-family: var(--font);
+      color: var(--gray-400); cursor: pointer;
+      position: relative; transition: color 0.15s; white-space: nowrap;
+    }
+    .tab-btn.active { color: var(--navy); }
+    .tab-btn.active::after {
+      content: ''; position: absolute; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 24px; height: 2.5px;
+      background: var(--navy); border-radius: 2px 2px 0 0;
+    }
+
+    /* ── 인라인 이모지 일러스트 ── */
+    .eil { display: inline-flex; align-items: center; vertical-align: -3px; margin: 0 1px; }
+    .eil svg { display: block; }
+
+    /* ── 스크롤 본문 ── */
+    .scroll-body { padding: 14px 16px 110px; display: flex; flex-direction: column; gap: 10px; }
+
+    /* ── 빠른 글쓰기 ── */
+    .quick-write {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 13px 14px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 2px 10px rgba(26,43,72,0.07);
+      cursor: pointer;
+    }
+    .qw-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #E8EDF5;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .qw-text { flex: 1; font-size: 14px; color: var(--gray-400); display: flex; align-items: center; gap: 5px; }
+    .qw-send {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--navy); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .qw-send svg { width: 16px; height: 16px; color: #fff; }
+
+    /* ── 트렌딩 ── */
+    .trending-row {
+      display: flex; gap: 7px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      padding: 2px 0;
+    }
+    .trending-row::-webkit-scrollbar { display: none; }
+    .trend-chip {
+      flex-shrink: 0; height: 34px; padding: 0 12px;
+      background: var(--surface); border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      font-size: 12px; font-weight: 600; color: var(--gray-500);
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
+      white-space: nowrap; transition: all 0.15s;
+      box-shadow: 0 1px 4px rgba(26,43,72,0.05);
+    }
+    .trend-chip:active { background: #EEF1F6; }
+    .trend-chip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+    /* ── 구분 라벨 ── */
+    .section-label { font-size: 12px; font-weight: 700; color: var(--gray-400); letter-spacing: 0.3px; padding: 4px 2px 0; }
+
+    /* ── 게시글 카드 ── */
+    .post-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(26,43,72,0.07);
+      cursor: pointer; transition: transform 0.12s;
+    }
+    .post-card:active { transform: scale(0.985); }
+    .post-card.hot {
+      background: linear-gradient(145deg, #FEFCF8 0%, #FFFFFF 100%);
+      border: 1.5px solid #EBE6DC;
+    }
+
+    /* 작성자 행 */
+    .author-row { display: flex; align-items: center; gap: 9px; margin-bottom: 11px; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .author-info { flex: 1; }
+    .author-name { font-size: 13px; font-weight: 700; color: var(--gray-900); display: block; line-height: 1.3; }
+    .author-sub { font-size: 11px; color: var(--gray-400); }
+    .cat-pill {
+      font-size: 11px; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+      background: #EEF1F6; color: var(--gray-500);
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* 본문 */
+    .post-title {
+      font-size: 15px; font-weight: 700; color: var(--gray-900);
+      line-height: 1.5; margin-bottom: 6px; letter-spacing: -0.2px;
+    }
+    .tooltip-word {
+      color: var(--navy); font-weight: 700;
+      border-bottom: 1.5px dashed var(--navy); cursor: help;
+    }
+    .post-preview {
+      font-size: 13px; color: var(--gray-500); line-height: 1.65;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 11px;
+    }
+
+    /* 태그 */
+    .post-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+    .tag { font-size: 12px; font-weight: 600; color: var(--gray-400); background: #F3F5F8; padding: 3px 9px; border-radius: 100px; }
+
+    /* 리액션 바 */
+    .reaction-bar {
+      display: flex; align-items: center; gap: 4px;
+      padding-top: 10px; border-top: 1px solid #F0F2F5;
+    }
+    .react-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 6px 11px; border-radius: 100px;
+      border: none; background: #F3F5F8; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: var(--gray-500);
+      font-family: var(--font); transition: background 0.15s;
+    }
+    .react-btn:active { background: #E8EDF5; }
+    .react-btn.liked { background: #FDECEA; color: var(--red); }
+    .react-btn svg { width: 14px; height: 14px; }
+    .hot-pill {
+      margin-left: auto; font-size: 11px; font-weight: 700;
+      color: #A07040; background: #F5EBE0;
+      padding: 5px 10px; border-radius: 100px;
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── 댓글 시트 ── */
+    .comment-sheet-inner {
+      display: flex; flex-direction: column;
+      max-height: 72vh;
+    }
+    .comment-sheet-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 4px 16px; flex-shrink: 0;
+    }
+    .comment-sheet-title { font-size: 16px; font-weight: 800; color: var(--gray-900); }
+    .comment-close-btn {
+      width: 30px; height: 30px; border-radius: 50%; border: none;
+      background: var(--gray-100); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-500);
+    }
+    .comment-close-btn svg { width: 16px; height: 16px; }
+    .comment-list-wrap {
+      flex: 1; overflow-y: auto; margin: 0 -20px;
+      padding: 0 20px;
+    }
+    .comment-item {
+      display: flex; gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid #F3F5F8;
+    }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      flex-shrink: 0; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .comment-body { flex: 1; }
+    .comment-meta { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+    .comment-name { font-size: 12px; font-weight: 700; color: var(--gray-900); }
+    .comment-time { font-size: 11px; color: var(--gray-400); }
+    .comment-text { font-size: 13px; color: var(--gray-700); line-height: 1.55; }
+    .comment-like {
+      font-size: 11px; color: var(--gray-400); margin-top: 4px;
+      display: flex; align-items: center; gap: 3px; cursor: pointer;
+    }
+    .comment-input-bar {
+      flex-shrink: 0;
+      border-top: 1px solid var(--gray-200);
+      padding: 12px 0 0;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .comment-my-av {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #E8EDF5; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .comment-input {
+      flex: 1; height: 38px; border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: #F8F9FA;
+      font-size: 13px; font-family: var(--font);
+      padding: 0 14px; outline: none; color: var(--gray-900);
+    }
+    .comment-input:focus { border-color: var(--navy); }
+    .comment-send-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--navy); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: opacity 0.15s;
+    }
+    .comment-send-btn:active { opacity: 0.7; }
+    .comment-send-btn svg { width: 16px; height: 16px; color: #fff; }
+
+    /* ── 업계 용어 툴팁 ── */
+    .term-tooltip {
+      position: fixed; z-index: 500;
+      background: var(--navy); color: #fff;
+      font-size: 12px; font-weight: 500; line-height: 1.55;
+      padding: 10px 14px; border-radius: 14px;
+      max-width: 220px; pointer-events: none;
+      opacity: 0; transition: opacity 0.15s;
+      box-shadow: 0 8px 24px rgba(27,45,78,0.22);
+    }
+    .term-tooltip.show { opacity: 1; }
+    .term-tooltip strong { display: block; font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+
+    /* ── FAB ── */
+    .fab {
+      position: fixed; bottom: calc(76px + env(safe-area-inset-bottom));
+      right: calc(50% - 215px + 16px);
+      width: 54px; height: 54px; border-radius: 50%;
+      background: var(--navy); color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(27,45,78,0.3);
+      transition: transform 0.15s; z-index: 90;
+    }
+    .fab:active { transform: scale(0.92); }
+    .fab svg { width: 22px; height: 22px; }
+
+    /* ── 바텀시트 ── */
+    .sheet-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.32);
+      z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .sheet-overlay.open { opacity: 1; pointer-events: all; }
+    .sheet {
+      position: fixed; bottom: 0; left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 430px;
+      background: var(--surface); border-radius: 28px 28px 0 0;
+      z-index: 201; padding: 0 20px;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+      transition: transform 0.32s cubic-bezier(0.34,1.06,0.64,1);
+    }
+    .sheet.open { transform: translateX(-50%) translateY(0); }
+    .sheet-handle { width: 36px; height: 4px; background: var(--gray-200); border-radius: 2px; margin: 14px auto 20px; }
+
+    /* 글쓰기 시트 */
+    .write-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 0; border-bottom: 1px solid #F3F5F8;
+      cursor: pointer; transition: opacity 0.1s;
+    }
+    .write-option:last-child { border-bottom: none; }
+    .write-option:active { opacity: 0.6; }
+    .write-option-icon {
+      width: 46px; height: 46px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; background: #F3F5F8;
+    }
+    .write-option-texts { flex: 1; }
+    .write-option-label { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+    .write-option-desc { font-size: 12px; color: var(--gray-400); }
+    .write-arrow { color: var(--gray-300); }
+    .write-arrow svg { width: 16px; height: 16px; }
+
+    /* ── 토스트 ── */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(27,45,78,0.9); backdrop-filter: blur(12px);
+      color: #fff; font-size: 13px; font-weight: 600;
+      padding: 11px 20px; border-radius: 100px;
+      opacity: 0; transition: all 0.25s; z-index: 300;
+      white-space: nowrap; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── 하단 내비게이션 ── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: rgba(248,247,244,0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,0,0,0.07);
+      padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom));
+      display: flex; z-index: 100;
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 3px; padding: 6px 0 4px;
+      cursor: pointer; color: var(--gray-400);
+      font-size: 10px; font-weight: 600; border: none; background: none;
+      font-family: var(--font); transition: color 0.15s; position: relative;
+    }
+    .nav-item.active { color: var(--navy); }
+    .nav-item.active::after {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 24px; height: 3px; background: var(--navy); border-radius: 0 0 3px 3px;
+    }
+    .nav-item svg { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── 헤더 ── -->
+  <header class="header">
+    <div class="header-inner">
+      <span class="logo-text">Filmmakers</span>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="showToast('알림 페이지로 이동합니다')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="badge-dot"></span>
+        </button>
+        <button class="icon-btn" onclick="showToast('설정 페이지로 이동합니다')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── 탭 바 ── -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'all')">전체</button>
+    <button class="tab-btn" onclick="switchTab(this,'qa')">Q&A</button>
+    <button class="tab-btn" onclick="switchTab(this,'free')">자유</button>
+    <button class="tab-btn" onclick="switchTab(this,'review')">현장 후기</button>
+    <button class="tab-btn" onclick="switchTab(this,'tip')">팁 공유</button>
+  </div>
+
+  <div class="scroll-body">
+
+    <!-- ── 빠른 글쓰기 ── -->
+    <div class="quick-write" onclick="openSheet('writeSheet')">
+      <div class="qw-avatar">
+        <!-- 내 아바타: 카메라 일러스트 -->
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <rect x="9" y="5" width="10" height="5" rx="2.5" fill="#4A7AB8"/>
+          <rect x="3" y="9" width="26" height="18" rx="5" fill="#3E6AA0"/>
+          <circle cx="16" cy="18" r="6" fill="#6A9ACC"/>
+          <circle cx="16" cy="18" r="3.5" fill="#2E508A"/>
+          <circle cx="14" cy="16" r="1.3" fill="rgba(255,255,255,0.45)"/>
+          <rect x="22" y="12" width="4" height="2.5" rx="1.2" fill="#6A9ACC"/>
+        </svg>
+      </div>
+      <div class="qw-text">
+        오늘 어떤 이야기 나눌까요?
+        <!-- smile 일러스트 -->
+        <span class="eil">
+          <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" fill="#FFD93D"/>
+            <circle cx="7.5" cy="9" r="1.3" fill="#3A3A3A"/>
+            <circle cx="12.5" cy="9" r="1.3" fill="#3A3A3A"/>
+            <path d="M7 12.5Q10 15.5 13 12.5" stroke="#3A3A3A" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+            <circle cx="8" cy="7.8" r="0.6" fill="rgba(255,255,255,0.6)"/>
+          </svg>
+        </span>
+      </div>
+      <button class="qw-send" onclick="event.stopPropagation(); openSheet('writeSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── 트렌딩 ── -->
+    <div class="trending-row">
+      <!-- 불꽃 일러스트 + DIT입문 -->
+      <div class="trend-chip on" onclick="showToast('#DIT입문 글 모아보기')">
+        <span class="eil">
+          <svg width="13" height="15" viewBox="0 0 14 18" fill="none">
+            <path d="M7 1C5.5 3.5 2 6 2 10C2 13.5 4.5 16.5 7 17C9.5 16.5 12 13.5 12 10C12 6 8.5 3.5 7 1Z" fill="#F97316"/>
+            <path d="M7 7C6 9 4.5 10.5 4.5 12C4.5 13.8 5.6 15.2 7 15.5C8.4 15.2 9.5 13.8 9.5 12C9.5 10.5 8 9 7 7Z" fill="#FCD34D"/>
+            <path d="M7 11C6.5 11.8 6.2 12.4 6.2 13C6.2 13.8 6.6 14.3 7 14.5C7.4 14.3 7.8 13.8 7.8 13C7.8 12.4 7.5 11.8 7 11Z" fill="#FFF9C4"/>
+          </svg>
+        </span>
+        #DIT입문
+      </div>
+      <div class="trend-chip" onclick="showToast('#단편영화 글 모아보기')">#단편영화</div>
+      <div class="trend-chip" onclick="showToast('#단가협상 글 모아보기')">#단가협상</div>
+      <div class="trend-chip" onclick="showToast('#서울촬영 글 모아보기')">#서울촬영</div>
+      <div class="trend-chip" onclick="showToast('#촬영장비 글 모아보기')">#촬영장비</div>
+      <div class="trend-chip" onclick="showToast('#프리랜서 글 모아보기')">#프리랜서</div>
+    </div>
+
+    <div class="section-label" id="listLabel">최근 게시글</div>
+
+    <!-- ── 게시글 1 ── -->
+    <div class="post-card hot" data-tab="qa">
+      <div class="author-row">
+        <div class="avatar" style="background:#D8E8F8;">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect x="9" y="5" width="10" height="5" rx="2.5" fill="#4A7AB8"/>
+            <rect x="3" y="9" width="26" height="18" rx="5" fill="#3E6AA0"/>
+            <circle cx="16" cy="18" r="6" fill="#6A9ACC"/>
+            <circle cx="16" cy="18" r="3.5" fill="#2E508A"/>
+            <circle cx="14" cy="16" r="1.3" fill="rgba(255,255,255,0.45)"/>
+            <rect x="22" y="12" width="4" height="2.5" rx="1.2" fill="#6A9ACC"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <span class="author-name">박지훈</span>
+          <span class="author-sub">촬영부 · 2시간 전</span>
+        </div>
+        <span class="cat-pill">Q&A</span>
+      </div>
+      <div class="post-title"><span class="tooltip-word" data-term="DIT" data-desc="Digital Imaging Technician. 촬영 현장에서 데이터 관리, 색보정 기준 설정, 백업 등을 담당하는 직군이에요.">DIT</span> 처음 도전하려는데 장비는 뭐부터 준비해야 할까요?</div>
+      <div class="post-preview">영상학과 4학년인데 방학 동안 DIT 어시스턴트 해보고 싶어서요. 맥북은 있는데 외장 SSD나 소프트웨어 최소 세팅이 어떻게 되는지 알고 싶어요
+        <!-- 두손 일러스트 -->
+        <span class="eil">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <path d="M10 16C7 14 4 11 4 8C4 6 5.5 5 7 5.5C7.8 5.8 8.5 6.5 9 7C9.2 6 9.8 5 11 5C12.5 5 13.5 6 13.5 7.5C14 6.5 15 6 16 6.5C17.5 7.5 16.5 10 15 12L10 16Z" fill="#FFBB8A"/>
+            <path d="M10 16C7 14 4 11 4 8" stroke="#E8995A" stroke-width="0.7" fill="none"/>
+            <ellipse cx="10" cy="16.5" rx="2" ry="1.2" fill="#FFBB8A" opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+      <div class="post-tags">
+        <span class="tag">#DIT입문</span>
+        <span class="tag">#장비추천</span>
+      </div>
+      <div class="reaction-bar">
+        <button class="react-btn liked" onclick="toggleLike(event,this)">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cnt">32</span>
+        </button>
+        <button class="react-btn" onclick="openComments(event, this, 14, 'qa1')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>14</span>
+        </button>
+        <div class="hot-pill">
+          <!-- 불꽃 일러스트 -->
+          <svg width="11" height="13" viewBox="0 0 14 18" fill="none">
+            <path d="M7 1C5.5 3.5 2 6 2 10C2 13.5 4.5 16.5 7 17C9.5 16.5 12 13.5 12 10C12 6 8.5 3.5 7 1Z" fill="#E0824A"/>
+            <path d="M7 7C6 9 4.5 10.5 4.5 12C4.5 13.8 5.6 15.2 7 15.5C8.4 15.2 9.5 13.8 9.5 12C9.5 10.5 8 9 7 7Z" fill="#F5C060"/>
+          </svg>
+          인기글
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 게시글 2 ── -->
+    <div class="post-card" data-tab="review">
+      <div class="author-row">
+        <div class="avatar" style="background:#D4EDE0;">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect x="3" y="10" width="26" height="18" rx="3" fill="#4A9070"/>
+            <rect x="3" y="6" width="26" height="5" rx="2" fill="#3A7858"/>
+            <path d="M7 6 L11 11 L7 11 Z" fill="white" opacity="0.55"/>
+            <path d="M13 6 L17 11 L13 11 Z" fill="white" opacity="0.55"/>
+            <path d="M19 6 L23 11 L19 11 Z" fill="white" opacity="0.55"/>
+            <rect x="7" y="15" width="10" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+            <rect x="7" y="19" width="7" height="2" rx="1" fill="rgba(255,255,255,0.38)"/>
+            <rect x="7" y="23" width="5" height="2" rx="1" fill="rgba(255,255,255,0.28)"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <span class="author-name">김민서</span>
+          <span class="author-sub">연출부 · 5시간 전</span>
+        </div>
+        <span class="cat-pill">현장 후기</span>
+      </div>
+      <div class="post-title">
+        단편영화 연출부 첫 현장 다녀왔어요
+        <!-- 슬레이트 일러스트 -->
+        <span class="eil">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="7" width="16" height="11" rx="2" fill="#3A7858"/>
+            <rect x="2" y="4" width="16" height="4" rx="1.5" fill="#2A6040"/>
+            <path d="M5 4 L8 8 L5 8Z" fill="white" opacity="0.5"/>
+            <path d="M10 4 L13 8 L10 8Z" fill="white" opacity="0.5"/>
+            <rect x="4" y="10" width="7" height="1.5" rx="0.75" fill="rgba(255,255,255,0.45)"/>
+            <rect x="4" y="13" width="5" height="1.5" rx="0.75" fill="rgba(255,255,255,0.3)"/>
+          </svg>
+        </span>
+      </div>
+      <div class="post-preview">필름메이커스에서 공고 보고 지원해서 처음으로 촬영 현장 나갔어요. 긴장했는데 스태프분들이 잘 챙겨주셔서 많이 배웠어요. 특히 <span class="tooltip-word" data-term="콘티" data-desc="콘티뉴이티(Continuity)의 줄임말. 장면의 순서와 구도를 그림으로 미리 정리한 촬영 계획서예요.">콘티</span> 보는 법이 제일 도움됐어요.</div>
+      <div class="post-tags">
+        <span class="tag">#단편영화</span>
+        <span class="tag">#첫현장</span>
+      </div>
+      <div class="reaction-bar">
+        <button class="react-btn" onclick="toggleLike(event,this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cnt">21</span>
+        </button>
+        <button class="react-btn" onclick="openComments(event, this, 8, 'review1')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>8</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── 게시글 3 ── -->
+    <div class="post-card" data-tab="tip">
+      <div class="author-row">
+        <div class="avatar" style="background:#F0E0C8;">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="13" fill="#C07848"/>
+            <circle cx="16" cy="16" r="8.5" fill="#9A5C30"/>
+            <circle cx="16" cy="16" r="4" fill="#C07848"/>
+            <circle cx="16" cy="16" r="2" fill="#7A3C18"/>
+            <circle cx="16" cy="8" r="2" fill="#E0A870"/>
+            <circle cx="24" cy="16" r="2" fill="#E0A870"/>
+            <circle cx="16" cy="24" r="2" fill="#E0A870"/>
+            <circle cx="8" cy="16" r="2" fill="#E0A870"/>
+            <circle cx="16" cy="16" r="13" fill="none" stroke="#B06838" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <span class="author-name">이수연</span>
+          <span class="author-sub">편집 · 어제</span>
+        </div>
+        <span class="cat-pill">팁 공유</span>
+      </div>
+      <div class="post-title">
+        편집 프리랜서 단가 협상, 이렇게 했더니 잘 됐어요
+        <!-- 전구 일러스트 -->
+        <span class="eil">
+          <svg width="15" height="17" viewBox="0 0 18 22" fill="none">
+            <path d="M9 2C5.7 2 3 4.7 3 8C3 10.5 4.4 12.6 6.5 13.8L6.5 16L11.5 16L11.5 13.8C13.6 12.6 15 10.5 15 8C15 4.7 12.3 2 9 2Z" fill="#FFD93D"/>
+            <rect x="6.5" y="16" width="5" height="1.8" rx="0.9" fill="#D0D0D0"/>
+            <rect x="7" y="17.8" width="4" height="1.5" rx="0.75" fill="#C0C0C0"/>
+            <line x1="9" y1="5" x2="9" y2="7" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="6.5" y1="5.5" x2="7.5" y2="7" stroke="rgba(255,255,255,0.4)" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </div>
+      <div class="post-preview">포트폴리오 정리하고 단가표 만들고 나서 협상하니까 훨씬 수월했어요. 특히 <span class="tooltip-word" data-term="레퍼런스" data-desc="참고 자료나 비교 작업물을 뜻해요. 편집 방향이나 색감 스타일을 구인자와 맞출 때 사용해요.">레퍼런스</span> 작업물 미리 보여주는 게 핵심이었어요.</div>
+      <div class="post-tags">
+        <span class="tag">#단가협상</span>
+        <span class="tag">#프리랜서</span>
+      </div>
+      <div class="reaction-bar">
+        <button class="react-btn" onclick="toggleLike(event,this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cnt">47</span>
+        </button>
+        <button class="react-btn" onclick="openComments(event, this, 5, 'tip1')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>5</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── 게시글 4 ── -->
+    <div class="post-card" data-tab="qa">
+      <div class="author-row">
+        <div class="avatar" style="background:#F2EAC8;">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect x="10" y="4" width="12" height="7" rx="3" fill="#C8982A"/>
+            <path d="M5 11 L27 11 L25 26 L7 26 Z" fill="#E0B840"/>
+            <rect x="11" y="5" width="10" height="3" rx="1.5" fill="#D4A830"/>
+            <line x1="16" y1="26" x2="11" y2="31" stroke="#C8982A" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <line x1="16" y1="26" x2="16" y2="31" stroke="#C8982A" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <line x1="16" y1="26" x2="21" y2="31" stroke="#C8982A" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <ellipse cx="16" cy="19" rx="5" ry="3.5" fill="#ECCA50" opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <span class="author-name">최준호</span>
+          <span class="author-sub">영상 지망생 · 1일 전</span>
+        </div>
+        <span class="cat-pill">Q&A</span>
+      </div>
+      <div class="post-title">
+        <!-- 고민 얼굴 일러스트 -->
+        <span class="eil" style="vertical-align: -4px; margin-right: 3px;">
+          <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" fill="#FFD93D"/>
+            <circle cx="7.2" cy="8.5" r="1.2" fill="#3A3A3A"/>
+            <circle cx="12.8" cy="8.5" r="1.2" fill="#3A3A3A"/>
+            <path d="M7.5 13.5Q10 11.5 12.5 13.5" stroke="#3A3A3A" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- 손 on chin -->
+            <path d="M5 14C4.5 13 4.8 12 5.5 11.5" stroke="#FFBB8A" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="5" cy="14.5" rx="2" ry="1.5" fill="#FFBB8A"/>
+          </svg>
+        </span>
+        <span class="tooltip-word" data-term="오퍼레이터" data-desc="카메라를 직접 조작하는 사람. A캠(메인 카메라), B캠(서브 카메라) 등을 담당해요.">오퍼레이터</span>와 <span class="tooltip-word" data-term="촬영감독" data-desc="촬영 전반을 총괄하는 책임자. DP(Director of Photography)라고도 불려요.">촬영감독</span>의 차이가 뭔가요?
+      </div>
+      <div class="post-preview">공고에 오퍼레이터 모집이라고 나와 있는데 촬영감독이랑 뭐가 다른 건지 잘 모르겠어서요. 지원 전에 미리 알고 싶어서 질문합니다!</div>
+      <div class="post-tags">
+        <span class="tag">#촬영</span>
+        <span class="tag">#업계용어</span>
+      </div>
+      <div class="reaction-bar">
+        <button class="react-btn" onclick="toggleLike(event,this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cnt">9</span>
+        </button>
+        <button class="react-btn" onclick="openComments(event, this, 6, 'qa2')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>6</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── 게시글 5 ── -->
+    <div class="post-card" data-tab="free">
+      <div class="author-row">
+        <div class="avatar" style="background:#D4EDE0;">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect x="3" y="10" width="26" height="18" rx="3" fill="#4A9070"/>
+            <rect x="3" y="6" width="26" height="5" rx="2" fill="#3A7858"/>
+            <path d="M7 6 L11 11 L7 11 Z" fill="white" opacity="0.55"/>
+            <path d="M13 6 L17 11 L13 11 Z" fill="white" opacity="0.55"/>
+            <path d="M19 6 L23 11 L19 11 Z" fill="white" opacity="0.55"/>
+            <rect x="7" y="15" width="10" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+            <rect x="7" y="19" width="7" height="2" rx="1" fill="rgba(255,255,255,0.38)"/>
+            <rect x="7" y="23" width="5" height="2" rx="1" fill="rgba(255,255,255,0.28)"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <span class="author-name">박지훈</span>
+          <span class="author-sub">촬영부 · 2일 전</span>
+        </div>
+        <span class="cat-pill">자유</span>
+      </div>
+      <div class="post-title">
+        지방에서 서울 단기 현장 다녀오시는 분들 숙박은 어떻게 하세요?
+        <!-- 땀 웃음 일러스트 -->
+        <span class="eil">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" fill="#FFD93D"/>
+            <circle cx="7.5" cy="9" r="1.2" fill="#3A3A3A"/>
+            <circle cx="12.5" cy="9" r="1.2" fill="#3A3A3A"/>
+            <path d="M7.5 13Q10 15.5 12.5 13" stroke="#3A3A3A" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- 땀방울 -->
+            <path d="M16.5 7C16.5 7 15.5 8.5 15.5 9.2C15.5 9.9 15.9 10.3 16.5 10.3C17.1 10.3 17.5 9.9 17.5 9.2C17.5 8.5 16.5 7 16.5 7Z" fill="#7EC8E3"/>
+          </svg>
+        </span>
+      </div>
+      <div class="post-preview">부산 사는데 서울 촬영 공고 보면 1박 2일짜리도 많더라구요. 게스트하우스 쓰시는 분들도 있나요? 아니면 당일치기 KTX? 경험 공유해주시면 감사해요!</div>
+      <div class="post-tags">
+        <span class="tag">#서울촬영</span>
+        <span class="tag">#지방</span>
+      </div>
+      <div class="reaction-bar">
+        <button class="react-btn" onclick="toggleLike(event,this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cnt">15</span>
+        </button>
+        <button class="react-btn" onclick="openComments(event, this, 19, 'free1')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>19</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── 게시글 6 ── -->
+    <div class="post-card" data-tab="review">
+      <div class="author-row">
+        <div class="avatar" style="background:#F2EAC8;">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect x="10" y="4" width="12" height="7" rx="3" fill="#C8982A"/>
+            <path d="M5 11 L27 11 L25 26 L7 26 Z" fill="#E0B840"/>
+            <rect x="11" y="5" width="10" height="3" rx="1.5" fill="#D4A830"/>
+            <line x1="16" y1="26" x2="11" y2="31" stroke="#C8982A" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <line x1="16" y1="26" x2="16" y2="31" stroke="#C8982A" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <line x1="16" y1="26" x2="21" y2="31" stroke="#C8982A" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+            <ellipse cx="16" cy="19" rx="5" ry="3.5" fill="#ECCA50" opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="author-info">
+          <span class="author-name">강태양</span>
+          <span class="author-sub">조명팀 · 3일 전</span>
+        </div>
+        <span class="cat-pill">현장 후기</span>
+      </div>
+      <div class="post-title">
+        뮤직비디오 조명 어시스턴트 — 하루짜리 현장 리뷰
+        <!-- 반짝 일러스트 -->
+        <span class="eil">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2L11 8L17 7L12 10L17 13L11 12L10 18L9 12L3 13L8 10L3 7L9 8Z" fill="#FFD93D"/>
+            <circle cx="16" cy="3" r="1.5" fill="#FFD93D" opacity="0.7"/>
+            <circle cx="4" cy="16" r="1" fill="#FFD93D" opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+      <div class="post-preview">처음으로 유료 현장 나갔는데 체력 소모가 심했어요. <span class="tooltip-word" data-term="소프트박스" data-desc="빛을 부드럽게 퍼뜨리는 조명 장비. 인물 촬영 시 그림자를 줄이고 피부를 자연스럽게 표현할 때 써요.">소프트박스</span> 세팅이 생각보다 무거워서 근육통이 왔지만 배운 게 정말 많았어요
+        <!-- 땀 웃음 인라인 -->
+        <span class="eil">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" fill="#FFD93D"/>
+            <circle cx="7.5" cy="9" r="1.2" fill="#3A3A3A"/>
+            <circle cx="12.5" cy="9" r="1.2" fill="#3A3A3A"/>
+            <path d="M7.5 13Q10 15.5 12.5 13" stroke="#3A3A3A" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M16.5 7C16.5 7 15.5 8.5 15.5 9.2C15.5 9.9 15.9 10.3 16.5 10.3C17.1 10.3 17.5 9.9 17.5 9.2C17.5 8.5 16.5 7 16.5 7Z" fill="#7EC8E3"/>
+          </svg>
+        </span>
+      </div>
+      <div class="post-tags">
+        <span class="tag">#뮤직비디오</span>
+        <span class="tag">#조명</span>
+      </div>
+      <div class="reaction-bar">
+        <button class="react-btn" onclick="toggleLike(event,this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cnt">11</span>
+        </button>
+        <button class="react-btn" onclick="openComments(event, this, 3, 'review2')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>3</span>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /scroll-body -->
+
+  <!-- ── FAB ── -->
+  <button class="fab" onclick="openSheet('writeSheet')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </button>
+
+  <div class="term-tooltip" id="termTooltip"></div>
+  <div class="sheet-overlay" id="overlay" onclick="closeSheet()"></div>
+
+  <!-- ── 댓글 시트 ── -->
+  <div class="sheet" id="commentSheet">
+    <div class="sheet-handle"></div>
+    <div class="comment-sheet-inner">
+      <div class="comment-sheet-head">
+        <span class="comment-sheet-title" id="commentTitle">댓글 14개</span>
+        <button class="comment-close-btn" onclick="closeSheet()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="comment-list-wrap" id="commentListWrap">
+        <!-- JS로 채워짐 -->
+      </div>
+      <div class="comment-input-bar">
+        <div class="comment-my-av">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+            <rect x="9" y="5" width="10" height="5" rx="2.5" fill="#4A7AB8"/>
+            <rect x="3" y="9" width="26" height="18" rx="5" fill="#3E6AA0"/>
+            <circle cx="16" cy="18" r="6" fill="#6A9ACC"/>
+            <circle cx="16" cy="18" r="3.5" fill="#2E508A"/>
+          </svg>
+        </div>
+        <input type="text" class="comment-input" id="commentInput" placeholder="댓글을 남겨보세요..." />
+        <button class="comment-send-btn" onclick="sendComment()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 글쓰기 시트 ── -->
+  <div class="sheet" id="writeSheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:17px;font-weight:800;color:var(--gray-900);margin-bottom:18px;display:flex;align-items:center;gap:7px;">
+      어떤 글을 쓸까요?
+      <!-- 연필 일러스트 -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M17 3L21 7L8 20L3 21L4 16Z" fill="#FFD93D" stroke="#E0B820" stroke-width="1" stroke-linejoin="round"/>
+        <path d="M15 5L19 9" stroke="#E0B820" stroke-width="1"/>
+        <path d="M3 21L4 16L8 20Z" fill="#FFBB8A"/>
+      </svg>
+    </div>
+    <div class="write-option" onclick="showToast('Q&A 작성 화면으로 이동합니다'); closeSheet();">
+      <div class="write-option-icon">
+        <!-- 손 들기 일러스트 -->
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="13" fill="#EEF1F6"/>
+          <path d="M16 6C15 6 14.5 6.8 14.5 7.5L14.5 16" stroke="#4A7AB8" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M19 8.5C18 8.5 17.5 9.3 17.5 10L17.5 16" stroke="#4A7AB8" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M11.5 10C10.5 10 10 10.8 10 11.5L10 18C10 21 12 23 16 23C20 23 22 21 22 18L22 12C22 11.2 21.5 10.5 20.5 10.5C19.5 10.5 19 11.2 19 12" stroke="#4A7AB8" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M14.5 16L14.5 17" stroke="#4A7AB8" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="write-option-texts">
+        <div class="write-option-label">Q&A</div>
+        <div class="write-option-desc">업계 궁금한 점을 질문해보세요</div>
+      </div>
+      <div class="write-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="write-option" onclick="showToast('현장 후기 작성 화면으로 이동합니다'); closeSheet();">
+      <div class="write-option-icon">
+        <!-- 슬레이트 일러스트 -->
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+          <rect x="5" y="12" width="22" height="16" rx="3" fill="#4A9070"/>
+          <rect x="5" y="7" width="22" height="6" rx="2" fill="#3A7858"/>
+          <path d="M9 7 L13 13 L9 13Z" fill="white" opacity="0.5"/>
+          <path d="M15 7 L19 13 L15 13Z" fill="white" opacity="0.5"/>
+          <rect x="8" y="17" width="9" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+          <rect x="8" y="21" width="6" height="2" rx="1" fill="rgba(255,255,255,0.35)"/>
+        </svg>
+      </div>
+      <div class="write-option-texts">
+        <div class="write-option-label">현장 후기</div>
+        <div class="write-option-desc">촬영 현장 경험을 공유해보세요</div>
+      </div>
+      <div class="write-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="write-option" onclick="showToast('팁 공유 작성 화면으로 이동합니다'); closeSheet();">
+      <div class="write-option-icon">
+        <!-- 전구 일러스트 -->
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+          <path d="M16 5C11.6 5 8 8.6 8 13C8 16.5 10 19.2 13 20.6L13 24L19 24L19 20.6C22 19.2 24 16.5 24 13C24 8.6 20.4 5 16 5Z" fill="#FFD93D"/>
+          <rect x="13" y="24" width="6" height="2.5" rx="1.2" fill="#D0D0D0"/>
+          <rect x="13.5" y="26.5" width="5" height="2" rx="1" fill="#C0C0C0"/>
+          <line x1="16" y1="9" x2="16" y2="12" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="write-option-texts">
+        <div class="write-option-label">팁 공유</div>
+        <div class="write-option-desc">유용한 정보나 노하우를 나눠요</div>
+      </div>
+      <div class="write-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="write-option" onclick="showToast('자유게시판 작성 화면으로 이동합니다'); closeSheet();">
+      <div class="write-option-icon">
+        <!-- 연필 일러스트 -->
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+          <path d="M22 6L26 10L12 24L7 25L8 20Z" fill="#FFD93D" stroke="#E0B820" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M20 8L24 12" stroke="#E0B820" stroke-width="1.2"/>
+          <path d="M7 25L8 20L12 24Z" fill="#FFBB8A"/>
+          <line x1="10" y1="22" x2="14" y2="18" stroke="#E0B820" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="write-option-texts">
+        <div class="write-option-label">자유</div>
+        <div class="write-option-desc">편하게 이야기 나눠요</div>
+      </div>
+      <div class="write-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- ── 하단 내비게이션 ── -->
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showToast('홈으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>홈
+    </button>
+    <button class="nav-item" onclick="showToast('탐색으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>탐색
+    </button>
+    <button class="nav-item" onclick="showToast('저장 목록으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>저장
+    </button>
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>커뮤니티
+    </button>
+    <button class="nav-item" onclick="showToast('마이페이지로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>마이페이지
+    </button>
+  </nav>
+
+</div>
+<script>
+  // ── 댓글 데이터 ──
+  const commentData = {
+    qa1: [
+      { name:'정현우', role:'영상학과 3학년', time:'10분 전', text:'저도 DIT 입문 준비 중인데 정말 도움됐어요! 감사합니다.', likes: 3, avatarBg:'#D8E8F8', avatarType:'camera' },
+      { name:'나린', role:'DIT 1년차', time:'1시간 전', text:'외장 SSD는 Samsung T7 추천드려요! 속도도 빠르고 현장에서 안정적이에요. 소프트웨어는 일단 Silverstack 무료 버전 써보세요.', likes: 11, avatarBg:'#D4EDE0', avatarType:'clapper' },
+      { name:'서민재', role:'촬영부', time:'2시간 전', text:'처음엔 장비보다 현장 경험이 더 중요해요. 어시스턴트로 들어가서 배우면서 하나씩 갖추는 게 훨씬 효율적입니다!', likes: 7, avatarBg:'#F2EAC8', avatarType:'light' },
+    ],
+    review1: [
+      { name:'유지원', role:'연출부 3년차', time:'30분 전', text:'첫 현장 이야기 읽으니 저 때 생각나네요 ㅎㅎ 잘 하셨어요! 콘티 보는 능력이 생기면 나머지는 금방이에요.', likes: 5, avatarBg:'#F0E0C8', avatarType:'reel' },
+      { name:'이다경', role:'영상학과 졸업', time:'3시간 전', text:'저도 필름메이커스로 첫 현장 갔었는데 정말 좋은 경험이었어요. 다음 현장도 화이팅!', likes: 8, avatarBg:'#D8E8F8', avatarType:'camera' },
+    ],
+    tip1: [
+      { name:'김승우', role:'프리랜서 편집', time:'2시간 전', text:'단가표 공유해주실 수 있나요? 저도 만들어보고 싶어서요!', likes: 2, avatarBg:'#D4EDE0', avatarType:'clapper' },
+      { name:'하은지', role:'편집 2년차', time:'어제', text:'레퍼런스 보여주는 게 진짜 핵심이에요. 말로 설명하는 것보다 보여주면 의뢰인이 훨씬 빨리 이해해요.', likes: 14, avatarBg:'#F2EAC8', avatarType:'light' },
+    ],
+    qa2: [
+      { name:'박도윤', role:'카메라 오퍼레이터', time:'5시간 전', text:'오퍼레이터는 카메라 조작에만 집중하고, 촬영감독(DP)은 전체 조명과 카메라 방향을 총괄해요. 규모 큰 현장일수록 역할이 명확히 나뉩니다.', likes: 9, avatarBg:'#D8E8F8', avatarType:'camera' },
+      { name:'정아름', role:'영화 스태프', time:'1일 전', text:'단편영화 같은 소규모 현장에서는 겸직하는 경우도 많아요. 공고 상세 내용 보시면 더 명확히 나와있을 거예요!', likes: 4, avatarBg:'#F0E0C8', avatarType:'reel' },
+    ],
+    free1: [
+      { name:'오현석', role:'부산 거주 스태프', time:'1시간 전', text:'저도 부산인데 당일치기 KTX 많이 써요. 새벽 6시 첫차 타면 현장 도착 시간 맞추기 편해요.', likes: 6, avatarBg:'#D4EDE0', avatarType:'clapper' },
+      { name:'최나연', role:'프리랜서', time:'2시간 전', text:'1박 2일이면 에어비앤비 추천해요! 게스트하우스보다 조금 더 비싸도 혼자 쉴 수 있어서 체력 회복에 좋아요.', likes: 10, avatarBg:'#F2EAC8', avatarType:'light' },
+      { name:'임지현', role:'연출부', time:'어제', text:'제작진에서 숙박 지원해주는 공고도 있어요. 공고 올릴 때 꼭 확인해보세요!', likes: 8, avatarBg:'#D8E8F8', avatarType:'camera' },
+    ],
+    review2: [
+      { name:'강민호', role:'조명팀 2년차', time:'2시간 전', text:'소프트박스 진짜 무거워요 ㅠㅠ 첫 날은 항상 근육통 옵니다. 그래도 배우는 게 많은 파트예요!', likes: 3, avatarBg:'#D4EDE0', avatarType:'clapper' },
+    ],
+  };
+
+  function getAvatarSVG(type, bg) {
+    const svgs = {
+      camera: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="9" y="5" width="10" height="5" rx="2.5" fill="#4A7AB8"/><rect x="3" y="9" width="26" height="18" rx="5" fill="#3E6AA0"/><circle cx="16" cy="18" r="6" fill="#6A9ACC"/><circle cx="16" cy="18" r="3.5" fill="#2E508A"/><circle cx="14" cy="16" r="1.3" fill="rgba(255,255,255,0.45)"/></svg>`,
+      clapper: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="3" y="10" width="26" height="18" rx="3" fill="#4A9070"/><rect x="3" y="6" width="26" height="5" rx="2" fill="#3A7858"/><path d="M7 6 L11 11 L7 11 Z" fill="white" opacity="0.55"/><path d="M13 6 L17 11 L13 11 Z" fill="white" opacity="0.55"/><path d="M19 6 L23 11 L19 11 Z" fill="white" opacity="0.55"/></svg>`,
+      reel: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" fill="#C07848"/><circle cx="16" cy="16" r="8.5" fill="#9A5C30"/><circle cx="16" cy="16" r="3" fill="#C07848"/><circle cx="16" cy="8" r="2" fill="#E0A870"/><circle cx="24" cy="16" r="2" fill="#E0A870"/><circle cx="16" cy="24" r="2" fill="#E0A870"/><circle cx="8" cy="16" r="2" fill="#E0A870"/></svg>`,
+      light: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="10" y="4" width="12" height="7" rx="3" fill="#C8982A"/><path d="M5 11 L27 11 L25 26 L7 26 Z" fill="#E0B840"/><ellipse cx="16" cy="19" rx="5" ry="3.5" fill="#ECCA50" opacity="0.6"/></svg>`,
+    };
+    return `<div class="comment-avatar" style="background:${bg};">${svgs[type] || svgs.camera}</div>`;
+  }
+
+  function openComments(event, btn, count, postKey) {
+    event.stopPropagation();
+    const comments = commentData[postKey] || [];
+    document.getElementById('commentTitle').textContent = `댓글 ${count}개`;
+    const listWrap = document.getElementById('commentListWrap');
+    listWrap.innerHTML = comments.map(c => `
+      <div class="comment-item">
+        ${getAvatarSVG(c.avatarType, c.avatarBg)}
+        <div class="comment-body">
+          <div class="comment-meta">
+            <span class="comment-name">${c.name}</span>
+            <span class="comment-time">${c.role} · ${c.time}</span>
+          </div>
+          <div class="comment-text">${c.text}</div>
+          <div class="comment-like">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${c.likes}
+          </div>
+        </div>
+      </div>
+    `).join('');
+    openSheet('commentSheet');
+    setTimeout(() => document.getElementById('commentInput').focus(), 400);
+  }
+
+  function sendComment() {
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const listWrap = document.getElementById('commentListWrap');
+    const newItem = document.createElement('div');
+    newItem.className = 'comment-item';
+    newItem.innerHTML = `
+      ${getAvatarSVG('camera', '#D8E8F8')}
+      <div class="comment-body">
+        <div class="comment-meta">
+          <span class="comment-name">나</span>
+          <span class="comment-time">방금</span>
+        </div>
+        <div class="comment-text">${text}</div>
+      </div>
+    `;
+    listWrap.appendChild(newItem);
+    listWrap.scrollTop = listWrap.scrollHeight;
+    input.value = '';
+    showToast('댓글을 남겼어요!');
+  }
+
+  // ── 탭 전환 ──
+  function switchTab(el, tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    const cards = document.querySelectorAll('.post-card[data-tab]');
+    let visible = 0;
+    cards.forEach(c => {
+      const show = tab === 'all' || c.dataset.tab === tab;
+      c.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    const labels = { all:'최근 게시글', qa:'Q&A', free:'자유 게시판', review:'현장 후기', tip:'팁 공유' };
+    document.getElementById('listLabel').textContent = labels[tab] || '최근 게시글';
+  }
+
+  // ── 좋아요 토글 ──
+  function toggleLike(event, btn) {
+    event.stopPropagation();
+    const cnt = btn.querySelector('.cnt');
+    const svg = btn.querySelector('svg');
+    const n = parseInt(cnt.textContent);
+    if (btn.classList.contains('liked')) {
+      btn.classList.remove('liked');
+      svg.setAttribute('fill', 'none');
+      cnt.textContent = n - 1;
+    } else {
+      btn.classList.add('liked');
+      svg.setAttribute('fill', 'currentColor');
+      cnt.textContent = n + 1;
+    }
+  }
+
+  // ── 업계 용어 툴팁 ──
+  const tooltip = document.getElementById('termTooltip');
+  let tooltipTimer;
+  document.querySelectorAll('.tooltip-word').forEach(word => {
+    word.addEventListener('click', e => {
+      e.stopPropagation();
+      tooltip.innerHTML = `<strong>${word.dataset.term}</strong>${word.dataset.desc}`;
+      const rect = word.getBoundingClientRect();
+      const appRect = document.querySelector('.app').getBoundingClientRect();
+      let top = rect.bottom + 8;
+      let left = rect.left;
+      if (left + 220 > appRect.right - 8) left = appRect.right - 228;
+      if (left < appRect.left + 8) left = appRect.left + 8;
+      tooltip.style.top = top + 'px';
+      tooltip.style.left = left + 'px';
+      tooltip.classList.add('show');
+      clearTimeout(tooltipTimer);
+      tooltipTimer = setTimeout(() => tooltip.classList.remove('show'), 3000);
+    });
+  });
+  document.addEventListener('click', () => tooltip.classList.remove('show'));
+
+  // ── 바텀시트 ──
+  function openSheet(id) {
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById(id).classList.add('open');
+  }
+  function closeSheet() {
+    document.getElementById('overlay').classList.remove('open');
+    document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open'));
+  }
+
+  // ── 엔터로 댓글 전송 ──
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('commentInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendComment();
+    });
+  });
+
+  // ── 토스트 ──
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>

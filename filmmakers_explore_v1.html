@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>필름메이커스 — 탐색</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg: #F8F7F4;
+      --surface: #FFFFFF;
+      --surface-alt: #F2F0EC;
+      --navy: #1A2B48;
+      --navy-mid: #F2F0EC;
+      --blue: #1A2B48;
+      --blue-light: #EBF0F8;
+      --green: #2E7D5E;
+      --green-light: #E0F2EA;
+      --red: #C0392B;
+      --red-light: #FDECEA;
+      --orange: #A07040;
+      --orange-light: #F5EBE0;
+      --gray-50: #F8F9FA;
+      --gray-100: #F1F3F5;
+      --gray-200: #E5E8EC;
+      --gray-400: #8A9BB0;
+      --gray-500: #5A6A80;
+      --gray-700: #2D3D52;
+      --gray-900: #1A2B48;
+      --font: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Pretendard', sans-serif;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --shadow: 0 2px 8px rgba(26,43,72,.06), 0 4px 16px rgba(26,43,72,.04);
+      --shadow-md: 0 6px 24px rgba(26,43,72,.10);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--gray-900);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      position: relative;
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 0 20px;
+      padding-top: env(safe-area-inset-top);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .logo-text {
+      font-size: 20px;
+      font-weight: 900;
+      color: #1A2B48;
+      letter-spacing: -0.5px;
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    }
+    .header-actions { display: flex; align-items: center; gap: 4px; }
+    .icon-btn {
+      width: 38px; height: 38px;
+      border: none; background: none; cursor: pointer;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-500);
+      transition: background 0.15s;
+      position: relative;
+    }
+    .icon-btn:active { background: var(--gray-100); }
+    .icon-btn svg { width: 22px; height: 22px; }
+    .badge-dot {
+      position: absolute; top: 6px; right: 6px;
+      width: 8px; height: 8px;
+      background: var(--red); border-radius: 50%;
+      border: 2px solid var(--bg);
+    }
+
+    /* ── 검색 + 필터 sticky 영역 ── */
+    .search-sticky {
+      position: sticky;
+      top: 56px;
+      z-index: 99;
+      background: rgba(248,247,244,0.95);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* 검색바 */
+    .search-section { padding: 14px 20px 12px; }
+    .search-bar { position: relative; }
+    .search-bar input {
+      width: 100%; height: 48px;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+      background: var(--surface-alt);
+      color: var(--gray-900);
+      font-size: 14px;
+      font-family: var(--font);
+      padding: 0 52px 0 48px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-bar input::placeholder { color: var(--gray-400); }
+    .search-bar input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(45,74,122,0.10);
+    }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+    }
+    .search-icon svg { width: 20px; height: 20px; display: block; }
+    .search-clear {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 26px; height: 26px;
+      border-radius: 50%; background: var(--gray-200);
+      border: none; color: var(--gray-500);
+      display: none; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 13px;
+    }
+
+    /* 대분류 칩 — 가로 스크롤 한 줄 */
+    .role-filter-wrap { padding: 0 0 0; }
+    .role-filter-scroll {
+      display: flex; gap: 7px;
+      padding: 0 16px 12px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .role-filter-scroll::-webkit-scrollbar { display: none; }
+    .role-chip {
+      flex-shrink: 0;
+      height: 34px; padding: 0 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: rgba(255,255,255,0.85);
+      color: var(--gray-500);
+      font-size: 12px; font-family: var(--font);
+      font-weight: 600; cursor: pointer;
+      white-space: nowrap; transition: all 0.15s;
+      display: flex; align-items: center;
+    }
+    .role-chip.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #ffffff;
+    }
+    .role-chip:active { opacity: 0.75; }
+
+    /* 소분류 칩 */
+    .sub-filter-wrap {
+      padding: 0 0 10px;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.25s ease, opacity 0.2s;
+      opacity: 0;
+    }
+    .sub-filter-wrap.visible {
+      max-height: 60px;
+      opacity: 1;
+    }
+    .sub-filter-scroll {
+      display: flex; gap: 6px;
+      padding: 0 16px 0;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .sub-filter-scroll::-webkit-scrollbar { display: none; }
+    .sub-chip {
+      flex-shrink: 0;
+      height: 30px; padding: 0 12px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--surface);
+      color: var(--gray-500);
+      font-size: 11px; font-family: var(--font);
+      font-weight: 600; cursor: pointer;
+      white-space: nowrap; transition: all 0.15s;
+      display: flex; align-items: center;
+    }
+    .sub-chip.active {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .sub-chip:active { opacity: 0.75; }
+
+    /* 필터 바 (지역·페이·마감 등) */
+    .filter-bar {
+      padding: 0 16px 12px;
+      display: flex; gap: 7px; align-items: center;
+    }
+    .filter-pill {
+      display: flex; align-items: center; gap: 5px;
+      height: 32px; padding: 0 12px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: rgba(255,255,255,0.75);
+      color: var(--gray-500);
+      font-size: 12px; font-family: var(--font);
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .filter-pill svg { width: 12px; height: 12px; }
+    .filter-pill.active {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .filter-pill:active { opacity: 0.75; }
+
+    /* 정렬 버튼 (결과 헤더 안) */
+    .sort-btn {
+      display: flex; align-items: center; gap: 4px;
+      height: 30px; padding: 0 11px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: rgba(255,255,255,0.75);
+      color: var(--gray-500);
+      font-size: 12px; font-family: var(--font);
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .sort-btn svg { width: 12px; height: 12px; }
+
+    /* ── 결과 영역 ── */
+    .main { padding: 16px 16px 100px; }
+
+    /* 결과 헤더 */
+    .result-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 8px;
+    }
+    .result-header-left {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; flex: 1;
+    }
+    .result-count {
+      font-size: 13px; font-weight: 600; color: var(--gray-500);
+      white-space: nowrap;
+    }
+    .result-count strong { color: var(--navy); font-weight: 800; }
+    .active-filters {
+      display: flex; gap: 5px; flex-wrap: wrap;
+    }
+    .active-tag {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 8px 3px 10px;
+      border-radius: 100px;
+      background: var(--blue-light); color: var(--blue);
+      cursor: pointer;
+    }
+    .active-tag svg { width: 10px; height: 10px; }
+
+    /* 공고 카드 */
+    .job-list { display: flex; flex-direction: column; gap: 12px; }
+    .job-card {
+      background: #FFFFFF;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+      position: relative;
+    }
+    .job-card:active { transform: scale(0.99); box-shadow: var(--shadow-md); }
+    .job-card-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 12px; margin-bottom: 10px;
+    }
+    .job-title {
+      font-size: 15px; font-weight: 800;
+      color: var(--gray-900); line-height: 1.4;
+      flex: 1; letter-spacing: -0.2px;
+    }
+    .job-pay {
+      flex-shrink: 0; font-size: 12px; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .job-pay.paid { background: var(--blue-light); color: var(--blue); }
+    .job-pay.unpaid { background: var(--gray-100); color: var(--gray-500); }
+    .job-pay.negotiable { background: var(--orange-light); color: var(--orange); }
+    .job-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .tag {
+      font-size: 12px; font-weight: 600; padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--gray-100); color: var(--gray-500);
+    }
+    .tag.blue { background: var(--blue-light); color: var(--blue); }
+    .job-meta {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .job-meta-item {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: var(--gray-500); font-weight: 500;
+    }
+    .job-meta-item svg { width: 13px; height: 13px; color: var(--gray-400); }
+    .job-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .job-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .urgent-badge {
+      font-size: 12px; font-weight: 700; padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--red-light); color: var(--red);
+    }
+    .beginner-badge {
+      font-size: 12px; font-weight: 700; padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--gray-100); color: var(--gray-500);
+    }
+    .job-deadline { font-size: 12px; font-weight: 600; color: var(--gray-400); }
+    .dday-badge {
+      font-size: 12px; font-weight: 700; padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--gray-100); color: var(--gray-500);
+    }
+    .bookmark-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--gray-400); transition: all 0.15s; flex-shrink: 0;
+    }
+    .bookmark-btn.saved { background: var(--gray-100); color: var(--navy); }
+    .bookmark-btn svg { width: 15px; height: 15px; }
+
+    /* 빈 결과 */
+    .empty-state {
+      padding: 48px 20px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px; text-align: center;
+      background: var(--surface-alt);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .empty-icon { font-size: 40px; }
+    .empty-title { font-size: 15px; font-weight: 700; color: var(--gray-700); }
+    .empty-desc { font-size: 13px; color: var(--gray-400); line-height: 1.6; }
+    .empty-btn {
+      margin-top: 4px; padding: 10px 22px;
+      border-radius: 100px;
+      border: 1.5px solid var(--blue);
+      background: none; color: var(--blue);
+      font-size: 13px; font-weight: 700;
+      font-family: var(--font); cursor: pointer;
+    }
+
+    /* ── 정렬 바텀시트 ── */
+    .sheet-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      z-index: 200; opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .sheet-overlay.open { opacity: 1; pointer-events: all; }
+    .sheet {
+      position: fixed; bottom: 0; left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 430px;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      z-index: 201; padding: 0 20px 40px;
+      transition: transform 0.32s cubic-bezier(0.34,1.06,0.64,1);
+    }
+    .sheet.open { transform: translateX(-50%) translateY(0); }
+    .sheet-handle {
+      width: 36px; height: 4px; background: var(--gray-200);
+      border-radius: 2px; margin: 14px auto 20px;
+    }
+    .sheet-title {
+      font-size: 16px; font-weight: 800;
+      color: var(--gray-900); margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+    .sort-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 15px; font-weight: 600; color: var(--gray-700);
+      cursor: pointer;
+    }
+    .sort-option:last-child { border-bottom: none; }
+    .sort-option.selected { color: var(--blue); }
+    .sort-option .check-icon { width: 18px; height: 18px; color: var(--blue); }
+
+    /* 지역 바텀시트 */
+    .region-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-top: 4px;
+    }
+    .region-btn {
+      padding: 12px 0; border-radius: 12px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--gray-50);
+      font-size: 13px; font-weight: 600;
+      color: var(--gray-700); font-family: var(--font);
+      cursor: pointer; text-align: center;
+      transition: all 0.15s;
+    }
+    .region-btn.active {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    /* 토스트 */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(27,45,78,0.92);
+      backdrop-filter: blur(12px);
+      color: #fff; font-size: 13px; font-weight: 600;
+      padding: 11px 20px; border-radius: 100px;
+      opacity: 0; transition: all 0.25s;
+      z-index: 300; white-space: nowrap;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── 하단 내비게이션 ── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: rgba(248,247,244,0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,0,0,0.07);
+      padding: 8px 0;
+      padding-bottom: calc(8px + env(safe-area-inset-bottom));
+      display: flex; z-index: 100;
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 3px; padding: 6px 0 4px;
+      cursor: pointer; color: var(--gray-400);
+      font-size: 10px; font-weight: 600;
+      border: none; background: none;
+      font-family: var(--font); transition: color 0.15s;
+      position: relative;
+    }
+    .nav-item.active { color: var(--navy); }
+    .nav-item.active::after {
+      content: ''; position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 24px; height: 3px;
+      background: var(--navy); border-radius: 0 0 3px 3px;
+    }
+    .nav-item svg { width: 22px; height: 22px; }
+    .nav-badge {
+      position: absolute; top: 3px; right: calc(50% - 24px);
+      background: var(--red); color: #fff;
+      font-size: 9px; font-weight: 800;
+      min-width: 15px; height: 15px; border-radius: 100px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 4px; border: 1.5px solid var(--bg);
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── 헤더 ── -->
+  <header class="header">
+    <div class="header-inner">
+      <span class="logo-text">Filmmakers</span>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="showToast('알림 페이지로 이동합니다')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="badge-dot"></span>
+        </button>
+        <button class="icon-btn" onclick="showToast('설정 페이지로 이동합니다')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── 검색 + 필터 sticky ── -->
+  <div class="search-sticky">
+
+    <!-- 검색바 -->
+    <div class="search-section">
+      <div class="search-bar">
+        <span class="search-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </span>
+        <input type="text" placeholder="공고 제목, 역할, 지역 검색" id="searchInput" oninput="onSearch(this)" />
+        <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
+      </div>
+    </div>
+
+    <!-- 대분류 칩 — 가로 스크롤 -->
+    <div class="role-filter-wrap">
+      <div class="role-filter-scroll" id="roleFilterScroll">
+        <button class="role-chip active" onclick="selectRole(this, '전체')">전체</button>
+        <button class="role-chip" onclick="selectRole(this, '연출부')">연출부</button>
+        <button class="role-chip" onclick="selectRole(this, '촬영부')">촬영부</button>
+        <button class="role-chip" onclick="selectRole(this, '조명부')">조명부</button>
+        <button class="role-chip" onclick="selectRole(this, '배우·모델')">배우·모델</button>
+        <button class="role-chip" onclick="selectRole(this, '편집·색보정')">편집·색보정</button>
+        <button class="role-chip" onclick="selectRole(this, '사운드')">사운드</button>
+        <button class="role-chip" onclick="selectRole(this, '제작부')">제작부</button>
+      </div>
+    </div>
+
+    <!-- 소분류 칩 — 선택 시 표시 -->
+    <div class="sub-filter-wrap" id="subFilterWrap">
+      <div class="sub-filter-scroll" id="subFilterScroll">
+        <!-- JS로 채워짐 -->
+      </div>
+    </div>
+
+    <!-- 세부 필터 -->
+    <div class="filter-bar">
+      <button class="filter-pill" id="regionPill" onclick="openSheet('regionSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        지역
+      </button>
+      <button class="filter-pill" id="payPill" onclick="toggleFilter('payPill', '유료만')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        유료만
+      </button>
+      <button class="filter-pill" id="beginnerPill" onclick="toggleFilter('beginnerPill', '경력 무관')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        경력 무관
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ── 결과 리스트 ── -->
+  <main class="main">
+
+    <div class="result-header">
+      <div class="result-header-left">
+        <span class="result-count">총 <strong id="resultCount">248</strong>건</span>
+        <div class="active-filters" id="activeFilters"></div>
+      </div>
+      <button class="sort-btn" id="sortBtn" onclick="openSheet('sortSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        최신순
+      </button>
+    </div>
+
+    <div class="job-list" id="jobList">
+
+      <!-- 카드 1 -->
+      <div class="job-card" data-role="편집·색보정" data-sub="편집,색보정(DI)" data-pay="paid" data-beginner="true" data-dday="14" data-index="0">
+        <div class="job-card-header">
+          <h3 class="job-title">장편 독립영화 &lt;푸른 봄&gt; 편집·색보정 담당자 모집</h3>
+          <span class="job-pay paid">유료</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">편집</span>
+          <span class="tag blue">색보정</span>
+          <span class="tag">DaVinci Resolve</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 종로구
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            5월 28일 ~ 6월 20일
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="dday-badge">D-14</span>
+            <span class="beginner-badge">경력 무관</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 6/4</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 2 -->
+      <div class="job-card" data-role="연출부" data-sub="조감독" data-pay="negotiable" data-beginner="true" data-dday="3" data-index="1">
+        <div class="job-card-header">
+          <h3 class="job-title">단편영화 연출부 스태프 (조감독 1명)</h3>
+          <span class="job-pay negotiable">협의</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">연출부</span>
+          <span class="tag">조감독</span>
+          <span class="tag">단편</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            부산 해운대구
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            6월 1일 ~ 6월 5일
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="urgent-badge">D-3</span>
+            <span class="beginner-badge">경력 무관</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 5/24</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 3 -->
+      <div class="job-card" data-role="촬영부" data-sub="오퍼레이터" data-pay="paid" data-beginner="false" data-dday="1" data-index="2">
+        <div class="job-card-header">
+          <h3 class="job-title">광고 영상 촬영 오퍼레이터 · B캠 경력자</h3>
+          <span class="job-pay paid">유료</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">촬영부</span>
+          <span class="tag">오퍼레이터</span>
+          <span class="tag">B캠</span>
+          <span class="tag">광고</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 강남구
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            5월 30일 (1일)
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="urgent-badge">D-1</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 5/22</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 4 -->
+      <div class="job-card" data-role="배우·모델" data-sub="단역" data-pay="unpaid" data-beginner="true" data-dday="8" data-index="3">
+        <div class="job-card-header">
+          <h3 class="job-title">웹드라마 단역 배우 모집 — 20~30대 여성</h3>
+          <span class="job-pay unpaid">무보수</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">배우</span>
+          <span class="tag">단역</span>
+          <span class="tag">웹드라마</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            경기 수원시
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            5월 24~25일
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="dday-badge">D-8</span>
+            <span class="beginner-badge">경력 무관</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 5/29</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 5 -->
+      <div class="job-card" data-role="사운드" data-sub="레코디스트" data-pay="paid" data-beginner="false" data-dday="20" data-index="4">
+        <div class="job-card-header">
+          <h3 class="job-title">다큐멘터리 사운드 레코디스트 · 전국 가능</h3>
+          <span class="job-pay paid">유료</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">사운드</span>
+          <span class="tag">레코디스트</span>
+          <span class="tag">다큐</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            전국
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            6월 10일 ~ 7월 31일
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="dday-badge">D-20</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 6/10</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 6 -->
+      <div class="job-card" data-role="조명부" data-sub="조명어시스턴트" data-pay="paid" data-beginner="true" data-dday="2" data-index="5">
+        <div class="job-card-header">
+          <h3 class="job-title">뮤직비디오 조명팀 어시스턴트 모집</h3>
+          <span class="job-pay paid">유료</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">조명부</span>
+          <span class="tag">MV</span>
+          <span class="tag">1일</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            경기 성남
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            5월 28일 (1일)
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="urgent-badge">D-2</span>
+            <span class="beginner-badge">경력 무관</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 5/23</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 7 -->
+      <div class="job-card" data-role="제작부" data-sub="제작PA" data-pay="paid" data-beginner="true" data-dday="11" data-index="6">
+        <div class="job-card-header">
+          <h3 class="job-title">OTT 드라마 제작부 막내 스태프 — 3개월</h3>
+          <span class="job-pay paid">유료</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag blue">제작부</span>
+          <span class="tag">드라마</span>
+          <span class="tag">OTT</span>
+        </div>
+        <div class="job-meta">
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 마포구
+          </span>
+          <span class="job-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            6월 ~ 8월
+          </span>
+        </div>
+        <div class="job-footer">
+          <div class="job-badges">
+            <span class="dday-badge">D-11</span>
+            <span class="beginner-badge">경력 무관</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="job-deadline">마감 6/1</span>
+            <button class="bookmark-btn" onclick="toggleBookmark(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 빈 상태 (숨김) -->
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-icon">🎬</div>
+        <div class="empty-title">해당 조건의 공고가 없어요</div>
+        <div class="empty-desc">필터를 조정하거나<br>다른 직군을 탐색해보세요</div>
+        <button class="empty-btn" onclick="resetAll()">필터 초기화</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── 정렬 바텀시트 ── -->
+  <div class="sheet-overlay" id="overlay" onclick="closeAllSheets()"></div>
+
+  <div class="sheet" id="sortSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">정렬</div>
+    <div class="sort-option selected" onclick="selectSort(this, '최신순')">
+      최신순
+      <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="sort-option" onclick="selectSort(this, '마감순')">
+      마감 임박순
+      <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="sort-option" onclick="selectSort(this, '관련도순')">
+      관련도순
+      <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+  </div>
+
+  <!-- 지역 바텀시트 -->
+  <div class="sheet" id="regionSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">지역 선택</div>
+    <div class="region-grid">
+      <button class="region-btn active" style="grid-column:span 3" onclick="selectRegion(this, '전국')">🌏 전국 (지역 무관)</button>
+      <button class="region-btn" onclick="selectRegion(this, '서울')">서울</button>
+      <button class="region-btn" onclick="selectRegion(this, '경기')">경기</button>
+      <button class="region-btn" onclick="selectRegion(this, '인천')">인천</button>
+      <button class="region-btn" onclick="selectRegion(this, '부산')">부산</button>
+      <button class="region-btn" onclick="selectRegion(this, '대구')">대구</button>
+      <button class="region-btn" onclick="selectRegion(this, '광주')">광주</button>
+      <button class="region-btn" onclick="selectRegion(this, '대전')">대전</button>
+      <button class="region-btn" onclick="selectRegion(this, '울산')">울산</button>
+      <button class="region-btn" onclick="selectRegion(this, '세종')">세종</button>
+      <button class="region-btn" onclick="selectRegion(this, '강원')">강원</button>
+      <button class="region-btn" onclick="selectRegion(this, '충북')">충북</button>
+      <button class="region-btn" onclick="selectRegion(this, '충남')">충남</button>
+      <button class="region-btn" onclick="selectRegion(this, '전북')">전북</button>
+      <button class="region-btn" onclick="selectRegion(this, '전남')">전남</button>
+      <button class="region-btn" onclick="selectRegion(this, '경북')">경북</button>
+      <button class="region-btn" onclick="selectRegion(this, '경남')">경남</button>
+      <button class="region-btn" onclick="selectRegion(this, '제주')">제주</button>
+    </div>
+  </div>
+
+  <!-- 토스트 -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ── 하단 내비게이션 ── -->
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showToast('홈으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>홈
+    </button>
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>탐색
+    </button>
+    <button class="nav-item" onclick="showToast('저장 목록으로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>저장
+    </button>
+    <button class="nav-item" onclick="showToast('커뮤니티로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>커뮤니티
+    </button>
+    <button class="nav-item" onclick="showToast('마이페이지로 이동합니다')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>마이페이지
+    </button>
+  </nav>
+
+</div>
+<script>
+  // ── 상태 ──
+  let currentRole = '전체';
+  let currentSub  = '전체';
+  let currentRegion = '전국';
+  let activeFilters = { pay: false, beginner: false };
+  let currentSort = '최신순';
+
+  // ── 소분류 데이터 ──
+  const subCategories = {
+    '전체':    [],
+    '연출부':  ['전체', '감독', '조감독', '스크립터', '연출PA'],
+    '촬영부':  ['전체', '촬영감독(DP)', '오퍼레이터', '포커스풀러', 'DIT', '드론'],
+    '조명부':  ['전체', '조명감독', '베스트보이', '조명어시스턴트', '전기팀'],
+    '배우·모델':['전체', '주·조연', '단역', '엑스트라', '모델', '성우'],
+    '편집·색보정':['전체', '편집', '색보정(DI)', 'VFX', '모션그래픽'],
+    '사운드':  ['전체', '사운드믹서', '레코디스트', '붐오퍼레이터', '작곡·음악'],
+    '제작부':  ['전체', '프로듀서', '라인PD', '제작PA', '로케이션', '소품', '의상', '분장'],
+  };
+
+  // ── 대분류 선택 ──
+  function selectRole(el, role) {
+    document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    currentRole = role;
+    currentSub  = '전체';
+
+    // 소분류 행 업데이트
+    const subs = subCategories[role] || [];
+    const wrap   = document.getElementById('subFilterWrap');
+    const scroll = document.getElementById('subFilterScroll');
+    if (subs.length > 0) {
+      scroll.innerHTML = subs.map((s, i) =>
+        `<button class="sub-chip${i === 0 ? ' active' : ''}" onclick="selectSub(this,'${s}')">${s}</button>`
+      ).join('');
+      wrap.classList.add('visible');
+    } else {
+      scroll.innerHTML = '';
+      wrap.classList.remove('visible');
+    }
+    applyFilters();
+  }
+
+  // ── 소분류 선택 ──
+  function selectSub(el, sub) {
+    document.querySelectorAll('.sub-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    currentSub = sub;
+    applyFilters();
+  }
+
+  // ── 토글 필터 (유료/경력무관) ──
+  function toggleFilter(id, label) {
+    const el = document.getElementById(id);
+    const key = id === 'payPill' ? 'pay' : 'beginner';
+    activeFilters[key] = !activeFilters[key];
+    el.classList.toggle('active', activeFilters[key]);
+    applyFilters();
+  }
+
+  // ── 지역 선택 ──
+  function selectRegion(el, region) {
+    document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentRegion = region;
+    const pill = document.getElementById('regionPill');
+    if (region === '전국') {
+      pill.classList.remove('active');
+      pill.childNodes[2].textContent = ' 지역';
+    } else {
+      pill.classList.add('active');
+      pill.childNodes[2].textContent = ' ' + region;
+    }
+    closeAllSheets();
+    applyFilters();
+  }
+
+  // ── 정렬 선택 ──
+  function selectSort(el, sort) {
+    document.querySelectorAll('.sort-option').forEach(o => {
+      o.classList.remove('selected');
+      o.querySelector('.check-icon').style.opacity = '0';
+    });
+    el.classList.add('selected');
+    el.querySelector('.check-icon').style.opacity = '1';
+    currentSort = sort;
+    const sortLabel = sort === '마감순' ? '마감 임박순' : sort;
+    document.getElementById('sortBtn').innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>${sortLabel}`;
+    closeAllSheets();
+    applyFilters();
+  }
+
+  // ── 필터 + 정렬 적용 ──
+  function applyFilters() {
+    const jobList = document.getElementById('jobList');
+    const cards = Array.from(document.querySelectorAll('.job-card[data-role]'));
+
+    // 1. 필터링
+    cards.forEach(card => {
+      const role = card.dataset.role;
+      const pay = card.dataset.pay;
+      const beginner = card.dataset.beginner === 'true';
+      let show = true;
+      if (currentRole !== '전체' && role !== currentRole) show = false;
+      if (currentSub  !== '전체' && !(card.dataset.sub || '').split(',').includes(currentSub)) show = false;
+      if (activeFilters.pay && pay !== 'paid') show = false;
+      if (activeFilters.beginner && !beginner) show = false;
+      card.dataset.visible = show ? '1' : '0';
+      card.style.display = show ? '' : 'none';
+    });
+
+    // 2. 정렬 (보이는 카드만)
+    const visibleCards = cards.filter(c => c.dataset.visible === '1');
+
+    if (currentSort === '마감순') {
+      visibleCards.sort((a, b) => Number(a.dataset.dday) - Number(b.dataset.dday));
+    } else if (currentSort === '관련도순') {
+      visibleCards.sort((a, b) => {
+        // 선택 직군 일치 카드 우선, 그 다음 D-day 오름차순
+        const aMatch = currentRole !== '전체' && a.dataset.role === currentRole ? 0 : 1;
+        const bMatch = currentRole !== '전체' && b.dataset.role === currentRole ? 0 : 1;
+        if (aMatch !== bMatch) return aMatch - bMatch;
+        return Number(a.dataset.dday) - Number(b.dataset.dday);
+      });
+    } else {
+      // 최신순: 원래 순서 (data-index)
+      visibleCards.sort((a, b) => Number(a.dataset.index) - Number(b.dataset.index));
+    }
+
+    // 3. DOM 재정렬
+    const emptyState = document.getElementById('emptyState');
+    visibleCards.forEach(card => jobList.insertBefore(card, emptyState));
+
+    // 4. 결과 수 업데이트
+    const count = visibleCards.length;
+    document.getElementById('resultCount').textContent = count;
+    emptyState.style.display = count === 0 ? '' : 'none';
+    updateActiveTags();
+  }
+
+  // ── 활성 필터 태그 표시 ──
+  function updateActiveTags() {
+    const container = document.getElementById('activeFilters');
+    container.innerHTML = '';
+    if (currentRole !== '전체') addTag(container, currentRole, () => {
+      document.querySelector('.role-chip.active').classList.remove('active');
+      document.querySelector('.role-chip').classList.add('active');
+      currentRole = '전체'; applyFilters();
+    });
+    if (activeFilters.pay) addTag(container, '유료만', () => toggleFilter('payPill'));
+    if (activeFilters.beginner) addTag(container, '경력 무관', () => toggleFilter('beginnerPill'));
+  }
+
+  function addTag(container, text, onRemove) {
+    const tag = document.createElement('span');
+    tag.className = 'active-tag';
+    tag.innerHTML = `${text}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    tag.onclick = onRemove;
+    container.appendChild(tag);
+  }
+
+  // ── 검색 ──
+  function onSearch(input) {
+    const q = input.value.trim().toLowerCase();
+    document.getElementById('clearBtn').style.display = q ? 'flex' : 'none';
+    const cards = document.querySelectorAll('.job-card[data-role]');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      const show = !q || text.includes(q);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('resultCount').textContent = visible;
+    document.getElementById('emptyState').style.display = visible === 0 ? '' : 'none';
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    document.getElementById('clearBtn').style.display = 'none';
+    applyFilters();
+    input.focus();
+  }
+
+  // ── 초기화 ──
+  function resetAll() {
+    currentRole = '전체'; currentRegion = '전국';
+    activeFilters = { pay: false, beginner: false };
+    document.querySelectorAll('.role-chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+    document.getElementById('payPill').classList.remove('active');
+    document.getElementById('beginnerPill').classList.remove('active');
+    document.getElementById('regionPill').classList.remove('active');
+    document.querySelectorAll('.region-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+    document.getElementById('searchInput').value = '';
+    document.getElementById('clearBtn').style.display = 'none';
+    applyFilters();
+  }
+
+  // ── 북마크 ──
+  function toggleBookmark(btn) {
+    btn.classList.toggle('saved');
+    const saved = btn.classList.contains('saved');
+    btn.querySelector('svg').setAttribute('fill', saved ? 'currentColor' : 'none');
+    showToast(saved ? '저장했어요' : '저장 취소했어요');
+  }
+
+  // ── 바텀시트 ──
+  function openSheet(id) {
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById(id).classList.add('open');
+  }
+  function closeAllSheets() {
+    document.getElementById('overlay').classList.remove('open');
+    document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open'));
+  }
+
+  // ── 토스트 ──
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>필름메이커스 · 지원서 작성</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg: #F8F7F4;
+      --surface: #FFFFFF;
+      --navy: #1B2D4E;
+      --blue: #2D4A7A;
+      --blue-light: #E8EEF8;
+      --green: #3D7A5E;
+      --green-light: #DCF0E8;
+      --red: #9B4040;
+      --red-light: #F5E0E0;
+      --orange: #A07040;
+      --orange-light: #F5EBE0;
+      --gray-50: #FAFAF8;
+      --gray-100: #EEF2F8;
+      --gray-200: #E0DCD4;
+      --gray-400: #8A9AB0;
+      --gray-500: #5A6A80;
+      --gray-700: #2D3D52;
+      --gray-900: #1B2D4E;
+      --font: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Pretendard', sans-serif;
+      --radius: 20px;
+      --radius-sm: 14px;
+      --shadow: 0 2px 8px rgba(27,45,78,.07), 0 4px 20px rgba(27,45,78,.05);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--gray-900);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      background: var(--bg);
+      position: relative;
+    }
+    @media (min-width: 430px) { .app { box-shadow: 0 0 40px rgba(0,0,0,.12); } }
+
+    /* ── 헤더 ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--gray-100);
+      padding: 0 20px;
+      padding-top: env(safe-area-inset-top);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 8px;
+    }
+    .back-btn {
+      width: 38px; height: 38px;
+      border: none; background: none; cursor: pointer;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-700);
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .back-btn:active { background: var(--gray-100); }
+    .back-btn svg { width: 22px; height: 22px; }
+    .header-title {
+      font-size: 17px; font-weight: 800;
+      color: var(--gray-900); letter-spacing: -.3px;
+      flex: 1;
+    }
+    .header-step {
+      font-size: 12px; font-weight: 700;
+      color: var(--gray-400);
+    }
+
+    /* ── 진행 바 ── */
+    .progress-bar-wrap {
+      height: 3px;
+      background: var(--gray-100);
+      position: sticky;
+      top: calc(56px + env(safe-area-inset-top));
+      z-index: 99;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--navy);
+      border-radius: 0 3px 3px 0;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+      width: 33%;
+    }
+
+    /* ── 메인 ── */
+    .main {
+      padding: 0 0 140px;
+    }
+
+    /* ── 공고 요약 카드 ── */
+    .post-summary {
+      margin: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow);
+    }
+    .post-summary-thumb {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1F3060, #0D1830);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .post-summary-thumb svg { width: 22px; height: 22px; color: rgba(255,255,255,.75); }
+    .post-summary-info { flex: 1; min-width: 0; }
+    .post-summary-org {
+      font-size: 11px; font-weight: 700;
+      color: var(--blue); margin-bottom: 3px;
+    }
+    .post-summary-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--gray-900);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .post-summary-meta {
+      font-size: 11px; color: var(--gray-400);
+      margin-top: 2px;
+    }
+    .post-summary-dday {
+      font-size: 11px; font-weight: 800;
+      padding: 4px 9px; border-radius: 100px;
+      background: var(--red-light); color: var(--red);
+      flex-shrink: 0;
+    }
+
+    /* ── 섹션 ── */
+    .form-section {
+      background: var(--surface);
+      padding: 20px;
+      margin-bottom: 8px;
+    }
+    .form-section-title {
+      font-size: 15px; font-weight: 800;
+      color: var(--gray-900); letter-spacing: -.2px;
+      margin-bottom: 4px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .form-section-title svg { width: 16px; height: 16px; color: var(--blue); }
+    .form-section-desc {
+      font-size: 12px; color: var(--gray-400);
+      line-height: 1.5; margin-bottom: 16px;
+    }
+    .required-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      display: inline-block;
+      margin-left: 2px;
+      vertical-align: super;
+    }
+
+    /* ── 포지션 선택 ── */
+    .position-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .position-card {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 16px 14px;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--surface);
+      position: relative;
+    }
+    .position-card.selected {
+      border-color: var(--navy);
+      background: #F0F4FA;
+    }
+    .position-card-check {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .position-card.selected .position-card-check {
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+    .position-card.selected .position-card-check svg { display: block; }
+    .position-card-check svg {
+      width: 11px; height: 11px;
+      display: none;
+      color: #fff;
+    }
+    .position-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .position-card.selected .position-icon { background: var(--blue-light); }
+    .position-icon svg { width: 18px; height: 18px; color: var(--gray-500); }
+    .position-card.selected .position-icon svg { color: var(--blue); }
+    .position-name {
+      font-size: 14px; font-weight: 800;
+      color: var(--gray-900);
+    }
+    .position-desc {
+      font-size: 11px; color: var(--gray-400);
+      line-height: 1.4;
+    }
+    .position-headcount {
+      font-size: 11px; font-weight: 700;
+      color: var(--blue);
+      background: var(--blue-light);
+      padding: 3px 8px;
+      border-radius: 100px;
+      display: inline-block;
+    }
+
+    /* ── 폼 입력 공통 ── */
+    .form-field {
+      margin-bottom: 16px;
+    }
+    .form-field:last-child { margin-bottom: 0; }
+    .field-label {
+      font-size: 13px; font-weight: 700;
+      color: var(--gray-700);
+      margin-bottom: 7px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .field-optional {
+      font-size: 11px; font-weight: 500;
+      color: var(--gray-400);
+    }
+    .field-input {
+      width: 100%;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--gray-50);
+      padding: 0 14px;
+      font-size: 14px;
+      color: var(--gray-900);
+      font-family: var(--font);
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .field-input:focus {
+      border-color: var(--navy);
+      background: var(--surface);
+    }
+    .field-input::placeholder { color: var(--gray-400); }
+    .field-textarea {
+      width: 100%;
+      min-height: 120px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--gray-50);
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--gray-900);
+      font-family: var(--font);
+      outline: none;
+      resize: none;
+      line-height: 1.6;
+      transition: border-color .2s, background .2s;
+    }
+    .field-textarea:focus {
+      border-color: var(--navy);
+      background: var(--surface);
+    }
+    .field-textarea::placeholder { color: var(--gray-400); }
+    .char-count {
+      text-align: right;
+      font-size: 11px; color: var(--gray-400);
+      margin-top: 5px; font-weight: 500;
+    }
+    .char-count.warn { color: var(--red); }
+    .field-hint {
+      font-size: 11px; color: var(--gray-400);
+      margin-top: 6px; line-height: 1.5;
+      display: flex; align-items: flex-start; gap: 4px;
+    }
+    .field-hint svg { width: 12px; height: 12px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── 경력 선택 ── */
+    .career-chips {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .career-chip {
+      padding: 9px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--gray-50);
+      color: var(--gray-700);
+      font-size: 13px; font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .career-chip.selected {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #fff;
+    }
+
+    /* ── 장비 체크리스트 ── */
+    .equipment-list {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .equipment-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--gray-50);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .equipment-item.checked {
+      border-color: var(--navy);
+      background: #F0F4FA;
+    }
+    .equipment-checkbox {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--gray-200);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all .15s;
+    }
+    .equipment-item.checked .equipment-checkbox {
+      background: var(--navy); border-color: var(--navy);
+    }
+    .equipment-checkbox svg {
+      width: 11px; height: 11px; color: #fff;
+      display: none;
+    }
+    .equipment-item.checked .equipment-checkbox svg { display: block; }
+    .equipment-info { flex: 1; min-width: 0; }
+    .equipment-name {
+      font-size: 13px; font-weight: 700;
+      color: var(--gray-900);
+    }
+    .equipment-desc {
+      font-size: 11px; color: var(--gray-400);
+      margin-top: 1px;
+    }
+    .equipment-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 7px; border-radius: 100px;
+      background: var(--orange-light); color: var(--orange);
+      flex-shrink: 0;
+    }
+
+    /* ── 연락처 확인 ── */
+    .contact-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex; align-items: center;
+      gap: 12px;
+    }
+    .contact-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-avatar svg { width: 20px; height: 20px; color: rgba(255,255,255,.8); }
+    .contact-info { flex: 1; }
+    .contact-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .contact-detail { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+    .contact-edit-btn {
+      font-size: 12px; font-weight: 700;
+      color: var(--blue);
+      background: none; border: none;
+      cursor: pointer; font-family: var(--font);
+    }
+
+    /* ── 개인정보 동의 ── */
+    .agree-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      cursor: pointer;
+    }
+    .agree-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .agree-check {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      border: 2px solid var(--gray-200);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all .15s;
+    }
+    .agree-item.checked .agree-check {
+      background: var(--green); border-color: var(--green);
+    }
+    .agree-check svg { width: 12px; height: 12px; color: #fff; display: none; }
+    .agree-item.checked .agree-check svg { display: block; }
+    .agree-text { flex: 1; font-size: 13px; font-weight: 600; color: var(--gray-700); }
+    .agree-text span { color: var(--red); }
+    .agree-arrow svg { width: 14px; height: 14px; color: var(--gray-400); }
+    .agree-all {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: all .15s;
+    }
+    .agree-all.checked { border-color: var(--green); background: var(--green-light); }
+    .agree-all-check {
+      width: 24px; height: 24px;
+      border-radius: 7px;
+      border: 2px solid var(--gray-200);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all .15s;
+    }
+    .agree-all.checked .agree-all-check { background: var(--green); border-color: var(--green); }
+    .agree-all-check svg { width: 13px; height: 13px; color: #fff; display: none; }
+    .agree-all.checked .agree-all-check svg { display: block; }
+    .agree-all-text { flex: 1; font-size: 14px; font-weight: 800; color: var(--gray-900); }
+
+    /* ── 주의사항 박스 ── */
+    .notice-box {
+      background: var(--orange-light);
+      border: 1px solid rgba(160,112,64,.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .notice-box-title {
+      font-size: 13px; font-weight: 800;
+      color: var(--orange);
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .notice-box-title svg { width: 14px; height: 14px; }
+    .notice-list {
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .notice-list li {
+      font-size: 12px; color: var(--gray-700);
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+      list-style: none;
+    }
+    .notice-list li::before {
+      content: '·';
+      position: absolute; left: 2px;
+      color: var(--orange); font-weight: 800;
+    }
+
+    /* ── 하단 고정 버튼 ── */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: rgba(248,247,244,.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--gray-200);
+      padding: 12px 20px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      z-index: 100;
+    }
+    .bottom-bar-inner {
+      display: flex; gap: 10px;
+    }
+    .btn-draft {
+      height: 52px; padding: 0 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--surface);
+      color: var(--gray-700);
+      font-size: 14px; font-weight: 700;
+      font-family: var(--font); cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; flex-shrink: 0;
+      transition: background .15s;
+    }
+    .btn-draft:active { background: var(--gray-100); }
+    .btn-draft svg { width: 16px; height: 16px; }
+    .btn-submit {
+      flex: 1; height: 52px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: var(--navy);
+      color: #fff;
+      font-size: 15px; font-weight: 800;
+      font-family: var(--font); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; letter-spacing: -.2px;
+      transition: background .15s, transform .1s;
+    }
+    .btn-submit:active { transform: scale(.98); background: #0F1E36; }
+    .btn-submit.disabled {
+      background: var(--gray-200);
+      color: var(--gray-400);
+      cursor: not-allowed;
+    }
+    .btn-submit svg { width: 18px; height: 18px; }
+
+    /* ── 중간 확인 시트 ── */
+    .confirm-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 300;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+    }
+    .confirm-overlay.open { opacity: 1; pointer-events: all; }
+    .confirm-sheet {
+      position: fixed; bottom: 0;
+      left: 50%; transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 430px;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      padding: 8px 24px calc(28px + env(safe-area-inset-bottom));
+      z-index: 301;
+      transition: transform .3s cubic-bezier(.32,.72,0,1);
+    }
+    .confirm-sheet.open { transform: translateX(-50%) translateY(0); }
+    .confirm-handle {
+      width: 36px; height: 4px;
+      background: var(--gray-200); border-radius: 100px;
+      margin: 8px auto 20px;
+    }
+    .confirm-title { font-size: 19px; font-weight: 800; color: var(--gray-900); margin-bottom: 4px; }
+    .confirm-sub { font-size: 14px; font-weight: 600; color: var(--gray-400); margin-bottom: 18px; }
+    .confirm-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .confirm-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      background: var(--gray-50);
+      border-radius: 12px;
+    }
+    .confirm-key { font-size: 14px; font-weight: 600; color: var(--gray-500); }
+    .confirm-val { font-size: 14px; font-weight: 800; color: var(--gray-900); text-align: right; max-width: 200px; line-height: 1.4; }
+    .confirm-btns { display: flex; gap: 10px; }
+    .confirm-cancel {
+      flex: 1; height: 52px;
+      border-radius: 14px;
+      border: 1.5px solid var(--gray-200);
+      background: none;
+      font-size: 15px; font-weight: 700;
+      color: var(--gray-500); cursor: pointer;
+      font-family: var(--font);
+    }
+    .confirm-ok {
+      flex: 2; height: 52px;
+      border-radius: 14px; border: none;
+      background: var(--navy); color: white;
+      font-size: 16px; font-weight: 800;
+      cursor: pointer; font-family: var(--font);
+      transition: background .15s;
+    }
+    .confirm-ok:active { background: #0F1E36; }
+
+    /* ── 완료 모달 ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 400;
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-sheet {
+      width: 100%; max-width: 430px;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      padding: 0 24px calc(40px + env(safe-area-inset-bottom));
+      transform: translateY(100%);
+      transition: transform .3s cubic-bezier(.32,.72,0,1);
+    }
+    .modal-overlay.open .modal-sheet { transform: translateY(0); }
+    .modal-handle {
+      width: 40px; height: 4px;
+      background: var(--gray-200);
+      border-radius: 100px;
+      margin: 12px auto 24px;
+    }
+    .modal-icon-wrap {
+      width: 72px; height: 72px;
+      border-radius: 22px;
+      background: var(--green-light);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .modal-icon-wrap svg { width: 38px; height: 38px; color: var(--green); }
+    .modal-title {
+      font-size: 22px; font-weight: 900;
+      color: var(--gray-900);
+      text-align: center; letter-spacing: -.5px;
+      margin-bottom: 8px;
+    }
+    .modal-desc {
+      font-size: 14px; color: var(--gray-500);
+      text-align: center; line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .modal-info-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex; flex-direction: column; gap: 9px;
+    }
+    .modal-info-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .modal-info-label { color: var(--gray-400); font-weight: 500; }
+    .modal-info-value { color: var(--gray-900); font-weight: 700; }
+    .modal-btn {
+      width: 100%; height: 52px;
+      border-radius: var(--radius-sm);
+      border: none; background: var(--navy);
+      color: #fff; font-size: 15px; font-weight: 800;
+      font-family: var(--font); cursor: pointer;
+    }
+    .modal-btn:active { background: #0F1E36; }
+    .modal-btn-sec {
+      width: 100%; height: 48px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: none; color: var(--gray-700);
+      font-size: 14px; font-weight: 700;
+      font-family: var(--font); cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* ── 이력서 불러오기 버튼 ── */
+    .resume-load-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 700;
+      color: var(--blue); background: var(--blue-light);
+      border: none; border-radius: 100px;
+      padding: 5px 11px; cursor: pointer;
+      font-family: var(--font); white-space: nowrap;
+      flex-shrink: 0; transition: background .15s;
+    }
+    .resume-load-btn:active { background: #d0dcf0; }
+    .resume-load-btn svg { width: 12px; height: 12px; }
+
+    /* ── 이력서 바텀시트 오버레이 ── */
+    .resume-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45); z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .resume-overlay.open { opacity: 1; pointer-events: all; }
+
+    /* ── 이력서 바텀시트 ── */
+    .resume-sheet {
+      position: fixed; bottom: 0;
+      left: 50%; transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 430px;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      z-index: 201;
+      padding: 0 20px calc(28px + env(safe-area-inset-bottom));
+      transition: transform .3s cubic-bezier(.32,.72,0,1);
+      max-height: 86dvh; overflow-y: auto;
+    }
+    .resume-sheet.open { transform: translateX(-50%) translateY(0); }
+    .resume-sheet-handle {
+      width: 40px; height: 4px;
+      background: var(--gray-200); border-radius: 100px;
+      margin: 12px auto 0;
+    }
+    .resume-sheet-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0 4px;
+    }
+    .resume-sheet-title {
+      font-size: 17px; font-weight: 800;
+      color: var(--gray-900); letter-spacing: -.3px;
+    }
+    .resume-sheet-close {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--gray-500); flex-shrink: 0;
+    }
+    .resume-sheet-close svg { width: 16px; height: 16px; }
+    .resume-sheet-desc {
+      font-size: 13px; color: var(--gray-400);
+      line-height: 1.5; margin-bottom: 16px;
+    }
+    .resume-list {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .resume-card {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      cursor: pointer; transition: all .15s;
+      position: relative; background: var(--surface);
+    }
+    .resume-card:active { background: var(--gray-50); }
+    .resume-card.selected {
+      border-color: var(--navy); background: #F0F4FA;
+    }
+    .resume-card-top {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 6px;
+    }
+    .resume-card-name {
+      font-size: 14px; font-weight: 800; color: var(--gray-900);
+    }
+    .resume-card.selected .resume-card-name { color: var(--navy); }
+    .resume-card-date {
+      font-size: 11px; color: var(--gray-400); font-weight: 500;
+    }
+    .resume-card-preview {
+      font-size: 12px; color: var(--gray-500);
+      line-height: 1.5; margin-bottom: 10px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .resume-card-tags {
+      display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .resume-tag {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 8px; border-radius: 100px;
+      background: var(--gray-100); color: var(--gray-500);
+    }
+    .resume-card.selected .resume-tag {
+      background: var(--blue-light); color: var(--blue);
+    }
+    .resume-card-check {
+      position: absolute; top: 12px; right: 12px;
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .resume-card-check svg { width: 11px; height: 11px; color: #fff; display: none; }
+    .resume-card.selected .resume-card-check {
+      background: var(--navy); border-color: var(--navy);
+    }
+    .resume-card.selected .resume-card-check svg { display: block; }
+    .resume-sheet-actions {
+      display: flex; gap: 10px;
+    }
+    .resume-manage-btn {
+      height: 48px; padding: 0 16px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: none; color: var(--gray-700);
+      font-size: 13px; font-weight: 700;
+      font-family: var(--font); cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .resume-manage-btn svg { width: 14px; height: 14px; }
+    .resume-apply-btn {
+      flex: 1; height: 48px;
+      border-radius: var(--radius-sm);
+      border: none; background: var(--navy);
+      color: #fff; font-size: 14px; font-weight: 800;
+      font-family: var(--font); cursor: pointer;
+      transition: background .15s;
+    }
+    .resume-apply-btn:active { background: #0F1E36; }
+    .resume-apply-btn.disabled {
+      background: var(--gray-200); color: var(--gray-400); cursor: not-allowed;
+    }
+
+    /* ── 토스트 ── */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy); color: #fff;
+      font-size: 13px; font-weight: 600;
+      padding: 12px 20px; border-radius: 100px;
+      white-space: nowrap; z-index: 300;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      font-family: var(--font);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="header-inner">
+      <button class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <div class="header-title">지원서 작성</div>
+      <div class="header-step" id="stepLabel">1 / 3</div>
+    </div>
+  </header>
+
+  <!-- 진행 바 -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+
+  <main class="main">
+
+    <!-- 공고 요약 -->
+    <div class="post-summary">
+      <div class="post-summary-thumb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="rgba(255,255,255,.8)" stroke="none"/>
+        </svg>
+      </div>
+      <div class="post-summary-info">
+        <div class="post-summary-org">김민준 감독 · 민준 필름</div>
+        <div class="post-summary-title">단편영화 &lt;빈 방&gt; 촬영부·조명부 스태프 모집</div>
+        <div class="post-summary-meta">경기도 양평 · 6월 14–16일 · 페이 협의</div>
+      </div>
+      <div class="post-summary-dday">D-2</div>
+    </div>
+
+    <!-- STEP 1: 포지션 선택 -->
+    <div class="form-section" id="step1">
+      <div class="form-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        지원 포지션<span class="required-dot"></span>
+      </div>
+      <div class="form-section-desc">지원하려는 포지션을 선택해주세요</div>
+
+      <div class="position-grid">
+        <div class="position-card" id="posCamera" onclick="togglePosition('camera')">
+          <div class="position-card-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="position-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+            </svg>
+          </div>
+          <div class="position-name">촬영부</div>
+          <div class="position-desc">카메라 오퍼레이팅 및 촬영 보조</div>
+          <span class="position-headcount">2명 모집</span>
+        </div>
+        <div class="position-card" id="posLight" onclick="togglePosition('light')">
+          <div class="position-card-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="position-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </div>
+          <div class="position-name">조명부</div>
+          <div class="position-desc">조명 설치 및 광원 보조</div>
+          <span class="position-headcount">1명 모집</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: 자기소개 및 경력 -->
+    <div class="form-section" id="step2">
+      <div class="form-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+        </svg>
+        자기소개<span class="required-dot"></span>
+      </div>
+      <div class="form-section-desc">지원 동기와 간단한 자기소개를 작성해주세요</div>
+
+      <div class="form-field">
+        <div class="field-label">이름 <span class="required-dot"></span></div>
+        <input class="field-input" type="text" placeholder="실명을 입력해주세요" id="nameInput" oninput="updateSubmit()"/>
+      </div>
+
+      <!-- 이력서 불러오기 -->
+      <div class="form-field">
+        <div class="field-label" style="justify-content:space-between;">
+          <span>자기소개 및 지원 동기 <span class="required-dot"></span><span id="introMinBadge" style="margin-left:6px;font-size:11px;font-weight:600;color:var(--gray-400);background:var(--gray-100);padding:2px 8px;border-radius:100px;">최소 10자</span></span>
+          <button type="button" class="resume-load-btn" onclick="openResumeSheet('intro')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            이력서 불러오기
+          </button>
+        </div>
+        <textarea class="field-textarea" placeholder="안녕하세요! 영상을 좋아하는 00입니다.
+이번 작품에 지원하게 된 이유는..." id="introTextarea" oninput="countChars(this,'introCount',500); updateSubmit()" style="min-height:140px;"></textarea>
+        <div class="char-count" id="introCount">0 / 500</div>
+        <div class="field-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          경력이 없어도 괜찮아요! 열정과 지원 이유를 솔직하게 적어주세요.
+        </div>
+      </div>
+
+      <div class="form-field">
+        <div class="field-label">현장 경험 <span class="required-dot"></span></div>
+        <div class="career-chips" id="careerChips">
+          <button class="career-chip" onclick="selectCareer(this)">현장 경험 없음</button>
+          <button class="career-chip" onclick="selectCareer(this)">1~2회 참여</button>
+          <button class="career-chip" onclick="selectCareer(this)">3~5회 참여</button>
+          <button class="career-chip" onclick="selectCareer(this)">6회 이상</button>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <div class="field-label">이전 참여 작품 <span class="field-optional">(선택)</span></div>
+        <textarea class="field-textarea" placeholder="참여했던 작품명, 역할, 기간 등을 간단히 적어주세요&#10;(없으면 비워두세요)" oninput="countChars(this,'prevCount',200)" style="min-height:80px;"></textarea>
+        <div class="char-count" id="prevCount">0 / 200</div>
+      </div>
+    </div>
+
+    <!-- STEP 3: 보유 장비 -->
+    <div class="form-section" id="step3">
+      <div class="form-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        보유 장비 <span class="field-optional" style="font-size:13px; font-weight:500;">(선택 · 장비 지참 시 페이 우대)</span>
+        <button type="button" class="resume-load-btn" style="margin-left:auto;" onclick="openResumeSheet('equip')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          이력서 불러오기
+        </button>
+      </div>
+      <div class="form-section-desc">보유하고 있는 장비가 있으면 체크해주세요</div>
+
+      <div class="equipment-list" id="equipmentList">
+        <div class="equipment-item" onclick="toggleEquip(this)">
+          <div class="equipment-checkbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="equipment-info">
+            <div class="equipment-name">미러리스 / DSLR 카메라</div>
+            <div class="equipment-desc">Sony, Canon, Nikon 등 영상 촬영 가능 기종</div>
+          </div>
+          <span class="equipment-badge">페이 우대</span>
+        </div>
+        <div class="equipment-item" onclick="toggleEquip(this)">
+          <div class="equipment-checkbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="equipment-info">
+            <div class="equipment-name">삼각대 / 짐벌</div>
+            <div class="equipment-desc">촬영 안정 장비</div>
+          </div>
+        </div>
+        <div class="equipment-item" onclick="toggleEquip(this)">
+          <div class="equipment-checkbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="equipment-info">
+            <div class="equipment-name">조명 장비</div>
+            <div class="equipment-desc">LED 패널, 리플렉터 등</div>
+          </div>
+          <span class="equipment-badge">페이 우대</span>
+        </div>
+        <div class="equipment-item" onclick="toggleEquip(this)">
+          <div class="equipment-checkbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="equipment-info">
+            <div class="equipment-name">외장 마이크 / 녹음 장비</div>
+            <div class="equipment-desc">샷건마이크, 핀마이크, 레코더 등</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field" style="margin-top: 16px;">
+        <div class="field-label">기타 장비 <span class="field-optional">(직접 입력)</span></div>
+        <input class="field-input" type="text" placeholder="보유한 다른 장비가 있으면 입력해주세요"/>
+      </div>
+    </div>
+
+    <!-- 이력서 선택 바텀시트 -->
+    <div class="resume-overlay" id="resumeOverlay" onclick="closeResumeSheet()"></div>
+    <div class="resume-sheet" id="resumeSheet">
+      <div class="resume-sheet-handle"></div>
+      <div class="resume-sheet-header">
+        <div class="resume-sheet-title" id="resumeSheetTitle">이력서 불러오기</div>
+        <button class="resume-sheet-close" onclick="closeResumeSheet()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="resume-sheet-desc">마이페이지에 저장된 이력서를 선택하면 자동으로 내용이 채워져요.</div>
+      <div class="resume-list">
+
+        <div class="resume-card" onclick="selectResume(this, 0)">
+          <div class="resume-card-top">
+            <div class="resume-card-name">기본 이력서</div>
+            <div class="resume-card-date">최근 수정 5월 18일</div>
+          </div>
+          <div class="resume-card-preview">안녕하세요! 영상을 좋아하는 박지훈입니다. 영상학과 3학년에 재학 중이며, 단편영화 현장에서 다양한 경험을 쌓고 싶어 지원하게 됐습니다.</div>
+          <div class="resume-card-tags">
+            <span class="resume-tag">촬영부</span>
+            <span class="resume-tag">미러리스 카메라</span>
+            <span class="resume-tag">삼각대</span>
+          </div>
+          <div class="resume-card-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+
+        <div class="resume-card" onclick="selectResume(this, 1)">
+          <div class="resume-card-top">
+            <div class="resume-card-name">촬영 집중형</div>
+            <div class="resume-card-date">최근 수정 5월 10일</div>
+          </div>
+          <div class="resume-card-preview">카메라를 향한 열정이 가득한 박지훈입니다. 1~2회 촬영 현장에 참여한 경험이 있으며, 미러리스 카메라와 짐벌을 보유하고 있습니다.</div>
+          <div class="resume-card-tags">
+            <span class="resume-tag">촬영부</span>
+            <span class="resume-tag">미러리스 카메라</span>
+            <span class="resume-tag">짐벌</span>
+            <span class="resume-tag">삼각대</span>
+          </div>
+          <div class="resume-card-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+
+        <div class="resume-card" onclick="selectResume(this, 2)">
+          <div class="resume-card-top">
+            <div class="resume-card-name">조명 지원용</div>
+            <div class="resume-card-date">최근 수정 4월 28일</div>
+          </div>
+          <div class="resume-card-preview">빛의 흐름에 관심이 많은 영상학도 박지훈입니다. 조명부 포지션에 지원하고 싶어 현장 경험은 없지만 조명 관련 수업을 이수했습니다.</div>
+          <div class="resume-card-tags">
+            <span class="resume-tag">조명부</span>
+            <span class="resume-tag">LED 패널</span>
+          </div>
+          <div class="resume-card-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+
+      </div>
+      <div class="resume-sheet-actions">
+        <button class="resume-manage-btn" onclick="showToast('마이페이지 > 내 이력서 관리로 이동')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          이력서 관리
+        </button>
+        <button class="resume-apply-btn disabled" id="resumeApplyBtn" onclick="applyResume()">이 이력서 적용하기</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: 연락처 확인 -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        연락처 확인
+      </div>
+      <div class="form-section-desc">합격 시 구인자에게 아래 연락처로 연락이 갑니다</div>
+
+      <div class="contact-card">
+        <div class="contact-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="contact-info">
+          <div class="contact-name">박지훈</div>
+          <div class="contact-detail">010-1234-5678 · jihun@email.com</div>
+        </div>
+        <button class="contact-edit-btn" onclick="showToast('마이페이지에서 수정할 수 있어요')">수정</button>
+      </div>
+
+      <div class="form-field" style="margin-top: 16px;">
+        <div class="field-label">추가 메시지 <span class="field-optional">(선택)</span></div>
+        <textarea class="field-textarea" placeholder="구인자에게 전달하고 싶은 말이 있으면 적어주세요" oninput="countChars(this,'msgCount',200)" style="min-height:80px;"></textarea>
+        <div class="char-count" id="msgCount">0 / 200</div>
+      </div>
+    </div>
+
+    <!-- 개인정보 동의 -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        약관 동의
+      </div>
+
+      <div class="notice-box">
+        <div class="notice-box-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          지원 전 확인해주세요
+        </div>
+        <ul class="notice-list">
+          <li>지원서 제출 후 취소는 마감일 24시간 전까지 가능합니다.</li>
+          <li>허위 정보 작성 시 불이익이 발생할 수 있습니다.</li>
+          <li>연락처 정보는 합격자에게만 구인자에게 공개됩니다.</li>
+        </ul>
+      </div>
+
+      <div class="agree-all" id="agreeAll" onclick="toggleAllAgree()">
+        <div class="agree-all-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="agree-all-text">아래 항목에 모두 동의합니다</div>
+      </div>
+
+      <div class="agree-item" id="agree1" onclick="toggleAgree('agree1')">
+        <div class="agree-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="agree-text"><span>[필수]</span> 개인정보 수집 및 이용 동의</div>
+        <div class="agree-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="agree-item" id="agree2" onclick="toggleAgree('agree2')">
+        <div class="agree-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="agree-text"><span>[필수]</span> 서비스 이용약관 동의</div>
+        <div class="agree-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="agree-item" id="agree3" onclick="toggleAgree('agree3')">
+        <div class="agree-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="agree-text">[선택] 마케팅 정보 수신 동의</div>
+        <div class="agree-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 버튼 -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-inner">
+      <button class="btn-draft" onclick="showToast('임시저장 완료!')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+        </svg>
+        임시저장
+      </button>
+      <button class="btn-submit disabled" id="submitBtn" onclick="handleSubmit()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+        지원서 제출하기
+      </button>
+    </div>
+  </div>
+
+  <!-- 중간 확인 시트 -->
+  <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirm()"></div>
+  <div class="confirm-sheet" id="confirmSheet">
+    <div class="confirm-handle"></div>
+    <div class="confirm-title">최종 확인</div>
+    <div class="confirm-sub">아래 내용으로 지원서를 제출할게요.</div>
+    <div class="confirm-rows">
+      <div class="confirm-row">
+        <span class="confirm-key">공고</span>
+        <span class="confirm-val">단편영화 〈빈 방〉 스태프</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">담당자</span>
+        <span class="confirm-val">김민준 감독</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">지원 포지션</span>
+        <span class="confirm-val" id="confirmPosition">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">촬영 기간</span>
+        <span class="confirm-val">6월 14일 ~ 16일 (3일)</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">마감</span>
+        <span class="confirm-val" style="color:var(--red)">D-2 · 5월 23일</span>
+      </div>
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">다시 확인</button>
+      <button class="confirm-ok" onclick="finalSubmit()">제출하기</button>
+    </div>
+  </div>
+
+  <!-- 완료 모달 -->
+  <div class="modal-overlay" id="doneModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="modal-title">지원 완료!</div>
+      <div class="modal-desc">단편영화 &lt;빈 방&gt; 공고에<br>지원서를 제출했어요.<br>구인자가 검토 후 연락드릴 예정이에요.</div>
+      <div class="modal-info-card">
+        <div class="modal-info-row">
+          <span class="modal-info-label">공고</span>
+          <span class="modal-info-value">단편영화 &lt;빈 방&gt;</span>
+        </div>
+        <div class="modal-info-row">
+          <span class="modal-info-label">지원 포지션</span>
+          <span class="modal-info-value" id="modalPosition">-</span>
+        </div>
+        <div class="modal-info-row">
+          <span class="modal-info-label">마감일</span>
+          <span class="modal-info-value" style="color:var(--red)">5월 23일 (금) D-2</span>
+        </div>
+        <div class="modal-info-row">
+          <span class="modal-info-label">제출 일시</span>
+          <span class="modal-info-value">2026. 05. 21 오후 3:30</span>
+        </div>
+      </div>
+      <button class="modal-btn" onclick="document.getElementById('doneModal').classList.remove('open'); showToast('지원 현황은 마이페이지에서 확인 가능해요')">확인</button>
+      <button class="modal-btn-sec" onclick="showToast('마이페이지 > 지원 현황'); document.getElementById('doneModal').classList.remove('open')">지원 현황 보기</button>
+    </div>
+  </div>
+
+  <!-- 토스트 -->
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  /* 포지션 선택 (단일 선택) */
+  const positions = { camera: false, light: false };
+  function togglePosition(key) {
+    const other = key === 'camera' ? 'light' : 'camera';
+    const otherId = other === 'camera' ? 'posCamera' : 'posLight';
+    const thisId  = key   === 'camera' ? 'posCamera' : 'posLight';
+    // 이미 선택된 항목 클릭 시 해제
+    if (positions[key]) {
+      positions[key] = false;
+      document.getElementById(thisId).classList.remove('selected');
+    } else {
+      // 나머지 해제 후 현재 선택
+      positions[other] = false;
+      document.getElementById(otherId).classList.remove('selected');
+      positions[key] = true;
+      document.getElementById(thisId).classList.add('selected');
+    }
+    updateProgress(); updateSubmit();
+  }
+
+  /* 경력 칩 (필수) */
+  function selectCareer(el) {
+    document.querySelectorAll('.career-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    updateSubmit();
+  }
+
+  /* 장비 토글 */
+  function toggleEquip(el) { el.classList.toggle('checked'); }
+
+  /* ── 이력서 바텀시트 ── */
+  // 이력서 데이터
+  const resumes = [
+    {
+      name: '기본 이력서',
+      intro: '안녕하세요! 영상을 좋아하는 박지훈입니다. 영상학과 3학년에 재학 중이며, 단편영화 현장에서 다양한 경험을 쌓고 싶어 지원하게 됐습니다.',
+      career: '현장 경험 없음',
+      equip: ['미러리스 / DSLR 카메라', '삼각대 / 짐벌']
+    },
+    {
+      name: '촬영 집중형',
+      intro: '카메라를 향한 열정이 가득한 박지훈입니다. 1~2회 촬영 현장에 참여한 경험이 있으며, 미러리스 카메라와 짐벌을 보유하고 있습니다.',
+      career: '1~2회 참여',
+      equip: ['미러리스 / DSLR 카메라', '삼각대 / 짐벌']
+    },
+    {
+      name: '조명 지원용',
+      intro: '빛의 흐름에 관심이 많은 영상학도 박지훈입니다. 조명부 포지션에 지원하고 싶어 현장 경험은 없지만 조명 관련 수업을 이수했습니다.',
+      career: '현장 경험 없음',
+      equip: ['조명 장비']
+    }
+  ];
+
+  let resumeTarget = 'intro'; // 'intro' | 'equip'
+  let selectedResumeIdx = -1;
+
+  function openResumeSheet(target) {
+    resumeTarget = target;
+    selectedResumeIdx = -1;
+    // 선택 초기화
+    document.querySelectorAll('.resume-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('resumeApplyBtn').classList.add('disabled');
+    // 타이틀 변경
+    document.getElementById('resumeSheetTitle').textContent =
+      target === 'intro' ? '자기소개 불러오기' : '보유 장비 불러오기';
+    document.getElementById('resumeOverlay').classList.add('open');
+    document.getElementById('resumeSheet').classList.add('open');
+  }
+
+  function closeResumeSheet() {
+    document.getElementById('resumeOverlay').classList.remove('open');
+    document.getElementById('resumeSheet').classList.remove('open');
+  }
+
+  function selectResume(el, idx) {
+    document.querySelectorAll('.resume-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedResumeIdx = idx;
+    document.getElementById('resumeApplyBtn').classList.remove('disabled');
+  }
+
+  function applyResume() {
+    if (selectedResumeIdx < 0) return;
+    const r = resumes[selectedResumeIdx];
+
+    if (resumeTarget === 'intro') {
+      // 자기소개 채우기
+      const ta = document.getElementById('introTextarea');
+      ta.value = r.intro;
+      countChars(ta, 'introCount', 500);
+      // 현장 경험 칩 선택
+      document.querySelectorAll('.career-chip').forEach(c => {
+        c.classList.toggle('selected', c.textContent.trim() === r.career);
+      });
+    }
+
+    if (resumeTarget === 'equip') {
+      // 장비 체크 초기화 후 이력서 장비 체크
+      document.querySelectorAll('.equipment-item').forEach(item => {
+        const name = item.querySelector('.equipment-name').textContent.trim();
+        item.classList.toggle('checked', r.equip.includes(name));
+      });
+    }
+
+    closeResumeSheet();
+    showToast(`'${r.name}' 이력서를 불러왔어요`);
+    updateSubmit();
+  }
+
+  /* 글자 수 */
+  function countChars(el, countId, max) {
+    const len = el.value.length;
+    const el2 = document.getElementById(countId);
+    el2.textContent = len + ' / ' + max;
+    el2.classList.toggle('warn', len >= max * .9);
+    if (len > max) el.value = el.value.slice(0, max);
+    // 자기소개 최소 10자 뱃지 업데이트
+    if (countId === 'introCount') {
+      const badge = document.getElementById('introMinBadge');
+      if (len >= 10) {
+        badge.textContent = '✓ 충족';
+        badge.style.color = 'var(--green)';
+        badge.style.background = 'var(--green-light)';
+      } else {
+        badge.textContent = '최소 10자';
+        badge.style.color = 'var(--gray-400)';
+        badge.style.background = 'var(--gray-100)';
+      }
+    }
+    updateSubmit();
+  }
+
+  /* 진행률 & 버튼 활성화 */
+  function updateProgress() {
+    const posOk = positions.camera || positions.light;
+    const nameOk = document.getElementById('nameInput').value.trim().length > 0;
+    const introOk = document.getElementById('introTextarea').value.trim().length >= 10;
+    const steps = [posOk, nameOk && introOk, true];
+    const done = steps.filter(Boolean).length;
+    document.getElementById('progressFill').style.width = (done / 3 * 100) + '%';
+    document.getElementById('stepLabel').textContent = done + ' / 3';
+  }
+  function updateSubmit() {
+    updateProgress();
+    const posOk     = positions.camera || positions.light;
+    const nameOk    = document.getElementById('nameInput').value.trim().length > 0;
+    const introOk   = document.getElementById('introTextarea').value.trim().length >= 10;
+    const careerOk  = !!document.querySelector('.career-chip.selected');
+    const agreeOk   = document.getElementById('agree1').classList.contains('checked')
+                   && document.getElementById('agree2').classList.contains('checked');
+    const ok = posOk && nameOk && introOk && careerOk && agreeOk;
+    document.getElementById('submitBtn').classList.toggle('disabled', !ok);
+  }
+
+  /* 약관 */
+  function toggleAgree(id) {
+    document.getElementById(id).classList.toggle('checked');
+    const all = ['agree1','agree2'].every(i => document.getElementById(i).classList.contains('checked'));
+    document.getElementById('agreeAll').classList.toggle('checked', all);
+    updateSubmit();
+  }
+  function toggleAllAgree() {
+    const allEl = document.getElementById('agreeAll');
+    const isAll = allEl.classList.toggle('checked');
+    ['agree1','agree2','agree3'].forEach(id => {
+      document.getElementById(id).classList.toggle('checked', isAll);
+    });
+    updateSubmit();
+  }
+
+  /* 제출 — 1단계: 확인 시트 열기 */
+  function handleSubmit() {
+    if (document.getElementById('submitBtn').classList.contains('disabled')) {
+      showToast('필수 항목을 모두 입력해주세요');
+      return;
+    }
+    const parts = [];
+    if (positions.camera) parts.push('촬영부');
+    if (positions.light) parts.push('조명부');
+    const posText = parts.join(' · ') || '—';
+    document.getElementById('confirmPosition').textContent = posText;
+    document.getElementById('modalPosition').textContent = posText;
+    // 확인 시트 열기
+    document.getElementById('confirmOverlay').classList.add('open');
+    document.getElementById('confirmSheet').classList.add('open');
+  }
+  function closeConfirm() {
+    document.getElementById('confirmOverlay').classList.remove('open');
+    document.getElementById('confirmSheet').classList.remove('open');
+  }
+  /* 제출 — 2단계: 완료 모달 */
+  function finalSubmit() {
+    closeConfirm();
+    setTimeout(() => {
+      document.getElementById('doneModal').classList.add('open');
+    }, 200);
+  }
+
+  /* 토스트 */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+</script>
+</body>
+</html>

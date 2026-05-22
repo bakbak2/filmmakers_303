@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Filmmakers — 공고 상세</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg: #F8F7F4;
+      --surface: #FFFFFF;
+      --surface-alt: #F2F0EC;
+      --navy: #1A2B48;
+      --blue: #1A2B48;
+      --blue-light: #EBF0F8;
+      --green: #2E7D5E;
+      --green-light: #E0F2EA;
+      --red: #C0392B;
+      --red-light: #FDECEA;
+      --orange: #A07040;
+      --orange-light: #F5EBE0;
+      --gray-50: #F8F9FA;
+      --gray-100: #F1F3F5;
+      --gray-200: #E5E8EC;
+      --gray-400: #8A9BB0;
+      --gray-500: #5A6A80;
+      --gray-700: #2D3D52;
+      --gray-900: #1A2B48;
+      --font: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Pretendard', sans-serif;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 2px 8px rgba(26,43,72,.06), 0 4px 16px rgba(26,43,72,.04);
+      --shadow-md: 0 6px 24px rgba(26,43,72,.10);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--gray-900);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      position: relative;
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* ── 상단 헤더 ── */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      z-index: 200;
+      padding: 0 8px;
+      padding-top: env(safe-area-inset-top);
+      background: rgba(248,247,244,0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      border-bottom: 1px solid transparent;
+      transition: background 0.25s, backdrop-filter 0.25s, border-color 0.25s;
+    }
+    .top-bar.scrolled {
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-color: rgba(0,0,0,0.07);
+    }
+    .top-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .top-bar-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-900);
+      opacity: 0;
+      transition: opacity 0.2s;
+      max-width: 200px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .top-bar.scrolled .top-bar-title { opacity: 1; }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(0,0,0,0.28);
+      cursor: pointer;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: background 0.2s, color 0.2s;
+    }
+    .top-bar.scrolled .icon-btn {
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+    .top-bar.scrolled .icon-btn:active { background: var(--gray-200); }
+    .icon-btn:active { background: var(--gray-100); }
+    .icon-btn svg { width: 20px; height: 20px; }
+    .top-right-btns { display: flex; gap: 8px; }
+    .icon-btn.bookmarked { color: var(--navy); }
+    .icon-btn.bookmarked svg path { fill: var(--navy); }
+
+    /* ── 히어로 이미지 영역 ── */
+    .hero-img {
+      width: 100%;
+      background: linear-gradient(160deg, #1E2E50 0%, #111B32 100%);
+      position: relative;
+      overflow: hidden;
+      border-radius: 0 0 32px 32px;
+      padding: calc(64px + env(safe-area-inset-top)) 20px 28px;
+    }
+    /* 미세 노이즈 패턴 */
+    .hero-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          rgba(255,255,255,0.018) 0px,
+          rgba(255,255,255,0.018) 1px,
+          transparent 1px,
+          transparent 12px
+        );
+      pointer-events: none;
+    }
+    .hero-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .hero-genre-pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 100px;
+      backdrop-filter: blur(8px);
+    }
+    .hero-dday {
+      background: #C83030;
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 100px;
+    }
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.35;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .hero-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+    .hero-chip svg { width: 13px; height: 13px; opacity: 0.7; }
+
+    /* ── 공고 메인 정보 ── */
+    .job-info-section {
+      background: transparent;
+      padding: 20px 20px 0;
+    }
+    .job-poster-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .poster-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #D4EDE0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .poster-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-700);
+    }
+    .poster-badge {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-400);
+      background: var(--gray-100);
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-left: 6px;
+    }
+    .poster-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      margin-top: 2px;
+    }
+    .poster-verified svg { width: 12px; height: 12px; }
+
+    .job-main-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--gray-900);
+      line-height: 1.35;
+      letter-spacing: -0.4px;
+      margin-bottom: 12px;
+    }
+    .job-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .badge {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 100px;
+    }
+    .badge.paid    { background: var(--blue-light); color: var(--blue); }
+    .badge.unpaid  { background: var(--gray-100); color: var(--gray-500); }
+    .badge.negotiable { background: var(--orange-light); color: var(--orange); }
+    .badge.beginner { background: var(--gray-100); color: var(--gray-500); }
+    .badge.urgent  { background: var(--red-light); color: var(--red); }
+    .badge.dday    { background: var(--blue-light); color: var(--blue); }
+    .badge.role    { background: var(--navy); color: white; }
+
+    /* 빠른 정보 칩 */
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .quick-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-700);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      padding: 8px 14px;
+      border-radius: 100px;
+    }
+    .quick-chip svg { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
+
+    /* 마감 바 */
+    .deadline-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .deadline-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .deadline-label { font-size: 14px; color: var(--gray-500); font-weight: 600; }
+    .deadline-date  { font-size: 15px; font-weight: 800; color: var(--gray-900); }
+    .deadline-progress-wrap {
+      width: 110px;
+    }
+    .deadline-progress-track {
+      height: 5px;
+      background: var(--gray-200);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .deadline-progress-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #D64040, #F07070);
+    }
+    .deadline-progress-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--red);
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    /* ── 탭 ── */
+    .detail-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray-200);
+      background: var(--surface);
+      padding: 0 20px;
+      position: sticky;
+      top: calc(52px + env(safe-area-inset-top));
+      z-index: 100;
+      border-radius: 20px 20px 0 0;
+      margin: 10px 0 0;
+    }
+    .detail-tab {
+      flex: 1;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-400);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .detail-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+    /* ── 콘텐츠 패널 ── */
+    .tab-panel { display: none; background: var(--bg); }
+    .tab-panel.active { display: block; }
+
+    /* ── 섹션 카드 ── */
+    .detail-card {
+      background: var(--surface);
+      border: none;
+      margin: 0 0 2px;
+      border-radius: 0;
+      padding: 20px 20px;
+      box-shadow: none;
+    }
+    .detail-card + .detail-card {
+      border-top: 1px solid var(--gray-100);
+    }
+    .panel-inner {
+      background: var(--surface);
+      margin: 12px 16px 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      padding-bottom: 4px;
+    }
+    .panel-inner + .panel-inner { margin-top: 10px; }
+    .card-group-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-400);
+      padding: 18px 20px 0;
+    }
+    .panel-bottom-space { height: 100px; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gray-400);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 14px;
+      letter-spacing: -0.3px;
+    }
+
+    /* 요약 행 */
+    .summary-rows { display: flex; flex-direction: column; }
+    .summary-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .summary-row:first-child { padding-top: 0; }
+    .summary-key {
+      width: 72px;
+      flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-500);
+    }
+    .summary-val {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.6;
+    }
+    .summary-val.highlight { color: var(--navy); }
+    .summary-val.pay-amount {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .summary-divider { display: none; }
+
+    /* 공고 본문 */
+    .detail-body {
+      font-size: 13.5px;
+      color: var(--gray-700);
+      line-height: 1.8;
+    }
+    .detail-body h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gray-500);
+      margin: 18px 0 8px;
+      letter-spacing: 0.2px;
+    }
+    .detail-body h4:first-child { margin-top: 0; }
+    .detail-body ul {
+      padding-left: 0;
+      list-style: none;
+    }
+    .detail-body ul li {
+      margin-bottom: 6px;
+      padding-left: 14px;
+      position: relative;
+    }
+    .detail-body ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gray-300, #C8D0DC);
+    }
+    .detail-body p { margin-bottom: 10px; }
+    .detail-body p:last-child { margin-bottom: 0; }
+
+    /* 태그 묶음 */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .dtag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 100px;
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+    .dtag.blue { background: var(--blue-light); color: var(--blue); }
+    .dtag.green { background: var(--green-light); color: var(--green); }
+
+    /* 지도 플레이스홀더 */
+    .map-placeholder {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(135deg, #D8E4F0 0%, #C8D8EC 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 1px,
+        transparent 1px, transparent 30px
+      ),
+      repeating-linear-gradient(
+        90deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 1px,
+        transparent 1px, transparent 30px
+      );
+    }
+    .map-pin {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .map-pin-dot {
+      width: 32px;
+      height: 32px;
+      background: var(--navy);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 2px 8px rgba(26,43,72,0.3);
+    }
+    .map-pin-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+    }
+    .map-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      background: white;
+      padding: 4px 10px;
+      border-radius: 100px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      margin-top: 10px;
+    }
+
+    /* 담당자 카드 */
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .contact-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #D8E8F8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-info { flex: 1; }
+    .contact-name { font-size: 16px; font-weight: 800; color: var(--gray-900); }
+    .contact-role { font-size: 13px; font-weight: 600; color: var(--gray-400); margin-top: 3px; }
+    .contact-btns { display: flex; gap: 8px; margin-top: 14px; }
+    .contact-btn {
+      flex: 1;
+      height: 42px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-700);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .contact-btn:active { background: var(--gray-100); }
+    .contact-btn svg { width: 16px; height: 16px; }
+    .contact-btn.primary {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white;
+    }
+    .contact-btn.primary:active { background: #152238; }
+
+    /* 유사 공고 */
+    .similar-list { display: flex; flex-direction: column; gap: 10px; }
+    .similar-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .similar-card:active { background: var(--gray-100); }
+    .similar-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .similar-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--gray-400);
+      font-weight: 600;
+    }
+    .similar-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-300, #CBD2DC); }
+
+    /* 지원자 패널 */
+    .applicant-section { padding: 0; }
+    .requirement-list { display: flex; flex-direction: column; gap: 8px; }
+    .requirement-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--gray-50);
+      border-radius: 10px;
+      border: 1px solid var(--gray-200);
+    }
+    .req-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .req-icon svg { width: 16px; height: 16px; color: var(--navy); }
+    .req-text { flex: 1; }
+    .req-label { font-size: 12px; font-weight: 700; color: var(--gray-400); margin-bottom: 3px; }
+    .req-val { font-size: 14px; font-weight: 700; color: var(--gray-900); line-height: 1.55; }
+
+    /* 우대 조건 리스트 */
+    .prefer-list { display: flex; flex-direction: column; gap: 8px; }
+    .prefer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--blue-light);
+    }
+    .prefer-item.optional {
+      background: var(--gray-100);
+    }
+    .prefer-bullet {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .prefer-item.optional .prefer-bullet {
+      background: var(--gray-400);
+    }
+    .prefer-bullet svg { width: 12px; height: 12px; color: white; }
+    .prefer-text { flex: 1; }
+    .prefer-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: 0.2px;
+      margin-bottom: 2px;
+    }
+    .prefer-item.optional .prefer-label { color: var(--gray-500); }
+    .prefer-desc {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.5;
+    }
+    .prefer-item.optional .prefer-desc { color: var(--gray-500); }
+
+    /* 지원 주의사항 배너 */
+    .notice-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #FFF8E8;
+      border: 1px solid #F8DFA0;
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin-top: 10px;
+    }
+    .notice-banner svg { width: 18px; height: 18px; color: #C0860A; flex-shrink: 0; margin-top: 1px; }
+    .notice-text { font-size: 13px; font-weight: 600; color: #8A620A; line-height: 1.65; }
+    .notice-text strong { font-weight: 800; color: #6A480A; }
+
+    /* ── 하단 CTA ── */
+    .bottom-cta {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      z-index: 200;
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(0,0,0,0.07);
+      padding: 12px 20px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    }
+    .cta-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .cta-share-btn {
+      width: 48px;
+      height: 52px;
+      border-radius: 14px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-500);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .cta-share-btn:active { background: var(--gray-100); }
+    .cta-share-btn svg { width: 20px; height: 20px; }
+    .cta-apply-btn {
+      flex: 1;
+      height: 52px;
+      border-radius: 14px;
+      border: none;
+      background: var(--navy);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: -0.2px;
+      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .cta-apply-btn:active { background: #152238; transform: scale(0.98); }
+    .cta-apply-btn svg { width: 18px; height: 18px; }
+    .cta-deadline-hint {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+      text-align: center;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    /* 성공 토스트 */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--gray-900);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 100px;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+      z-index: 300;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* 스크롤 패딩 */
+    .scroll-content {
+      padding-bottom: 100px;
+    }
+
+    /* 지원 확인 시트 */
+    .sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 400;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .sheet-overlay.visible { opacity: 1; pointer-events: all; }
+    .sheet {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 430px;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      padding: 8px 24px 24px;
+      padding-bottom: calc(24px + env(safe-area-inset-bottom));
+      z-index: 401;
+      transition: transform 0.3s cubic-bezier(0.32,0,0.08,1);
+    }
+    .sheet.visible { transform: translateX(-50%) translateY(0); }
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--gray-200);
+      border-radius: 100px;
+      margin: 8px auto 20px;
+    }
+    .sheet-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+    .sheet-sub {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+    .sheet-confirm-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .sheet-confirm-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      background: var(--gray-50);
+      border-radius: 12px;
+    }
+    .scr-key { font-size: 14px; font-weight: 600; color: var(--gray-500); }
+    .scr-val { font-size: 14px; font-weight: 800; color: var(--gray-900); }
+    .sheet-btns { display: flex; gap: 10px; }
+    .sheet-cancel-btn {
+      flex: 1;
+      height: 52px;
+      border-radius: 14px;
+      border: 1.5px solid var(--gray-200);
+      background: none;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-500);
+      cursor: pointer;
+    }
+    .sheet-ok-btn {
+      flex: 2;
+      height: 52px;
+      border-radius: 14px;
+      border: none;
+      background: var(--navy);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .sheet-ok-btn:active { background: #152238; }
+
+    /* 지원 완료 상태 */
+    .applied-state .cta-apply-btn {
+      background: var(--green);
+    }
+    .applied-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+      background: var(--green-light);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .applied-badge svg { width: 13px; height: 13px; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── 상단 바 ── -->
+  <div class="top-bar" id="topBar">
+    <div class="top-bar-inner">
+      <button class="icon-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <span class="top-bar-title">단편영화 연출부 스태프 모집</span>
+      <div class="top-right-btns">
+        <button class="icon-btn" id="bookmarkBtn" onclick="toggleBookmark()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+        </button>
+        <button class="icon-btn" onclick="shareJob()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-content" id="scrollArea">
+
+    <!-- ── 히어로 ── -->
+    <div class="hero-img">
+      <div class="hero-top-row">
+        <span class="hero-genre-pill">연출부 · 단편영화</span>
+        <span class="hero-dday">D-3</span>
+      </div>
+      <div class="hero-title">단편영화 연출부 스태프<br>(조감독 1명) 모집</div>
+      <div class="hero-meta-row">
+        <span class="hero-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          부산 해운대구
+        </span>
+        <span class="hero-chip" style="color:rgba(255,255,255,0.3)">·</span>
+        <span class="hero-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          6월 1일 ~ 5일
+        </span>
+      </div>
+    </div>
+
+    <!-- ── 공고 메인 정보 ── -->
+    <div class="job-info-section">
+      <div class="job-poster-row">
+        <div class="poster-avatar">
+          <!-- 클래퍼보드 아바타 -->
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="11" width="22" height="13" rx="2.5" fill="#1A2B48"/>
+            <rect x="2" y="6" width="22" height="6" rx="2" fill="#2C3E6B"/>
+            <rect x="4.5" y="6" width="2.5" height="6" rx="1" fill="#F8C84A" transform="rotate(-10 6 9)"/>
+            <rect x="10" y="6" width="2.5" height="6" rx="1" fill="#F8C84A" transform="rotate(-10 12 9)"/>
+            <rect x="15.5" y="6" width="2.5" height="6" rx="1" fill="#F8C84A" transform="rotate(-10 18 9)"/>
+            <circle cx="13" cy="17" r="3.5" fill="#3D5A8A"/>
+            <circle cx="13" cy="17" r="2" fill="#6B8EC4"/>
+            <circle cx="12" cy="16" r="0.7" fill="white" opacity="0.7"/>
+          </svg>
+        </div>
+        <div>
+          <div class="poster-name">김민준 감독
+            <span class="poster-badge">개인</span>
+          </div>
+          <div class="poster-verified">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            신원 인증 완료
+          </div>
+        </div>
+      </div>
+
+      <div class="job-badge-row">
+        <span class="badge negotiable">보수 협의</span>
+        <span class="badge beginner">경력 무관</span>
+      </div>
+
+      <div class="quick-chips">
+        <div class="quick-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          </svg>
+          스태프 1명
+        </div>
+        <div class="quick-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          숙소 지원 가능
+        </div>
+        <div class="quick-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+          식사 제공
+        </div>
+      </div>
+
+      <!-- 마감 진행바 -->
+      <div class="deadline-bar">
+        <div class="deadline-left">
+          <span class="deadline-label">모집 마감</span>
+          <span class="deadline-date">2025년 5월 24일</span>
+        </div>
+        <div class="deadline-progress-wrap">
+          <div class="deadline-progress-track">
+            <div class="deadline-progress-fill" style="width:85%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 탭 ── -->
+    <div class="detail-tabs" id="detailTabs">
+      <button class="detail-tab active" onclick="switchTab(0)">공고 내용</button>
+      <button class="detail-tab" onclick="switchTab(1)">지원 정보</button>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━ 탭 1: 공고 내용 ━━━━━━━━━━━━━━ -->
+    <div class="tab-panel active" id="panel0">
+
+      <!-- 그룹 1: 공고 요약 -->
+      <div class="panel-inner">
+        <div class="detail-card">
+          <span class="section-label">공고 요약</span>
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span class="summary-key">작품명</span>
+              <span class="summary-val highlight">단편영화 〈그날의 파도〉</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">모집 직군</span>
+              <span class="summary-val">연출부 — 조감독 1명</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">촬영 기간</span>
+              <span class="summary-val">2025년 6월 1일 ~ 6월 5일 (5일)</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">촬영 장소</span>
+              <span class="summary-val">부산 해운대구 일대 (야외 + 실내)</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">혜택</span>
+              <span class="summary-val">보수 협의 · 식사 3끼 · 교통비 지원</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 그룹 2: 작품 소개 + 담당 업무 -->
+      <div class="panel-inner">
+        <div class="detail-card">
+          <div class="section-title">작품 소개</div>
+          <div class="detail-body">
+            <p><strong>〈그날의 파도〉</strong>는 바닷가 소도시에서 10년 만에 재회한 두 남녀의 하루를 담은 감성 드라마입니다. 러닝타임 25분 내외의 단편으로, 인디 영화제 출품을 목표로 합니다.</p>
+            <p>자연광을 최대한 활용한 로케이션 촬영이 중심이며, 소규모 스태프와 함께 밀도 있는 현장을 만들어가고 싶습니다. 경험보다는 <strong>함께 만들어간다는 의지</strong>를 중요하게 봅니다.</p>
+          </div>
+          <div class="tag-row" style="margin-top:14px">
+            <span class="dtag blue">감성 드라마</span>
+            <span class="dtag blue">단편</span>
+            <span class="dtag">25분</span>
+            <span class="dtag">인디 영화제 출품</span>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="section-title">담당 업무</div>
+          <div class="detail-body">
+            <h4>촬영 전</h4>
+            <ul>
+              <li>감독과의 사전 미팅 참여 (5월 27일, 온라인 가능)</li>
+              <li>콘티·씬 리스트 숙지 및 촬영 계획 검토</li>
+              <li>로케이션 사전 답사 동행 (선택)</li>
+            </ul>
+            <h4>촬영 중</h4>
+            <ul>
+              <li>감독 보조 및 현장 진행 지원</li>
+              <li>배우 스케줄·콜타임 관리</li>
+              <li>스태프 커뮤니케이션 조율</li>
+              <li>스크립터 기능 보조 (연속성 확인)</li>
+            </ul>
+            <h4>촬영 후</h4>
+            <ul>
+              <li>데일리 리포트 작성 지원</li>
+              <li>필요 시 후반 작업 미팅 참여 (선택)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 그룹 3: 스케줄 + 촬영 장소 -->
+      <div class="panel-inner">
+        <div class="detail-card">
+          <div class="section-title">촬영 스케줄</div>
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span class="summary-key" style="width:60px;color:var(--navy);font-weight:800">6/1 일</span>
+              <span class="summary-val">오전 6시 콜타임 · 해운대 해수욕장 일출 씬</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:60px;color:var(--navy);font-weight:800">6/2 월</span>
+              <span class="summary-val">오전 10시 · 카페 실내 씬 (해운대구 소재)</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:60px;color:var(--navy);font-weight:800">6/3 화</span>
+              <span class="summary-val">오후 2시 · 동네 골목 씬, 노을 씬</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:60px;color:var(--navy);font-weight:800">6/4 수</span>
+              <span class="summary-val">오전 9시 · 항구 씬 (기상 예비일 포함)</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:60px;color:var(--navy);font-weight:800">6/5 목</span>
+              <span class="summary-val">오후 4시 · 마무리 씬 + 크랭크업</span>
+            </div>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="section-title">주요 촬영 장소</div>
+          <div class="quick-chip" style="display:inline-flex;margin-bottom:12px;font-size:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            부산 해운대구 해운대해수욕장 일대
+          </div>
+          <div class="map-placeholder">
+            <div class="map-pin">
+              <div class="map-pin-dot"></div>
+              <div class="map-label">부산 해운대구</div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--gray-400);margin-top:8px;font-weight:600;">지도를 탭하면 카카오맵에서 열립니다</p>
+        </div>
+      </div>
+
+      <!-- 그룹 4: 보수 -->
+      <div class="panel-inner">
+        <div class="detail-card">
+          <div class="section-title">보수 안내</div>
+          <div class="detail-body" style="margin-bottom:14px">
+            <p>촬영 참여 일수 및 개인 역량에 따라 <strong>사전 협의 후 결정</strong>합니다. 지원 시 희망 보수를 자유롭게 작성해주세요.</p>
+          </div>
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span class="summary-key">보수</span>
+              <span class="summary-val pay-amount">협의 (면접 후 확정)</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">식사</span>
+              <span class="summary-val">촬영 중 3끼 현장 제공</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">교통</span>
+              <span class="summary-val">왕복 교통비 실비 지원</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-key">숙박</span>
+              <span class="summary-val">타지역 거주자 숙소 지원 가능</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 그룹 5: 담당자 -->
+      <div class="panel-inner">
+        <div class="detail-card">
+          <span class="section-label">담당자</span>
+          <div class="contact-row">
+            <div class="contact-avatar">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="9" width="24" height="16" rx="4" fill="#1A2B48"/>
+                <path d="M10 9 L11.5 6 L16.5 6 L18 9Z" fill="#2C3E6B"/>
+                <circle cx="14" cy="17" r="5" fill="#3D5A8A"/>
+                <circle cx="14" cy="17" r="3.2" fill="#6B8EC4"/>
+                <circle cx="12.8" cy="15.8" r="1" fill="white" opacity="0.7"/>
+                <rect x="20" y="11" width="3" height="2" rx="1" fill="#F8C84A"/>
+              </svg>
+            </div>
+            <div class="contact-info">
+              <div class="contact-name">김민준</div>
+              <div class="contact-role">감독 · 개인 제작자 · 가입 8개월</div>
+            </div>
+          </div>
+          <div class="contact-btns">
+            <button class="contact-btn" onclick="showToast('채팅 기능은 준비 중이에요')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              채팅 문의
+            </button>
+            <button class="contact-btn primary" onclick="goApply()">지원하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 그룹 6: 비슷한 공고 -->
+      <div class="panel-inner">
+        <div class="detail-card">
+          <span class="section-label">비슷한 공고</span>
+          <div class="similar-list">
+            <div class="similar-card" onclick="showToast('공고를 불러오는 중이에요')">
+              <div class="similar-title">장편 독립영화 〈봄날〉 연출부 스태프 (연출PA 2명)</div>
+              <div class="similar-meta">
+                <span>서울 마포구</span><span class="similar-meta-dot"></span>
+                <span>보수 협의</span><span class="similar-meta-dot"></span>
+                <span style="color:var(--red);font-weight:800">D-7</span>
+              </div>
+            </div>
+            <div class="similar-card" onclick="showToast('공고를 불러오는 중이에요')">
+              <div class="similar-title">웹드라마 시즌2 연출부 모집 — 조감독·스크립터</div>
+              <div class="similar-meta">
+                <span>부산 전역</span><span class="similar-meta-dot"></span>
+                <span>일급 15만원~</span><span class="similar-meta-dot"></span>
+                <span>D-12</span>
+              </div>
+            </div>
+            <div class="similar-card" onclick="showToast('공고를 불러오는 중이에요')">
+              <div class="similar-title">단편영화 〈기억의 방〉 연출·촬영 스태프 통합 모집</div>
+              <div class="similar-meta">
+                <span>경남 창원</span><span class="similar-meta-dot"></span>
+                <span>경력 무관</span><span class="similar-meta-dot"></span>
+                <span>D-18</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-bottom-space"></div>
+    </div><!-- /panel0 -->
+
+    <!-- ━━━━━━━━━━━━━━ 탭 2: 지원 정보 ━━━━━━━━━━━━━━ -->
+    <div class="tab-panel" id="panel1">
+    <div class="panel-inner">
+      <div class="applicant-section" style="padding:0">
+
+        <!-- 지원 조건 -->
+        <div class="detail-card">
+          <div class="section-title">지원 조건</div>
+          <div class="requirement-list">
+            <div class="requirement-item">
+              <div class="req-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div class="req-text">
+                <div class="req-label">경력</div>
+                <div class="req-val">무관 (관심과 의지 우선)</div>
+              </div>
+            </div>
+            <div class="requirement-item">
+              <div class="req-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+                </svg>
+              </div>
+              <div class="req-text">
+                <div class="req-label">참여 가능 기간</div>
+                <div class="req-val">6월 1일 ~ 5일 전일 참여 가능자</div>
+              </div>
+            </div>
+            <div class="requirement-item">
+              <div class="req-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div class="req-text">
+                <div class="req-label">이동 가능 지역</div>
+                <div class="req-val">부산 해운대구 현장 방문 가능자<br><span style="font-size:12px;color:var(--gray-400)">타지역 거주 시 숙소 지원 가능</span></div>
+              </div>
+            </div>
+            <div class="requirement-item">
+              <div class="req-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                </svg>
+              </div>
+              <div class="req-text">
+                <div class="req-label">제출 서류</div>
+                <div class="req-val">간단한 자기소개 + 참여 이유<br><span style="font-size:12px;color:var(--gray-400)">포트폴리오 있으면 첨부 환영</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 우대 조건 -->
+        <div class="detail-card">
+          <div class="section-title">이런 분이면 더 좋아요</div>
+          <div class="prefer-list">
+            <div class="prefer-item">
+              <div class="prefer-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="prefer-text">
+                <div class="prefer-label">우대</div>
+                <div class="prefer-desc">영화·영상 관련 전공자 또는 수업 수강 경험</div>
+              </div>
+            </div>
+            <div class="prefer-item">
+              <div class="prefer-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="prefer-text">
+                <div class="prefer-label">우대</div>
+                <div class="prefer-desc">단편 / 자체 제작 영상 참여 경험</div>
+              </div>
+            </div>
+            <div class="prefer-item">
+              <div class="prefer-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="prefer-text">
+                <div class="prefer-label">우대</div>
+                <div class="prefer-desc">능동적으로 소통하고 의견을 제안할 수 있는 분</div>
+              </div>
+            </div>
+            <div class="prefer-item optional">
+              <div class="prefer-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="prefer-text">
+                <div class="prefer-label">있으면 좋아요</div>
+                <div class="prefer-desc">부산 거주 또는 현지 지리 파악 가능자</div>
+              </div>
+            </div>
+            <div class="prefer-item optional">
+              <div class="prefer-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="prefer-text">
+                <div class="prefer-label">있으면 좋아요</div>
+                <div class="prefer-desc">포트폴리오 또는 필모그래피 보유자 (없어도 무관)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 준비물 -->
+        <div class="detail-card">
+          <div class="section-title">현장 준비물</div>
+          <div class="detail-body">
+            <ul>
+              <li>개인 노트 및 필기도구 (씬 노트 작성용)</li>
+              <li>스마트폰 (연락 및 타임라인 관리)</li>
+              <li>야외 촬영 대비 자외선 차단제·선글라스</li>
+              <li>편한 복장 (움직임이 많은 현장)</li>
+            </ul>
+          </div>
+          <div class="notice-banner" style="margin-top:10px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="notice-text">
+              <strong>별도 장비 불필요</strong> — 촬영 장비는 감독이 모두 준비합니다. 스태프 개인 장비는 가져오지 않으셔도 됩니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- 지원 안내 -->
+        <div class="detail-card">
+          <div class="section-title">지원 절차</div>
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span class="summary-key" style="width:48px">① 지원</span>
+              <span class="summary-val">아래 지원하기 버튼으로 자기소개 제출</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:48px">② 검토</span>
+              <span class="summary-val">3일 이내 개별 연락 (채팅 또는 문자)</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:48px">③ 미팅</span>
+              <span class="summary-val">온라인 간단 미팅 후 최종 확정</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row">
+              <span class="summary-key" style="width:48px">④ 확정</span>
+              <span class="summary-val">5월 27일 전후 최종 스태프 확정</span>
+            </div>
+          </div>
+
+          <div class="notice-banner" style="margin-top:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="notice-text">
+              미성년자의 경우 보호자 동의서가 필요할 수 있습니다. 모집 마감 <strong>5월 24일 자정</strong>까지 지원 가능합니다.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /panel-inner -->
+    </div><!-- /panel1 -->
+
+  </div><!-- /scroll-content -->
+
+  <!-- ── 하단 CTA ── -->
+  <div class="bottom-cta" id="bottomCta">
+    <div class="cta-row">
+      <button class="cta-share-btn" onclick="shareJob()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+      </button>
+      <button class="cta-apply-btn" id="applyBtn" onclick="goApply()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+        지원하기
+      </button>
+    </div>
+    <div class="cta-deadline-hint" id="deadlineHint">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      마감까지 3일 남았어요 · 5월 24일 자정
+    </div>
+  </div>
+
+  <!-- ── 지원 확인 시트 ── -->
+  <div class="sheet-overlay" id="sheetOverlay" onclick="closeApplySheet()"></div>
+  <div class="sheet" id="applySheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">지원하기</div>
+    <div class="sheet-sub">아래 공고에 지원합니다. 확인해주세요.</div>
+    <div class="sheet-confirm-rows">
+      <div class="sheet-confirm-row">
+        <span class="scr-key">공고명</span>
+        <span class="scr-val" style="text-align:right;max-width:200px;font-size:12px;line-height:1.4">단편영화 연출부 스태프 (조감독 1명)</span>
+      </div>
+      <div class="sheet-confirm-row">
+        <span class="scr-key">담당자</span>
+        <span class="scr-val">김민준 감독</span>
+      </div>
+      <div class="sheet-confirm-row">
+        <span class="scr-key">기간</span>
+        <span class="scr-val">6/1 ~ 6/5 (5일)</span>
+      </div>
+      <div class="sheet-confirm-row">
+        <span class="scr-key">보수</span>
+        <span class="scr-val">협의</span>
+      </div>
+      <div class="sheet-confirm-row">
+        <span class="scr-key">마감</span>
+        <span class="scr-val" style="color:var(--red)">D-3 · 5월 24일</span>
+      </div>
+    </div>
+    <div class="sheet-btns">
+      <button class="sheet-cancel-btn" onclick="closeApplySheet()">취소</button>
+      <button class="sheet-ok-btn" onclick="submitApply()">지원 완료하기</button>
+    </div>
+  </div>
+
+  <!-- 토스트 -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /app -->
+
+<script>
+  /* ── 스크롤 → 헤더 전환 ── */
+  const scrollArea = document.getElementById('scrollArea');
+  const topBar = document.getElementById('topBar');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 160) {
+      topBar.classList.add('scrolled');
+    } else {
+      topBar.classList.remove('scrolled');
+    }
+  });
+
+  /* ── 탭 전환 ── */
+  function switchTab(idx) {
+    document.querySelectorAll('.detail-tab').forEach((t, i) => {
+      t.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+    });
+  }
+
+  /* ── 북마크 ── */
+  let bookmarked = false;
+  function toggleBookmark() {
+    bookmarked = !bookmarked;
+    const btn = document.getElementById('bookmarkBtn');
+    if (bookmarked) {
+      btn.style.color = '#1A2B48';
+      btn.querySelector('path').setAttribute('fill', '#1A2B48');
+      showToast('북마크에 저장했어요');
+    } else {
+      btn.style.color = '';
+      btn.querySelector('path').setAttribute('fill', 'none');
+      showToast('북마크를 해제했어요');
+    }
+  }
+
+  /* ── 공유 ── */
+  function shareJob() {
+    showToast('링크가 복사됐어요!');
+  }
+
+  /* ── 지원하기 → apply 페이지로 이동 ── */
+  let applied = false;
+  function goApply() {
+    if (applied) { showToast('이미 지원한 공고예요'); return; }
+    window.location.href = 'filmmakers_apply_v1.html';
+  }
+  function openApplySheet() {
+    if (applied) { showToast('이미 지원한 공고예요'); return; }
+    window.location.href = 'filmmakers_apply_v1.html';
+  }
+  function closeApplySheet() {
+    document.getElementById('sheetOverlay').classList.remove('visible');
+    document.getElementById('applySheet').classList.remove('visible');
+  }
+  function submitApply() {
+    applied = true;
+    closeApplySheet();
+    // CTA 버튼 상태 변경
+    const btn = document.getElementById('applyBtn');
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      지원 완료
+    `;
+    btn.style.background = '#2E7D5E';
+    btn.onclick = () => showToast('이미 지원한 공고예요');
+    // 마감 힌트 변경
+    document.getElementById('deadlineHint').innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <span style="color:var(--green)">지원이 완료됐어요 · 결과를 기다려주세요</span>
+    `;
+    showToast('🎉 지원이 완료됐어요! 합격을 응원해요');
+  }
+
+  /* ── 토스트 ── */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>
