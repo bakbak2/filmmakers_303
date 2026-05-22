@@ -1420,7 +1420,7 @@
         <span class="logo-text">Filmmakers</span>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" onclick="showToast('알림 페이지로 이동합니다')">
+        <button class="icon-btn" onclick="window.location.href='filmmakers_notifications_v1.html'">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
@@ -1726,7 +1726,7 @@
     <section>
       <div class="section-header">
         <h2 class="section-title">최신 공고</h2>
-        <button class="section-more">
+        <button class="section-more" onclick="window.location.href='filmmakers_explore_v1.html'">
           전체
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
             <path d="M9 18l6-6-6-6"/>
@@ -1923,7 +1923,7 @@
         <polyline points="9 22 9 12 15 12 15 22"/>
       </svg>홈
     </button>
-    <button class="nav-item" onclick="showToast('탐색으로 이동합니다')">
+    <button class="nav-item" onclick="window.location.href='filmmakers_explore_v1.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>탐색
@@ -1933,12 +1933,12 @@
         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
       </svg>저장
     </button>
-    <button class="nav-item" onclick="showToast('커뮤니티로 이동합니다')">
+    <button class="nav-item" onclick="window.location.href='filmmakers_community_v1.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
       </svg>커뮤니티
     </button>
-    <button class="nav-item" onclick="showToast('마이페이지로 이동합니다')">
+    <button class="nav-item" onclick="window.location.href='filmmakers_mypage_v1.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -2265,6 +2265,16 @@
   // ── 검색 입력 시 ──
   document.getElementById('searchInput').addEventListener('input', function() {
     if (this.value.length > 0) showToast('검색 기능은 데모 버전에서 지원되지 않아요');
+  });
+
+  // ── 공고 카드 클릭 → 상세 페이지 ──
+  document.querySelectorAll('.job-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+      if (!e.target.closest('.bookmark-btn')) {
+        window.location.href = 'filmmakers_detail_v1.html';
+      }
+    });
   });
 </script>
 </body>
