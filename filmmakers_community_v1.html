@@ -358,6 +358,30 @@
       width: 24px; height: 3px; background: var(--navy); border-radius: 0 0 3px 3px;
     }
     .nav-item svg { width: 22px; height: 22px; }
+    /* ── 설정 시트 ── */
+    .sheet-section { margin-bottom: 24px; }
+    .sheet-label { font-size: 11px; font-weight: 700; color: var(--gray-400); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .settings-group { background: var(--surface); border-radius: 16px; overflow: hidden; border: 1px solid var(--gray-200); }
+    .settings-item { display: flex; align-items: center; padding: 14px 16px; gap: 12px; cursor: pointer; transition: background 0.1s; border: none; background: none; width: 100%; text-align: left; font-family: var(--font); }
+    .settings-item:not(:last-child) { border-bottom: 1px solid rgba(224,220,212,0.55); }
+    .settings-item:active { background: var(--gray-50); }
+    .si-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .si-icon.navy { background: #1A2B48; } .si-icon.navy svg { color: #fff; }
+    .si-icon.blue { background: #2D4A7A; } .si-icon.blue svg { color: #fff; }
+    .si-icon.blue-mid { background: #3A5C8E; } .si-icon.blue-mid svg { color: #fff; }
+    .si-icon.orange { background: #A07040; } .si-icon.orange svg { color: #fff; }
+    .si-icon.gray { background: var(--gray-200); } .si-icon.gray svg { color: var(--gray-700); }
+    .si-icon svg { width: 17px; height: 17px; }
+    .si-body { flex: 1; min-width: 0; }
+    .si-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 1px; }
+    .si-title.danger { color: #8B3A3A; }
+    .si-desc { font-size: 11px; color: var(--gray-400); }
+    .si-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .si-right svg { width: 15px; height: 15px; color: var(--gray-200); }
+    .toggle-wrap { width: 44px; height: 26px; border-radius: 100px; background: var(--gray-200); position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .toggle-wrap.on { background: #2D4A7A; }
+    .toggle-knob { width: 20px; height: 20px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    .toggle-wrap.on .toggle-knob { transform: translateX(18px); }
   </style>
 </head>
 <body>
@@ -375,7 +399,7 @@
           </svg>
           <span class="badge-dot"></span>
         </button>
-        <button class="icon-btn" onclick="window.location.href='filmmakers_mypage_v1.html'">
+        <button class="icon-btn" onclick="openSheet('settingsSheet')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -899,6 +923,63 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- ── 설정 시트 ── -->
+  <div class="sheet" id="settingsSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">설정</div>
+    <div class="sheet-section">
+      <div class="sheet-label">알림 설정</div>
+      <div class="settings-group">
+        <div class="settings-item" onclick="toggleSwitch('csn1')">
+          <div class="si-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+          <div class="si-body"><div class="si-title">맞춤 공고 알림</div><div class="si-desc">내 직군·지역 신규 공고 알림</div></div>
+          <div class="si-right"><div class="toggle-wrap on" id="csn1"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="settings-item" onclick="toggleSwitch('csn2')">
+          <div class="si-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="si-body"><div class="si-title">마감 임박 알림</div><div class="si-desc">스크랩 공고 D-3 자동 알림</div></div>
+          <div class="si-right"><div class="toggle-wrap on" id="csn2"><div class="toggle-knob"></div></div></div>
+        </div>
+        <div class="settings-item" onclick="toggleSwitch('csn3')">
+          <div class="si-icon blue-mid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="si-body"><div class="si-title">지원 결과 알림</div><div class="si-desc">합격·불합격 결과 즉시 알림</div></div>
+          <div class="si-right"><div class="toggle-wrap on" id="csn3"><div class="toggle-knob"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-section">
+      <div class="sheet-label">계정</div>
+      <div class="settings-group">
+        <button class="settings-item" onclick="closeSheet();showToast('이메일 변경 화면으로 이동합니다')">
+          <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="si-body"><div class="si-title">이메일</div><div class="si-desc">suyeon.lee@gmail.com</div></div>
+          <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </button>
+        <button class="settings-item" onclick="closeSheet();showToast('비밀번호 변경 화면으로 이동합니다')">
+          <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <div class="si-body"><div class="si-title">비밀번호 변경</div></div>
+          <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </button>
+        <button class="settings-item" onclick="closeSheet();showToast('고객센터로 연결됩니다')">
+          <div class="si-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
+          <div class="si-body"><div class="si-title">고객센터 · 문의</div><div class="si-desc">운영시간 평일 10:00–18:00</div></div>
+          <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </button>
+        <button class="settings-item" onclick="closeSheet();showToast('로그아웃 되었습니다')">
+          <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
+          <div class="si-body"><div class="si-title">로그아웃</div></div>
+          <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </button>
+        <button class="settings-item" onclick="closeSheet();showToast('회원 탈퇴 전에 한 번 더 확인합니다')">
+          <div class="si-icon gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>
+          <div class="si-body"><div class="si-title danger">회원 탈퇴</div></div>
+          <div class="si-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </button>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--gray-400);padding:4px 0 8px;">필름메이커스 v2.1.0</div>
+  </div>
+
   <!-- ── 하단 내비게이션 ── -->
   <nav class="bottom-nav">
     <button class="nav-item" onclick="window.location.href='index.html'">
@@ -1082,6 +1163,7 @@
     document.getElementById('overlay').classList.remove('open');
     document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open'));
   }
+  function toggleSwitch(id) { document.getElementById(id).classList.toggle('on'); }
 
   // ── 엔터로 댓글 전송 ──
   document.addEventListener('DOMContentLoaded', () => {
