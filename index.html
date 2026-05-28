@@ -167,7 +167,7 @@
     /* 검색창 섹션 (라이트 배경) */
     .search-section {
       background: var(--bg);
-      padding: 14px 20px 12px;
+      padding: 16px 20px 14px;
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
 
@@ -178,24 +178,27 @@
     .search-bar input {
       width: 100%;
       height: 46px;
-      border-radius: var(--radius);
-      border: 1.5px solid var(--gray-200);
-      background: var(--surface-alt);
+      border-radius: 50px;
+      border: 1.5px solid #2D4A7A;
+      background: var(--surface);
       color: var(--gray-900);
       font-size: 14px;
       font-family: var(--font);
       padding: 0 48px 0 44px;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     .search-bar input::placeholder { color: var(--gray-400); }
-    .search-bar input:focus { border-color: var(--blue); }
+    .search-bar input:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(45,74,122,0.10);
+    }
     .search-icon {
       position: absolute;
-      left: 13px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--gray-400);
+      color: #2D4A7A;
     }
     .search-icon svg { width: 18px; height: 18px; display: block; }
     .search-clear {
@@ -291,10 +294,10 @@
 
     /* ── 메인 콘텐츠 ── */
     .main {
-      padding: 20px 16px 100px;
+      padding: 16px 16px 100px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 6px;
     }
 
     /* ── 섹션 헤더 ── */
@@ -305,23 +308,44 @@
       margin-bottom: 14px;
     }
     .section-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
       color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
+    .section-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+    .chip-amber  { background: #FFF0D0; color: #C07800; }
+    .chip-violet { background: #EDE8FF; color: #6B48FF; }
+    .chip-teal   { background: #FFE0E0; color: #D42B2B; }
     .section-more {
-      font-size: 12px;
-      color: var(--gray-400);
-      font-weight: 500;
-      background: none;
+      font-size: 11px;
+      color: var(--gray-500);
+      font-weight: 600;
+      background: var(--gray-100);
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 2px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      transition: background 0.15s;
     }
-    .section-more svg { width: 13px; height: 13px; }
+    .section-more:active { background: var(--gray-200); }
+    .section-more svg { width: 11px; height: 11px; }
 
     /* ── 역할 원형 가로 스크롤 ── */
     .role-circle-scroll {
@@ -381,22 +405,509 @@
       margin-top: -4px;
     }
 
+    /* ── 햄버거 메뉴 ── */
+    .hamburger-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0;
+      transition: background 0.15s;
+    }
+    .hamburger-btn:active { background: var(--gray-100); }
+    .hamburger-line {
+      width: 20px;
+      height: 2px;
+      background: var(--gray-700);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .hamburger-line:first-child { width: 20px; }
+    .hamburger-line:nth-child(2) { width: 16px; align-self: flex-start; margin-left: 9px; }
+    .hamburger-line:last-child { width: 20px; }
+
+    /* ── 사이드 드로어 ── */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--surface);
+      z-index: 201;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-header {
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .drawer-logo {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+    .drawer-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .drawer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+    .drawer-profile-info { display: flex; flex-direction: column; gap: 2px; }
+    .drawer-profile-name { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+    .drawer-profile-role { font-size: 12px; color: var(--gray-400); }
+    .drawer-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+    .drawer-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: background 0.12s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .drawer-nav-item:active { background: var(--gray-100); }
+    .drawer-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--gray-400); }
+    .drawer-nav-item.active { color: var(--navy); font-weight: 700; }
+    .drawer-nav-item.active svg { color: var(--navy); }
+    .drawer-divider { height: 1px; background: var(--gray-100); margin: 8px 0; }
+
+    /* ── 컬러 섹션 배경 ── */
+    .section-colored {
+      margin: 0 -16px;
+      padding: 20px 16px 24px;
+      border-radius: 0;
+    }
+    .section-colored .section-header { margin-bottom: 14px; }
+
+    .section-bg-amber    { background: linear-gradient(180deg, #FFF5E0 0%, #F8F7F4 100%); }
+    .section-bg-lavender { background: linear-gradient(180deg, #EEEBFF 0%, #F8F7F4 100%); }
+    .section-bg-mint     { background: linear-gradient(180deg, #E0F7EE 0%, #F8F7F4 100%); }
+
+    /* ── 오늘 올라온 공고 피드형 ── */
+    .today-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .today-feed-card {
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(26,43,72,0.08);
+      display: flex;
+      cursor: pointer;
+      transition: transform 0.12s;
+      position: relative;
+    }
+    .today-feed-card:active { transform: scale(0.985); }
+    .today-feed-icon {
+      width: 72px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 14px 0;
+    }
+    .today-feed-icon svg { width: 26px; height: 26px; }
+    .today-feed-icon-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.3px;
+      text-align: center;
+    }
+    .today-feed-content {
+      flex: 1;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+    }
+    .today-feed-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      padding-right: 72px;
+    }
+    .today-feed-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+    .today-feed-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+    .today-feed-meta {
+      font-size: 10px;
+      color: var(--gray-400);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .today-feed-meta svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .today-feed-right { display: flex; align-items: center; gap: 6px; }
+    .today-feed-pay {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 6px;
+      line-height: 1;
+      position: absolute;
+      top: 12px;
+      right: 14px;
+    }
+    .today-feed-pay.paid       { background: var(--green-light);  color: var(--green); }
+    .today-feed-pay.unpaid     { background: var(--gray-100);     color: var(--gray-500); }
+    .today-feed-pay.negotiable { background: var(--orange-light); color: var(--orange); }
+    .today-feed-dday {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 6px;
+    }
+    .today-feed-dday.urgent { background: var(--red-light);  color: var(--red); }
+    .today-feed-dday.normal { background: var(--blue-light); color: var(--navy); }
+    .today-feed-bm {
+      width: 26px; height: 26px;
+      border: none; background: none; cursor: pointer; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-300); border-radius: 7px; transition: color 0.15s;
+    }
+    .today-feed-bm svg { width: 15px; height: 15px; }
+    .today-feed-bm.saved { color: var(--navy); }
+    .today-feed-bm.saved svg { fill: var(--navy); }
+    .today-more-btn {
+      width: 100%;
+      margin-top: 4px;
+      padding: 13px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 14px;
+      background: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-500);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .today-more-btn:active { background: var(--gray-100); color: var(--gray-700); }
+    .today-more-btn svg { width: 15px; height: 15px; }
+
+    /* ── 직군 인기 공고 ── */
+    .peer-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      margin: 0 -16px;
+      padding: 4px 16px 4px;
+    }
+    .peer-scroll::-webkit-scrollbar { display: none; }
+    .peer-item {
+      flex-shrink: 0;
+      position: relative;
+    }
+    .peer-item-num {
+      position: absolute;
+      left: -12px;
+      bottom: -6px;
+      font-size: 92px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -6px;
+      color: rgba(26,43,72,0.07);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      font-family: var(--font);
+    }
+    .peer-item-num.gold { color: rgba(210,140,10,0.15); }
+    .peer-card {
+      flex-shrink: 0;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.80);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+      position: relative;
+      z-index: 1;
+      margin-left: 20px;
+    }
+    .peer-card:active { transform: scale(0.98); }
+    .peer-rank {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gray-400);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .peer-rank-num {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    .peer-rank-num.top { color: #E8A020; }
+    .peer-hot-label {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: #E53935; color: #fff;
+      font-size: 10px; font-weight: 800;
+      padding: 2px 7px; border-radius: 20px;
+      margin-left: 4px;
+    }
+    .peer-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.4;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .peer-card-meta {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .peer-card-meta svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .peer-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .peer-hot-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: #FEF3E2;
+      color: #C07000;
+      border-radius: 6px;
+      padding: 3px 7px;
+    }
+    .peer-apply-count {
+      font-size: 10px;
+      color: var(--gray-400);
+    }
+
+    /* ── 광고 배너 캐러셀 ── */
+    .ad-banner-section {
+      margin: 0 -16px;
+      position: relative;
+    }
+    .ad-banner-scroll {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 0;
+    }
+    .ad-banner-scroll::-webkit-scrollbar { display: none; }
+    .ad-banner-slide {
+      flex-shrink: 0;
+      width: 100%;
+      scroll-snap-align: start;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .ad-banner-slide:active { opacity: 0.92; }
+    .ad-banner-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.3s;
+    }
+    .ad-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 100%);
+    }
+    .ad-banner-content {
+      position: absolute;
+      inset: 0;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+    }
+    .ad-banner-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .ad-banner-label::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: #5B9CF6;
+      border-radius: 50%;
+    }
+    .ad-banner-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: -0.4px;
+    }
+    .ad-banner-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 400;
+    }
+    .ad-banner-cta {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 5px 12px;
+      width: fit-content;
+      backdrop-filter: blur(4px);
+    }
+    .ad-banner-cta svg { width: 10px; height: 10px; }
+    .ad-banner-poster {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 78px;
+      height: 108px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+    .ad-banner-poster-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      padding: 8px;
+    }
+    .ad-banner-poster-inner svg { width: 28px; height: 28px; }
+    .ad-banner-dots {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      padding: 10px 0 2px;
+    }
+    .ad-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .ad-dot.active {
+      width: 16px;
+      border-radius: 3px;
+      background: var(--gray-500);
+    }
+
     /* ── 추천 공고 가로 스크롤 ── */
     .recommend-scroll {
       display: flex;
       gap: 12px;
       overflow-x: auto;
       scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
       padding-bottom: 4px;
-      margin: 0 -4px;
-      padding: 4px;
     }
     .recommend-scroll::-webkit-scrollbar { display: none; }
     .recommend-card {
       flex-shrink: 0;
-      width: 220px;
-      background: var(--surface);
-      border: 1px solid var(--gray-200);
+      width: calc(25vw - 5px);
+      scroll-snap-align: start;
+      background: #fff;
+      border: 1px solid rgba(255,255,255,0.9);
       border-radius: var(--radius);
       padding: 16px;
       box-shadow: var(--shadow);
@@ -1413,10 +1924,57 @@
 
   </div><!-- /ob-wrap -->
 
+  <!-- ── 사이드 드로어 ── -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-header">
+      <div class="drawer-logo">Filmmakers</div>
+    </div>
+    <div class="drawer-profile">
+      <div class="drawer-avatar">박</div>
+      <div class="drawer-profile-info">
+        <div class="drawer-profile-name">박지훈</div>
+        <div class="drawer-profile-role">촬영부 · 편집·색보정</div>
+      </div>
+    </div>
+    <nav class="drawer-nav">
+      <button class="drawer-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        홈
+      </button>
+      <button class="drawer-nav-item" onclick="window.location.href='filmmakers_explore_v1.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        공고 탐색
+      </button>
+      <button class="drawer-nav-item" onclick="window.location.href='filmmakers_saved_v1.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        저장한 공고
+      </button>
+      <button class="drawer-nav-item" onclick="window.location.href='filmmakers_community_v1.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        커뮤니티
+      </button>
+      <div class="drawer-divider"></div>
+      <button class="drawer-nav-item" onclick="window.location.href='filmmakers_mypage_v1.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        마이페이지
+      </button>
+      <button class="drawer-nav-item" onclick="window.location.href='filmmakers_notifications_v1.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        알림
+      </button>
+    </nav>
+  </div>
+
   <!-- ── 헤더 ── -->
   <header class="header">
     <div class="header-inner">
-      <div class="logo">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="hamburger-btn" onclick="openDrawer()" aria-label="메뉴">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
         <span class="logo-text">Filmmakers</span>
       </div>
       <div class="header-actions">
@@ -1431,19 +1989,7 @@
     </div>
   </header>
 
-  <!-- ── 히어로 (컴팩트) ── -->
-  <section class="hero">
-    <p class="greeting">안녕하세요, <strong>박지훈</strong> 님 👋</p>
-    <div class="hero-stat-row">
-      <span class="hero-big-num">32<span class="unit">건</span></span>
-      <div class="hero-stat-texts">
-        <span class="hero-stat-label">오늘 새로운 공고</span>
-        <span class="hero-stat-sub">↑ 어제보다 12건 더 올라왔어요</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 검색창 (라이트 배경) ── -->
+  <!-- ── 검색창 ── -->
   <div class="search-section">
     <div class="search-bar">
       <span class="search-icon">
@@ -1460,8 +2006,115 @@
   <!-- ── 메인 콘텐츠 ── -->
   <main class="main">
 
-    <!-- 역할 카테고리 -->
-    <section>
+    <!-- 광고 배너 캐러셀 -->
+    <section class="ad-banner-section">
+      <div class="ad-banner-scroll" id="adBannerScroll">
+
+        <!-- 배너 1: 마케팅 채용 -->
+        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=18'">
+          <div class="ad-banner-bg" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"></div>
+          <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%);"></div>
+          <div class="ad-banner-content">
+            <span class="ad-banner-label">채용 공고</span>
+            <div class="ad-banner-title">씨네마스터 — 마케팅<br>팀원을 찾고 있어요</div>
+            <div class="ad-banner-sub">서울 · 정규직 · 경력 2년 이상</div>
+            <div class="ad-banner-cta">지금 지원하기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="ad-banner-poster">
+            <div class="ad-banner-poster-inner" style="background: linear-gradient(160deg, #0f3460, #1a1a2e);">
+              <svg viewBox="0 0 32 32" fill="none">
+                <rect x="4" y="8" width="24" height="18" rx="3" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                <circle cx="16" cy="17" r="5" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                <circle cx="16" cy="17" r="2.5" fill="rgba(255,255,255,0.6)"/>
+                <rect x="10" y="5" width="5" height="4" rx="1" fill="rgba(255,255,255,0.5)"/>
+              </svg>
+              CINE<br>MASTER
+            </div>
+          </div>
+        </div>
+
+        <!-- 배너 2: 독립영화 포스터 공모 -->
+        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=19'">
+          <div class="ad-banner-bg" style="background: linear-gradient(135deg, #2d1b4e 0%, #1a0a2e 60%, #3d1a5e 100%);"></div>
+          <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 65%);"></div>
+          <div class="ad-banner-content">
+            <span class="ad-banner-label" style="--dot-color:#C084FC;">포스터 디자인</span>
+            <div class="ad-banner-title">2025 독립영화제<br>공식 포스터 공모</div>
+            <div class="ad-banner-sub">마감 6월 30일 · 상금 300만원</div>
+            <div class="ad-banner-cta" style="border-color:rgba(192,132,252,0.5);background:rgba(192,132,252,0.15);">공모 참여하기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="ad-banner-poster">
+            <div class="ad-banner-poster-inner" style="background: linear-gradient(160deg, #3d1a5e, #1a0a2e);">
+              <svg viewBox="0 0 32 32" fill="none">
+                <rect x="6" y="4" width="20" height="26" rx="2" fill="none" stroke="rgba(192,132,252,0.9)" stroke-width="1.5"/>
+                <line x1="10" y1="12" x2="22" y2="12" stroke="rgba(192,132,252,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="10" y1="16" x2="18" y2="16" stroke="rgba(192,132,252,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+                <circle cx="16" cy="23" r="3" fill="none" stroke="rgba(192,132,252,0.7)" stroke-width="1.2"/>
+              </svg>
+              독립<br>영화제
+            </div>
+          </div>
+        </div>
+
+        <!-- 배너 3: 후반작업 편집자 구인 -->
+        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=20'">
+          <div class="ad-banner-bg" style="background: linear-gradient(135deg, #0d2137 0%, #0a1628 60%, #1a3a5c 100%);"></div>
+          <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%);"></div>
+          <div class="ad-banner-content">
+            <span class="ad-banner-label" style="--dot-color:#38BDF8;">후반작업</span>
+            <div class="ad-banner-title">스튜디오 BLANK<br>편집자 즉시 채용</div>
+            <div class="ad-banner-sub">장편 OTT 시리즈 · 협의</div>
+            <div class="ad-banner-cta" style="border-color:rgba(56,189,248,0.5);background:rgba(56,189,248,0.15);">지금 지원하기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="ad-banner-poster">
+            <div class="ad-banner-poster-inner" style="background: linear-gradient(160deg, #1a3a5c, #0a1628);">
+              <svg viewBox="0 0 32 32" fill="none">
+                <rect x="3" y="10" width="26" height="14" rx="2" fill="none" stroke="rgba(56,189,248,0.9)" stroke-width="1.5"/>
+                <line x1="8" y1="10" x2="6" y2="6" stroke="rgba(56,189,248,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="16" y1="10" x2="16" y2="6" stroke="rgba(56,189,248,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="24" y1="10" x2="26" y2="6" stroke="rgba(56,189,248,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="16" cy="17" r="4" fill="none" stroke="rgba(56,189,248,0.8)" stroke-width="1.5"/>
+                <polygon points="14,15 14,19 19,17" fill="rgba(56,189,248,0.8)"/>
+              </svg>
+              STUDIO<br>BLANK
+            </div>
+          </div>
+        </div>
+
+        <!-- 배너 4: 뮤직비디오 팀 모집 -->
+        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=21'">
+          <div class="ad-banner-bg" style="background: linear-gradient(135deg, #1a2e1a 0%, #0f1f0f 60%, #2a4a1a 100%);"></div>
+          <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 65%);"></div>
+          <div class="ad-banner-content">
+            <span class="ad-banner-label" style="--dot-color:#4ADE80;">뮤직비디오</span>
+            <div class="ad-banner-title">아이돌 MV 촬영팀<br>전 포지션 모집</div>
+            <div class="ad-banner-sub">서울 · 5박 6일 · 일급 정산</div>
+            <div class="ad-banner-cta" style="border-color:rgba(74,222,128,0.5);background:rgba(74,222,128,0.15);">팀 합류하기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="ad-banner-poster">
+            <div class="ad-banner-poster-inner" style="background: linear-gradient(160deg, #2a4a1a, #0f1f0f);">
+              <svg viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="11" fill="none" stroke="rgba(74,222,128,0.8)" stroke-width="1.5"/>
+                <circle cx="16" cy="16" r="3" fill="rgba(74,222,128,0.6)"/>
+                <line x1="16" y1="5" x2="16" y2="9" stroke="rgba(74,222,128,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="16" y1="23" x2="16" y2="27" stroke="rgba(74,222,128,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              MV<br>CREW
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ad-banner-dots" id="adBannerDots">
+        <div class="ad-dot active" onclick="scrollAdBanner(0)"></div>
+        <div class="ad-dot" onclick="scrollAdBanner(1)"></div>
+        <div class="ad-dot" onclick="scrollAdBanner(2)"></div>
+        <div class="ad-dot" onclick="scrollAdBanner(3)"></div>
+      </div>
+    </section>
+
+    <!-- 역할 카테고리 (숨김) -->
+    <section style="display:none">
       <div class="section-header">
         <h2 class="section-title">내 역할로 탐색</h2>
       </div>
@@ -1582,10 +2235,111 @@
       </div>
     </section>
 
-    <!-- AI 추천 공고 (가로 스크롤) -->
-    <section>
+    <!-- 같은 직군 인기 공고 -->
+    <section class="section-colored section-bg-amber">
       <div class="section-header">
-        <h2 class="section-title">✦ AI 추천 공고</h2>
+        <h2 class="section-title"><span class="section-chip chip-amber">HOT</span>촬영부들이 많이 본 공고</h2>
+        <button class="section-more" onclick="window.location.href='filmmakers_explore_v1.html'">
+          전체
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+      <div class="peer-scroll">
+
+        <!-- 1위 -->
+        <div class="peer-item">
+          <span class="peer-item-num gold" style="left: 0px;">1</span>
+        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=1'">
+          <div class="peer-rank"><span class="peer-rank-num top">1</span> 위 <span class="peer-hot-label">🔥 오늘 가장 인기</span></div>
+          <div class="peer-card-title">장편 독립영화 &lt;새벽&gt; 촬영감독 모집</div>
+          <div class="peer-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 마포구 · 6월 10~25일
+          </div>
+          <div class="peer-card-footer">
+            <span class="peer-hot-badge">🔥 조회 284회</span>
+            <span class="peer-apply-count">지원 32명</span>
+          </div>
+        </div>
+        </div>
+
+        <!-- 2위 -->
+        <div class="peer-item">
+          <span class="peer-item-num gold">2</span>
+        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=2'">
+          <div class="peer-rank"><span class="peer-rank-num top">2</span> 위</div>
+          <div class="peer-card-title">뮤직비디오 B캠 오퍼레이터 — 경력무관</div>
+          <div class="peer-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 강남구 · 5월 30일 (1일)
+          </div>
+          <div class="peer-card-footer">
+            <span class="peer-hot-badge">🔥 조회 197회</span>
+            <span class="peer-apply-count">지원 18명</span>
+          </div>
+        </div>
+        </div>
+
+        <!-- 3위 -->
+        <div class="peer-item">
+          <span class="peer-item-num">3</span>
+        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=3'">
+          <div class="peer-rank"><span class="peer-rank-num">3</span> 위</div>
+          <div class="peer-card-title">광고 영상 촬영 어시스턴트 1명 급구</div>
+          <div class="peer-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            경기 성남시 · 6월 3~5일
+          </div>
+          <div class="peer-card-footer">
+            <span class="peer-hot-badge">조회 143회</span>
+            <span class="peer-apply-count">지원 11명</span>
+          </div>
+        </div>
+        </div>
+
+        <!-- 4위 -->
+        <div class="peer-item">
+          <span class="peer-item-num">4</span>
+        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=4'">
+          <div class="peer-rank"><span class="peer-rank-num">4</span> 위</div>
+          <div class="peer-card-title">다큐멘터리 촬영팀 스태프 (전국 이동 가능)</div>
+          <div class="peer-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            전국 · 6월 15일 ~ 7월 20일
+          </div>
+          <div class="peer-card-footer">
+            <span class="peer-hot-badge">조회 98회</span>
+            <span class="peer-apply-count">지원 7명</span>
+          </div>
+        </div>
+        </div>
+
+        <!-- 5위 -->
+        <div class="peer-item">
+          <span class="peer-item-num">5</span>
+        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=5'">
+          <div class="peer-rank"><span class="peer-rank-num">5</span> 위</div>
+          <div class="peer-card-title">웹드라마 촬영부 팀장급 모집 — 유료</div>
+          <div class="peer-card-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 종로구 · 6월 8~30일
+          </div>
+          <div class="peer-card-footer">
+            <span class="peer-hot-badge">조회 76회</span>
+            <span class="peer-apply-count">지원 5명</span>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- AI 추천 공고 (가로 스크롤) -->
+    <section class="section-colored section-bg-lavender">
+      <div class="section-header">
+        <h2 class="section-title"><span class="section-chip chip-violet">AI</span>나에게 맞춤 공고</h2>
         <button class="section-more">
           전체
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -1677,198 +2431,208 @@
             <span class="ai-match-badge">✦ 유사 지원자 조회 다수</span>
           </div>
         </div>
+        <div class="recommend-card">
+          <div class="recommend-card-top">
+            <div class="recommend-thumb">
+              <svg viewBox="0 0 26 26" fill="none">
+                <rect x="3" y="6" width="20" height="14" rx="3" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/>
+                <circle cx="13" cy="13" r="4" fill="none" stroke="#2D4A7A" stroke-width="1.5"/>
+                <circle cx="13" cy="13" r="2" fill="#2D4A7A"/>
+                <rect x="16" y="7" width="4" height="2.5" rx="1" fill="#2D4A7A"/>
+              </svg>
+            </div>
+            <span class="pay-badge paid">유료</span>
+          </div>
+          <div class="recommend-title">OTT 드라마 B캠 오퍼레이터 모집</div>
+          <div class="recommend-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 종로구 · 6월 5~30일
+          </div>
+          <div class="recommend-tags">
+            <span class="tag blue">촬영부</span>
+            <span class="tag">드라마</span>
+          </div>
+          <div class="recommend-footer">
+            <span class="ai-match-badge">✦ 직군 일치 · 88%</span>
+          </div>
+        </div>
+        <div class="recommend-card">
+          <div class="recommend-card-top">
+            <div class="recommend-thumb">
+              <svg viewBox="0 0 26 26" fill="none">
+                <path d="M4 20 L13 5 L22 20Z" fill="none" stroke="#2D4A7A" stroke-width="1.5" stroke-linejoin="round"/>
+                <circle cx="13" cy="13" r="3" fill="#1A2B48"/>
+                <line x1="13" y1="2" x2="13" y2="5" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/>
+                <line x1="4" y1="22" x2="22" y2="22" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="pay-badge negotiable">협의</span>
+          </div>
+          <div class="recommend-title">광고 영상 조감독 — 즉시 합류 가능자</div>
+          <div class="recommend-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 강남구 · 6월 2~10일
+          </div>
+          <div class="recommend-tags">
+            <span class="tag blue">연출부</span>
+            <span class="tag">광고</span>
+          </div>
+          <div class="recommend-footer">
+            <span class="ai-match-badge">✦ 경력 · 지역 일치</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- 전체 공고 리스트 -->
+    <!-- 오늘 새로운 공고 -->
     <section>
       <div class="section-header">
-        <h2 class="section-title">최신 공고</h2>
-        <button class="section-more" onclick="window.location.href='filmmakers_explore_v1.html'">
-          전체
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
+        <h2 class="section-title"><span class="section-chip chip-teal">NEW</span>오늘 올라온 공고 <span style="font-size:12px;font-weight:600;color:var(--gray-400);margin-left:2px;">12건</span></h2>
+      </div>
+      <div class="today-feed">
+
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=6'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">단편영화 &lt;새벽, 그 너머&gt; 촬영감독 모집</div>
+            <div class="today-feed-tags"><span class="tag blue">촬영부</span><span class="tag">단편</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 마포구 · 6월 10~14일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 130,000원</span><span class="today-feed-dday normal">D-13</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=7'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">광고 영상 연출부 조감독 모집 (즉시 출발)</div>
+            <div class="today-feed-tags"><span class="tag blue">연출부</span><span class="tag">조감독</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 강남구 · 5월 30~31일</div>
+              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday urgent">D-2</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=8'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">OTT 드라마 조명팀 어시스턴트 2명 모집</div>
+            <div class="today-feed-tags"><span class="tag blue">조명부</span><span class="tag">경력무관</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 종로구 · 6월 3일~7월 2일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 90,000원</span><span class="today-feed-dday normal">D-6</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=9'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">독립 단편 배우 모집 — 20대 남녀 각 1명</div>
+            <div class="today-feed-tags"><span class="tag blue">배우</span><span class="tag">단역</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>경기 수원시 · 6월 1~2일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 80,000원</span><span class="today-feed-dday normal">D-4</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=10'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">뮤직비디오 편집·색보정 프리랜서 구인</div>
+            <div class="today-feed-tags"><span class="tag blue">편집·색보정</span><span class="tag">원격가능</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>전국 (원격) · 6월 내</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 120,000원</span><span class="today-feed-dday normal">D-20</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=11'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">다큐멘터리 사운드 레코디스트 구인</div>
+            <div class="today-feed-tags"><span class="tag blue">사운드</span><span class="tag">다큐</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>부산 · 6월 15일~7월 10일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 130,000원</span><span class="today-feed-dday normal">D-18</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="job-list" id="jobList">
+      <div id="today-extra-cards" style="display:none; flex-direction:column; gap:9px; margin-top:9px;">
 
-        <!-- 카드 1 -->
-        <div class="job-card">
-          <div class="job-card-header">
-            <h3 class="job-title">장편 독립영화 &lt;푸른 봄&gt; 편집·색보정 담당자 모집</h3>
-            <span class="job-pay paid">유료</span>
-          </div>
-          <div class="job-tags">
-            <span class="tag blue">편집</span>
-            <span class="tag blue">색보정</span>
-            <span class="tag">DaVinci Resolve</span>
-          </div>
-          <div class="job-meta">
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              서울 종로구
-            </span>
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              5월 22일 ~ 6월 15일
-            </span>
-          </div>
-          <div class="job-footer">
-            <div class="job-badges">
-              <span class="dday-badge">D-14</span>
-              <span class="beginner-badge">경력 무관</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="job-deadline">마감 6/4</span>
-              <button class="bookmark-btn" onclick="toggleBookmark(this)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-              </button>
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=12'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">웹드라마 촬영팀 스태프 모집 — 6월 촬영</div>
+            <div class="today-feed-tags"><span class="tag blue">촬영부</span><span class="tag">웹드라마</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 성동구 · 6월 8~20일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 90,000원</span><span class="today-feed-dday normal">D-11</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
 
-        <!-- 카드 2 -->
-        <div class="job-card">
-          <div class="job-card-header">
-            <h3 class="job-title">단편영화 연출부 스태프 (조감독 1명)</h3>
-            <span class="job-pay negotiable">협의</span>
-          </div>
-          <div class="job-tags">
-            <span class="tag blue">연출부</span>
-            <span class="tag">조감독</span>
-            <span class="tag">단편</span>
-          </div>
-          <div class="job-meta">
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              부산 해운대구
-            </span>
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              6월 1일 ~ 6월 5일
-            </span>
-          </div>
-          <div class="job-footer">
-            <div class="job-badges">
-              <span class="urgent-badge">D-3</span>
-              <span class="beginner-badge">경력 무관</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="job-deadline">마감 5/24</span>
-              <button class="bookmark-btn" onclick="toggleBookmark(this)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-              </button>
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=13'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">광고 제작 조명부 어시스턴트 급구</div>
+            <div class="today-feed-tags"><span class="tag blue">조명부</span><span class="tag">광고</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 강서구 · 5월 29~30일</div>
+              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday urgent">D-1</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
 
-        <!-- 카드 3 -->
-        <div class="job-card">
-          <div class="job-card-header">
-            <h3 class="job-title">광고 영상 촬영 오퍼레이터 · B캠 경력자</h3>
-            <span class="job-pay paid">유료</span>
-          </div>
-          <div class="job-tags">
-            <span class="tag blue">촬영부</span>
-            <span class="tag">오퍼레이터</span>
-            <span class="tag">B캠</span>
-            <span class="tag">광고</span>
-          </div>
-          <div class="job-meta">
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              서울 강남구
-            </span>
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              5월 16일 (1일)
-            </span>
-          </div>
-          <div class="job-footer">
-            <div class="job-badges">
-              <span class="urgent-badge">D-1</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="job-deadline">마감 5/22</span>
-              <button class="bookmark-btn" onclick="toggleBookmark(this)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-              </button>
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=14'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">독립영화 제작부 스태프 모집 (경력무관)</div>
+            <div class="today-feed-tags"><span class="tag blue">제작부</span><span class="tag">독립영화</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>경기 고양시 · 6월 1~10일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 60,000원</span><span class="today-feed-dday normal">D-4</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
 
-        <!-- 카드 4 -->
-        <div class="job-card">
-          <div class="job-card-header">
-            <h3 class="job-title">웹드라마 단역 배우 모집 — 20~30대 여성</h3>
-            <span class="job-pay unpaid">무보수</span>
-          </div>
-          <div class="job-tags">
-            <span class="tag blue">배우</span>
-            <span class="tag">단역</span>
-            <span class="tag">웹드라마</span>
-          </div>
-          <div class="job-meta">
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              경기 수원시
-            </span>
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              5월 24~25일
-            </span>
-          </div>
-          <div class="job-footer">
-            <div class="job-badges">
-              <span class="dday-badge">D-8</span>
-              <span class="beginner-badge">경력 무관</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="job-deadline">마감 5/29</span>
-              <button class="bookmark-btn" onclick="toggleBookmark(this)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-              </button>
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=15'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">뮤직비디오 연출부 스태프 모집</div>
+            <div class="today-feed-tags"><span class="tag blue">연출부</span><span class="tag">뮤직비디오</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 마포구 · 6월 3~5일</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 80,000원</span><span class="today-feed-dday normal">D-6</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
 
-        <!-- 카드 5 -->
-        <div class="job-card">
-          <div class="job-card-header">
-            <h3 class="job-title">다큐멘터리 사운드 레코디스트 · 전국 가능</h3>
-            <span class="job-pay paid">유료</span>
-          </div>
-          <div class="job-tags">
-            <span class="tag blue">사운드</span>
-            <span class="tag">레코디스트</span>
-            <span class="tag">다큐</span>
-          </div>
-          <div class="job-meta">
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              전국
-            </span>
-            <span class="job-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              6월 10일 ~ 7월 31일
-            </span>
-          </div>
-          <div class="job-footer">
-            <div class="job-badges">
-              <span class="dday-badge">D-20</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="job-deadline">마감 6/10</span>
-              <button class="bookmark-btn" onclick="toggleBookmark(this)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-              </button>
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=16'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">장편영화 DIT 스태프 — 경력자 우대</div>
+            <div class="today-feed-tags"><span class="tag blue">DIT</span><span class="tag">장편</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 전체 · 6월~8월</div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 150,000원</span><span class="today-feed-dday normal">D-15</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
 
-      </div><!-- /job-list -->
+        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=17'">
+          <div class="today-feed-content">
+            <div class="today-feed-title">단편영화 사운드 스태프 (동시녹음)</div>
+            <div class="today-feed-tags"><span class="tag blue">사운드</span><span class="tag">단편</span></div>
+            <div class="today-feed-bottom">
+              <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>인천 · 6월 7~9일</div>
+              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday normal">D-10</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="today-more-btn" id="today-more-btn" onclick="expandTodayFeed(this)">
+        오늘 공고 더보기
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
     </section>
 
   </main><!-- /main -->
@@ -2217,8 +2981,51 @@
     showToast('필터가 적용되었어요');
   }
 
+  // ── 사이드 드로어 ──
+  function openDrawer() {
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── 배너 캐러셀 ──
+  function scrollAdBanner(idx) {
+    const scroll = document.getElementById('adBannerScroll');
+    if (!scroll) return;
+    scroll.scrollTo({ left: scroll.offsetWidth * idx, behavior: 'smooth' });
+  }
+
+  (function initAdBanner() {
+    const scroll = document.getElementById('adBannerScroll');
+    const dots = document.querySelectorAll('.ad-dot');
+    if (!scroll) return;
+
+    scroll.addEventListener('scroll', () => {
+      const idx = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, { passive: true });
+
+    // 5초마다 자동 슬라이드
+    let current = 0;
+    setInterval(() => {
+      current = (current + 1) % dots.length;
+      scrollAdBanner(current);
+    }, 5000);
+  })();
+
   // ── 토스트 ──
   let toastTimer;
+  function expandTodayFeed(btn) {
+    const extra = document.getElementById('today-extra-cards');
+    extra.style.display = 'flex';
+    btn.style.display = 'none';
+  }
+
   function showToast(msg) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
@@ -2289,16 +3096,18 @@
         const pool = RECOMMEND_DB[genre] || [];
         for (const card of pool) {
           if (!cards.find(c => c.title === card.title)) cards.push(card);
-          if (cards.length >= 4) break;
+          if (cards.length >= 5) break;
         }
-        if (cards.length >= 4) break;
+        if (cards.length >= 5) break;
       }
     }
     if (cards.length === 0) {
       cards = [
         RECOMMEND_DB['촬영부'][0],
+        RECOMMEND_DB['촬영부'][1],
         RECOMMEND_DB['편집·색보정'][0],
         RECOMMEND_DB['조명부'][0],
+        RECOMMEND_DB['연출부'][0],
       ];
     }
 
