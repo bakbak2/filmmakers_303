@@ -350,7 +350,8 @@
     .sheet-actions { display: flex; gap: 10px; margin-top: 28px; }
     /* 버튼 규격: 높이 50px, border-radius 14px, border 1.5px 통일 */
     .btn-reset { flex: 1; height: 50px; border-radius: 14px; border: var(--border) solid var(--gray-200); background: none; color: var(--gray-700); font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; }
-    .btn-apply { flex: 2; height: 50px; border-radius: 14px; border: none; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; }
+    .btn-apply { flex: 2; height: 50px; border-radius: 14px; border: none; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; transition: opacity 0.2s; }
+    .btn-apply:disabled { opacity: 0.35; cursor: not-allowed; }
 
     /* ── 인풋 — 높이 48px, border-radius 12px, border 1.5px 완전 통일 ── */
     .edit-input-wrap { margin-bottom: 16px; }
@@ -405,7 +406,7 @@
           <div class="verified-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
         </div>
         <div class="profile-sub" style="color:var(--gray-400);font-style:italic;">한 줄 소개를 작성해보세요 ✏️</div>
-        <div class="profile-tags">
+        <div class="profile-tags" id="profileTags">
           <span class="ghost-tag primary">스태프</span>
           <span class="ghost-tag primary">편집·색보정</span>
           <span class="ghost-tag muted">촬영부</span>
@@ -491,7 +492,7 @@
         <button class="section-more" onclick="openSheet('roleSheet')">수정 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
       </div>
       <div class="role-card">
-        <div class="role-chips-row">
+        <div class="role-chips-row" id="roleChipsRow">
           <span class="role-tag primary">스태프</span>
           <span class="role-tag secondary">편집·색보정</span>
           <span class="role-tag secondary">촬영부</span>
@@ -499,7 +500,7 @@
         <div class="role-divider"></div>
         <div class="region-row">
           <div class="region-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div class="region-info"><div class="region-label">활동 지역</div><div class="region-val">서울 · 경기</div></div>
+          <div class="region-info"><div class="region-label">활동 지역</div><div class="region-val" id="regionVal">서울 · 경기</div></div>
         </div>
       </div>
     </section>
@@ -673,51 +674,51 @@
   <div class="sheet-title">역할 · 직군 수정</div>
   <div class="sheet-section">
     <div class="sheet-label">나는 어떤 사람인가요?</div>
-    <div class="chip-group">
-      <button class="select-chip active" onclick="toggleChip(this)">스태프·감독</button>
-      <button class="select-chip" onclick="toggleChip(this)">배우·모델</button>
-      <button class="select-chip" onclick="toggleChip(this)">입문자</button>
+    <div class="chip-group" id="roleTypeGroup">
+      <button class="select-chip active" onclick="toggleRoleChip(this)">스태프·감독</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">배우·모델</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">입문자</button>
     </div>
   </div>
   <div class="sheet-section">
     <div class="sheet-label">관심 직군 (최대 3개)</div>
-    <div class="chip-group">
-      <button class="select-chip active" onclick="toggleChip(this)">편집·색보정</button>
-      <button class="select-chip active" onclick="toggleChip(this)">촬영부</button>
-      <button class="select-chip" onclick="toggleChip(this)">연출부</button>
-      <button class="select-chip" onclick="toggleChip(this)">조명부</button>
-      <button class="select-chip" onclick="toggleChip(this)">사운드</button>
-      <button class="select-chip" onclick="toggleChip(this)">제작부</button>
-      <button class="select-chip" onclick="toggleChip(this)">DIT</button>
-      <button class="select-chip" onclick="toggleChip(this)">배우(연기)</button>
+    <div class="chip-group" id="roleGenreGroup">
+      <button class="select-chip active" onclick="toggleRoleChip(this)">편집·색보정</button>
+      <button class="select-chip active" onclick="toggleRoleChip(this)">촬영부</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">연출부</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">조명부</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">사운드</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">제작부</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">DIT</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">배우(연기)</button>
     </div>
   </div>
   <div class="sheet-section">
     <div class="sheet-label">활동 지역</div>
-    <div class="chip-group">
-      <button class="select-chip active" onclick="toggleChip(this)">서울</button>
-      <button class="select-chip active" onclick="toggleChip(this)">경기</button>
-      <button class="select-chip" onclick="toggleChip(this)">인천</button>
-      <button class="select-chip" onclick="toggleChip(this)">강원</button>
-      <button class="select-chip" onclick="toggleChip(this)">대전</button>
-      <button class="select-chip" onclick="toggleChip(this)">세종</button>
-      <button class="select-chip" onclick="toggleChip(this)">충북</button>
-      <button class="select-chip" onclick="toggleChip(this)">충남</button>
-      <button class="select-chip" onclick="toggleChip(this)">광주</button>
-      <button class="select-chip" onclick="toggleChip(this)">전북</button>
-      <button class="select-chip" onclick="toggleChip(this)">전남</button>
-      <button class="select-chip" onclick="toggleChip(this)">대구</button>
-      <button class="select-chip" onclick="toggleChip(this)">경북</button>
-      <button class="select-chip" onclick="toggleChip(this)">부산</button>
-      <button class="select-chip" onclick="toggleChip(this)">울산</button>
-      <button class="select-chip" onclick="toggleChip(this)">경남</button>
-      <button class="select-chip" onclick="toggleChip(this)">제주</button>
-      <button class="select-chip" onclick="toggleChip(this)">전국</button>
+    <div class="chip-group" id="roleRegionGroup">
+      <button class="select-chip active" onclick="toggleRoleChip(this)">서울</button>
+      <button class="select-chip active" onclick="toggleRoleChip(this)">경기</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">인천</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">강원</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">대전</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">세종</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">충북</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">충남</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">광주</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">전북</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">전남</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">대구</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">경북</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">부산</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">울산</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">경남</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">제주</button>
+      <button class="select-chip" onclick="toggleRoleChip(this)">전국</button>
     </div>
   </div>
   <div class="sheet-actions">
     <button class="btn-reset" onclick="closeSheet('roleSheet')">취소</button>
-    <button class="btn-apply" onclick="closeSheet('roleSheet');showToast('역할·직군이 업데이트되었습니다')">저장하기</button>
+    <button class="btn-apply" id="roleSaveBtn" onclick="saveRolePrefs()">저장하기</button>
   </div>
 </div>
 
@@ -847,6 +848,79 @@
   function toggleSwitch(id){document.getElementById(id).classList.toggle('on');}
   let tt;
   function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000);}
+
+  // ── 역할·직군 시트 전용 칩 토글 (저장 버튼 상태 연동) ──
+  function toggleRoleChip(el) {
+    el.classList.toggle('active');
+    checkRoleSaveBtn();
+  }
+
+  function checkRoleSaveBtn() {
+    var hasSelection =
+      document.querySelectorAll('#roleTypeGroup .select-chip.active').length > 0 ||
+      document.querySelectorAll('#roleGenreGroup .select-chip.active').length > 0;
+    var btn = document.getElementById('roleSaveBtn');
+    if (btn) btn.disabled = !hasSelection;
+  }
+
+  // ── 역할·직군 저장 ──
+  function saveRolePrefs() {
+    var roleTypes = Array.from(document.querySelectorAll('#roleTypeGroup .select-chip.active')).map(function(c){ return c.textContent.trim(); });
+    var genres    = Array.from(document.querySelectorAll('#roleGenreGroup .select-chip.active')).map(function(c){ return c.textContent.trim(); });
+    var regions   = Array.from(document.querySelectorAll('#roleRegionGroup .select-chip.active')).map(function(c){ return c.textContent.trim(); });
+
+    localStorage.setItem('fm_user_prefs', JSON.stringify({ roleTypes: roleTypes, genres: genres, regions: regions }));
+    closeSheet('roleSheet');
+
+    // 시트 닫기 애니메이션(300ms) 후 UI 반영
+    setTimeout(function() {
+      applyRoleDisplay(roleTypes, genres, regions);
+      showToast('역할·직군이 업데이트되었습니다');
+    }, 320);
+  }
+
+  // ── 화면에 역할·직군 반영 ──
+  function applyRoleDisplay(roleTypes, genres, regions) {
+    var profileHTML = '';
+    var chipsHTML   = '';
+
+    roleTypes.forEach(function(t) {
+      profileHTML += '<span class="ghost-tag primary">' + t + '</span>';
+      chipsHTML   += '<span class="role-tag primary">'  + t + '</span>';
+    });
+    genres.forEach(function(t, i) {
+      profileHTML += '<span class="ghost-tag ' + (i === 0 ? 'primary' : 'muted') + '">' + t + '</span>';
+      chipsHTML   += '<span class="role-tag secondary">' + t + '</span>';
+    });
+
+    var profileTags = document.getElementById('profileTags');
+    var roleChipsRow = document.getElementById('roleChipsRow');
+    var regionVal    = document.getElementById('regionVal');
+
+    if (profileTags)  profileTags.innerHTML  = profileHTML;
+    if (roleChipsRow) roleChipsRow.innerHTML  = chipsHTML;
+    if (regionVal)    regionVal.textContent   = regions.length > 0 ? regions.join(' · ') : '전국';
+  }
+
+  // ── 페이지 로드 시 저장된 설정 복원 ──
+  (function() {
+    var raw = localStorage.getItem('fm_user_prefs');
+    if (!raw) return;
+    try {
+      var prefs = JSON.parse(raw);
+      applyRoleDisplay(prefs.roleTypes || [], prefs.genres || [], prefs.regions || []);
+
+      // 시트 칩 상태도 저장값에 맞게 동기화
+      function syncChips(groupId, saved) {
+        document.querySelectorAll('#' + groupId + ' .select-chip').forEach(function(btn) {
+          btn.classList.toggle('active', saved.indexOf(btn.textContent.trim()) !== -1);
+        });
+      }
+      syncChips('roleTypeGroup', prefs.roleTypes || []);
+      syncChips('roleGenreGroup', prefs.genres || []);
+      syncChips('roleRegionGroup', prefs.regions || []);
+    } catch(e) {}
+  })();
 </script>
 </body>
 </html>

@@ -2145,9 +2145,10 @@
 
   function exitOnboarding() {
     localStorage.setItem('fm_onboarding_done', '1');
+    localStorage.setItem('fm_user_prefs', JSON.stringify({ genres: obGenres, regions: obRegions }));
     const wrap = document.getElementById('obWrap');
     wrap.classList.add('exit');
-    setTimeout(() => { wrap.style.display = 'none'; }, 400);
+    setTimeout(() => { wrap.style.display = 'none'; renderRecommendCards(); }, 400);
   }
 
   // 이미 온보딩을 완료한 경우 즉시 숨김
@@ -2231,11 +2232,95 @@
     if (this.value.length > 0) showToast('검색 기능은 데모 버전에서 지원되지 않아요');
   });
 
-  // ── AI 추천 카드 클릭 → 상세 페이지 ──
-  document.querySelectorAll('.recommend-card').forEach(card => {
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', () => window.location.href = 'filmmakers_detail_v1.html');
-  });
+  // ── AI 추천 공고 데이터 & 동적 렌더링 ──
+  const RECOMMEND_DB = {
+    '촬영부': [
+      { title: '단편영화 &lt;밤의 끝&gt; 촬영부 스태프 모집', meta: '서울 마포구 · 5월 15~17일', tags: ['촬영부', '조감독'], pay: '유료', match: '✦ 직군 일치 · 93%', icon: 'camera' },
+      { title: '독립영화 촬영감독 모집 — 장편 데뷔작', meta: '서울 전체 · 6월 중', tags: ['촬영부', '촬영감독'], pay: '협의', match: '✦ 경력 무관 · 지역 일치', icon: 'camera' },
+    ],
+    '편집·색보정': [
+      { title: '장편 독립영화 색보정 담당자 — 협업 가능자', meta: '서울 전체 · 6월 1~20일', tags: ['편집·색보정', 'DaVinci'], pay: '유료', match: '✦ 경력 무관 · 지역 일치', icon: 'spotlight' },
+      { title: '뮤직비디오 편집 스태프 구합니다', meta: '서울 강남구 · 5월 25일~6월 5일', tags: ['편집·색보정', 'Premiere Pro'], pay: '유료', match: '✦ 직군 일치 · 88%', icon: 'spotlight' },
+    ],
+    '조명부': [
+      { title: '뮤직비디오 조명팀 어시스턴트 모집', meta: '경기 성남 · 5월 18일 (1일)', tags: ['조명부'], pay: '유료', match: '✦ 유사 지원자 조회 다수', icon: 'softbox' },
+      { title: '단편영화 조명부 스태프 (1명)', meta: '서울 영등포구 · 6월 초', tags: ['조명부', '경력 무관'], pay: '협의', match: '✦ 직군 일치 · 79%', icon: 'softbox' },
+    ],
+    '연출부': [
+      { title: '단편영화 연출부 스태프 (조감독 1명)', meta: '서울 은평구 · 6월 5~7일', tags: ['연출부', '조감독'], pay: '협의', match: '✦ 직군 일치 · 91%', icon: 'clapper' },
+      { title: '장편 독립영화 &lt;봄날의 기억&gt; 연출부 모집', meta: '서울·경기 전체 · 6월~8월', tags: ['연출부', '장편'], pay: '유료', match: '✦ 경력 무관 · 지역 일치', icon: 'clapper' },
+    ],
+    '사운드': [
+      { title: '단편영화 동시녹음 담당자 모집', meta: '서울 전체 · 6월 2~4일', tags: ['사운드', '동시녹음'], pay: '유료', match: '✦ 직군 일치 · 85%', icon: 'mic' },
+      { title: '인디 음악 다큐 사운드 스태프', meta: '서울 마포구 · 5월 말', tags: ['사운드', '다큐멘터리'], pay: '협의', match: '✦ 경력 무관 · 지역 일치', icon: 'mic' },
+    ],
+    '제작부': [
+      { title: '단편영화 제작부 스태프 모집', meta: '서울·경기 · 5월 30일~6월 3일', tags: ['제작부'], pay: '협의', match: '✦ 직군 일치 · 82%', icon: 'brief' },
+    ],
+    'DIT': [
+      { title: '장편영화 DIT 스태프 모집 (경력자 우대)', meta: '서울 전체 · 6월~9월', tags: ['DIT', 'SSD 관리'], pay: '유료', match: '✦ 직군 일치 · 96%', icon: 'monitor' },
+    ],
+    '배우(연기)': [
+      { title: '단편영화 &lt;시선&gt; 주연 배우 캐스팅', meta: '서울 전체 · 6월 촬영', tags: ['배우(연기)', '주연'], pay: '협의', match: '✦ 역할 일치 · 90%', icon: 'actor' },
+      { title: '웹드라마 단역 배우 모집', meta: '서울 강남구 · 5월 말', tags: ['배우(연기)', '단역'], pay: '유료', match: '✦ 직군 일치 · 87%', icon: 'actor' },
+    ],
+  };
+
+  const REC_ICONS = {
+    camera: `<svg viewBox="0 0 26 26" fill="none"><rect x="2" y="8" width="18" height="13" rx="3" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><rect x="7" y="5" width="6" height="4" rx="1" fill="#1A2B48"/><circle cx="11" cy="14" r="4.5" fill="none" stroke="#2D4A7A" stroke-width="1.5"/><circle cx="11" cy="14" r="2.5" fill="#2D4A7A"/><path d="M20 11L25 8V18L20 15Z" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.2" stroke-linejoin="round"/></svg>`,
+    spotlight: `<svg viewBox="0 0 26 26" fill="none"><path d="M13 10 L5 24 L21 24Z" fill="rgba(26,43,72,0.15)"/><path d="M7 4 L19 4 L16 11 L10 11Z" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="13" cy="11" rx="3.5" ry="2" fill="#2D4A7A"/><line x1="13" y1="2" x2="13" y2="4" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="13" cy="24" rx="5" ry="1.5" fill="rgba(26,43,72,0.35)"/></svg>`,
+    softbox: `<svg viewBox="0 0 26 26" fill="none"><path d="M4 3 L22 3 L17 12 L9 12Z" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 4 L19 4 L15 10 L11 10Z" fill="rgba(26,43,72,0.3)"/><line x1="13" y1="12" x2="13" y2="22" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="22" x2="18" y2="22" stroke="#2D4A7A" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="22" x2="5" y2="26" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="22" x2="21" y2="26" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    clapper: `<svg viewBox="0 0 26 26" fill="none"><rect x="2" y="10" width="22" height="14" rx="2" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><rect x="2" y="5" width="22" height="6" rx="1.5" fill="#2D4A7A"/><line x1="7" y1="5" x2="5" y2="11" stroke="#C8D8F0" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="5" x2="11" y2="11" stroke="#C8D8F0" stroke-width="1.5" stroke-linecap="round"/><line x1="19" y1="5" x2="17" y2="11" stroke="#C8D8F0" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    mic: `<svg viewBox="0 0 26 26" fill="none"><rect x="9" y="2" width="8" height="13" rx="4" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><path d="M5 13a8 8 0 0 0 16 0" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="13" y1="21" x2="13" y2="25" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/><line x1="9" y1="25" x2="17" y2="25" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    brief: `<svg viewBox="0 0 26 26" fill="none"><rect x="2" y="8" width="22" height="16" rx="2.5" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><path d="M9 8V6a3 3 0 0 1 8 0v2" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="16" x2="24" y2="16" stroke="#2D4A7A" stroke-width="1.2"/></svg>`,
+    monitor: `<svg viewBox="0 0 26 26" fill="none"><rect x="2" y="3" width="22" height="16" rx="2.5" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><line x1="9" y1="22" x2="17" y2="22" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/><line x1="13" y1="19" x2="13" y2="22" stroke="#2D4A7A" stroke-width="1.8" stroke-linecap="round"/><rect x="5" y="6" width="16" height="10" rx="1" fill="#2D4A7A" opacity="0.5"/></svg>`,
+    actor: `<svg viewBox="0 0 26 26" fill="none"><circle cx="13" cy="8" r="5" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><path d="M4 24c0-5 4-8 9-8s9 3 9 8" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>`,
+  };
+
+  function renderRecommendCards() {
+    const raw = localStorage.getItem('fm_user_prefs');
+    const prefs = raw ? JSON.parse(raw) : null;
+    const scroll = document.querySelector('.recommend-scroll');
+    if (!scroll) return;
+
+    let cards = [];
+    if (prefs && prefs.genres && prefs.genres.length > 0) {
+      for (const genre of prefs.genres) {
+        const pool = RECOMMEND_DB[genre] || [];
+        for (const card of pool) {
+          if (!cards.find(c => c.title === card.title)) cards.push(card);
+          if (cards.length >= 4) break;
+        }
+        if (cards.length >= 4) break;
+      }
+    }
+    if (cards.length === 0) {
+      cards = [
+        RECOMMEND_DB['촬영부'][0],
+        RECOMMEND_DB['편집·색보정'][0],
+        RECOMMEND_DB['조명부'][0],
+      ];
+    }
+
+    scroll.innerHTML = cards.map(c => {
+      const payClass = c.pay === '유료' ? ' paid' : c.pay === '협의' ? ' negotiable' : '';
+      return `<div class="recommend-card" style="cursor:pointer" onclick="window.location.href='filmmakers_detail_v1.html'">
+        <div class="recommend-card-top">
+          <div class="recommend-thumb">${REC_ICONS[c.icon]}</div>
+          <span class="pay-badge${payClass}">${c.pay}</span>
+        </div>
+        <div class="recommend-title">${c.title}</div>
+        <div class="recommend-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${c.meta}
+        </div>
+        <div class="recommend-tags">${c.tags.map((t, i) => `<span class="tag${i === 0 ? ' blue' : ''}">${t}</span>`).join('')}</div>
+        <div class="recommend-footer"><span class="ai-match-badge">${c.match}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  renderRecommendCards();
 
   // ── 공고 카드 클릭 → 상세 페이지 ──
   document.querySelectorAll('.job-card').forEach(card => {
