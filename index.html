@@ -1710,6 +1710,29 @@
       font-size: 13px;
       font-weight: 600;
     }
+    /* ── 공고 상세 슬라이드 오버레이 ── */
+    .detail-overlay {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) translateX(100vw);
+      width: 100%;
+      max-width: 430px;
+      height: 100%;
+      z-index: 300;
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #F8F7F4;
+      overflow: hidden;
+    }
+    .detail-overlay.open {
+      transform: translateX(-50%) translateX(0);
+    }
+    #detailFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -2011,7 +2034,7 @@
       <div class="ad-banner-scroll" id="adBannerScroll">
 
         <!-- 배너 1: 마케팅 채용 -->
-        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=18'">
+        <div class="ad-banner-slide" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=18')">
           <div class="ad-banner-bg" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"></div>
           <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%);"></div>
           <div class="ad-banner-content">
@@ -2034,7 +2057,7 @@
         </div>
 
         <!-- 배너 2: 독립영화 포스터 공모 -->
-        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=19'">
+        <div class="ad-banner-slide" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=19')">
           <div class="ad-banner-bg" style="background: linear-gradient(135deg, #2d1b4e 0%, #1a0a2e 60%, #3d1a5e 100%);"></div>
           <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 65%);"></div>
           <div class="ad-banner-content">
@@ -2057,7 +2080,7 @@
         </div>
 
         <!-- 배너 3: 후반작업 편집자 구인 -->
-        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=20'">
+        <div class="ad-banner-slide" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=20')">
           <div class="ad-banner-bg" style="background: linear-gradient(135deg, #0d2137 0%, #0a1628 60%, #1a3a5c 100%);"></div>
           <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%);"></div>
           <div class="ad-banner-content">
@@ -2082,7 +2105,7 @@
         </div>
 
         <!-- 배너 4: 뮤직비디오 팀 모집 -->
-        <div class="ad-banner-slide" onclick="window.location.href='filmmakers_detail_v1.html?job=21'">
+        <div class="ad-banner-slide" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=21')">
           <div class="ad-banner-bg" style="background: linear-gradient(135deg, #1a2e1a 0%, #0f1f0f 60%, #2a4a1a 100%);"></div>
           <div class="ad-banner-overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 65%);"></div>
           <div class="ad-banner-content">
@@ -2251,7 +2274,7 @@
         <!-- 1위 -->
         <div class="peer-item">
           <span class="peer-item-num gold" style="left: 0px;">1</span>
-        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=1'">
+        <div class="peer-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=1')">
           <div class="peer-rank"><span class="peer-rank-num top">1</span> 위 <span class="peer-hot-label">🔥 오늘 가장 인기</span></div>
           <div class="peer-card-title">장편 독립영화 &lt;새벽&gt; 촬영감독 모집</div>
           <div class="peer-card-meta">
@@ -2268,7 +2291,7 @@
         <!-- 2위 -->
         <div class="peer-item">
           <span class="peer-item-num gold">2</span>
-        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=2'">
+        <div class="peer-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=2')">
           <div class="peer-rank"><span class="peer-rank-num top">2</span> 위</div>
           <div class="peer-card-title">뮤직비디오 B캠 오퍼레이터 — 경력무관</div>
           <div class="peer-card-meta">
@@ -2285,7 +2308,7 @@
         <!-- 3위 -->
         <div class="peer-item">
           <span class="peer-item-num">3</span>
-        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=3'">
+        <div class="peer-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=3')">
           <div class="peer-rank"><span class="peer-rank-num">3</span> 위</div>
           <div class="peer-card-title">광고 영상 촬영 어시스턴트 1명 급구</div>
           <div class="peer-card-meta">
@@ -2302,7 +2325,7 @@
         <!-- 4위 -->
         <div class="peer-item">
           <span class="peer-item-num">4</span>
-        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=4'">
+        <div class="peer-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=4')">
           <div class="peer-rank"><span class="peer-rank-num">4</span> 위</div>
           <div class="peer-card-title">다큐멘터리 촬영팀 스태프 (전국 이동 가능)</div>
           <div class="peer-card-meta">
@@ -2319,7 +2342,7 @@
         <!-- 5위 -->
         <div class="peer-item">
           <span class="peer-item-num">5</span>
-        <div class="peer-card" onclick="window.location.href='filmmakers_detail_v1.html?job=5'">
+        <div class="peer-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=5')">
           <div class="peer-rank"><span class="peer-rank-num">5</span> 위</div>
           <div class="peer-card-title">웹드라마 촬영부 팀장급 모집 — 유료</div>
           <div class="peer-card-meta">
@@ -2491,7 +2514,7 @@
       </div>
       <div class="today-feed">
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=6'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=6')">
           <div class="today-feed-content">
             <div class="today-feed-title">단편영화 &lt;새벽, 그 너머&gt; 촬영감독 모집</div>
             <div class="today-feed-tags"><span class="tag blue">촬영부</span><span class="tag">단편</span></div>
@@ -2502,7 +2525,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=7'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=7')">
           <div class="today-feed-content">
             <div class="today-feed-title">광고 영상 연출부 조감독 모집 (즉시 출발)</div>
             <div class="today-feed-tags"><span class="tag blue">연출부</span><span class="tag">조감독</span></div>
@@ -2513,7 +2536,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=8'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=8')">
           <div class="today-feed-content">
             <div class="today-feed-title">OTT 드라마 조명팀 어시스턴트 2명 모집</div>
             <div class="today-feed-tags"><span class="tag blue">조명부</span><span class="tag">경력무관</span></div>
@@ -2524,7 +2547,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=9'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=9')">
           <div class="today-feed-content">
             <div class="today-feed-title">독립 단편 배우 모집 — 20대 남녀 각 1명</div>
             <div class="today-feed-tags"><span class="tag blue">배우</span><span class="tag">단역</span></div>
@@ -2535,7 +2558,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=10'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=10')">
           <div class="today-feed-content">
             <div class="today-feed-title">뮤직비디오 편집·색보정 프리랜서 구인</div>
             <div class="today-feed-tags"><span class="tag blue">편집·색보정</span><span class="tag">원격가능</span></div>
@@ -2546,7 +2569,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=11'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=11')">
           <div class="today-feed-content">
             <div class="today-feed-title">다큐멘터리 사운드 레코디스트 구인</div>
             <div class="today-feed-tags"><span class="tag blue">사운드</span><span class="tag">다큐</span></div>
@@ -2561,7 +2584,7 @@
 
       <div id="today-extra-cards" style="display:none; flex-direction:column; gap:9px; margin-top:9px;">
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=12'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=12')">
           <div class="today-feed-content">
             <div class="today-feed-title">웹드라마 촬영팀 스태프 모집 — 6월 촬영</div>
             <div class="today-feed-tags"><span class="tag blue">촬영부</span><span class="tag">웹드라마</span></div>
@@ -2572,7 +2595,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=13'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=13')">
           <div class="today-feed-content">
             <div class="today-feed-title">광고 제작 조명부 어시스턴트 급구</div>
             <div class="today-feed-tags"><span class="tag blue">조명부</span><span class="tag">광고</span></div>
@@ -2583,7 +2606,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=14'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=14')">
           <div class="today-feed-content">
             <div class="today-feed-title">독립영화 제작부 스태프 모집 (경력무관)</div>
             <div class="today-feed-tags"><span class="tag blue">제작부</span><span class="tag">독립영화</span></div>
@@ -2594,7 +2617,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=15'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=15')">
           <div class="today-feed-content">
             <div class="today-feed-title">뮤직비디오 연출부 스태프 모집</div>
             <div class="today-feed-tags"><span class="tag blue">연출부</span><span class="tag">뮤직비디오</span></div>
@@ -2605,7 +2628,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=16'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=16')">
           <div class="today-feed-content">
             <div class="today-feed-title">장편영화 DIT 스태프 — 경력자 우대</div>
             <div class="today-feed-tags"><span class="tag blue">DIT</span><span class="tag">장편</span></div>
@@ -2616,7 +2639,7 @@
           </div>
         </div>
 
-        <div class="today-feed-card" onclick="window.location.href='filmmakers_detail_v1.html?job=17'">
+        <div class="today-feed-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=17')">
           <div class="today-feed-content">
             <div class="today-feed-title">단편영화 사운드 스태프 (동시녹음)</div>
             <div class="today-feed-tags"><span class="tag blue">사운드</span><span class="tag">단편</span></div>
@@ -2730,6 +2753,11 @@
 
   <!-- ── 토스트 ── -->
   <div class="toast" id="toast"></div>
+
+  <!-- ── 공고 상세 오버레이 ── -->
+  <div class="detail-overlay" id="detailOverlay">
+    <iframe id="detailFrame" src="" title="공고 상세"></iframe>
+  </div>
 
 </div><!-- /app -->
 
@@ -3113,7 +3141,7 @@
 
     scroll.innerHTML = cards.map(c => {
       const payClass = c.pay === '유료' ? ' paid' : c.pay === '협의' ? ' negotiable' : '';
-      return `<div class="recommend-card" style="cursor:pointer" onclick="window.location.href='filmmakers_detail_v1.html'">
+      return `<div class="recommend-card" style="cursor:pointer" onclick="openDetailOverlay('filmmakers_detail_v1.html')">
         <div class="recommend-card-top">
           <div class="recommend-thumb">${REC_ICONS[c.icon]}</div>
           <span class="pay-badge${payClass}">${c.pay}</span>
@@ -3136,9 +3164,23 @@
     card.style.cursor = 'pointer';
     card.addEventListener('click', function(e) {
       if (!e.target.closest('.bookmark-btn')) {
-        window.location.href = 'filmmakers_detail_v1.html';
+        openDetailOverlay('filmmakers_detail_v1.html');
       }
     });
+  });
+
+  function openDetailOverlay(url) {
+    document.getElementById('detailFrame').src = url;
+    document.getElementById('detailOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDetailOverlay() {
+    document.getElementById('detailOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { document.getElementById('detailFrame').src = ''; }, 350);
+  }
+  window.addEventListener('message', e => {
+    if (e.data === 'closeDetailOverlay') closeDetailOverlay();
   });
 </script>
 </body>
