@@ -522,7 +522,7 @@
     }
     .today-feed-icon svg { width: 26px; height: 26px; }
     .today-feed-icon-label {
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       color: rgba(255,255,255,0.75);
       letter-spacing: 0.3px;
@@ -537,7 +537,7 @@
       min-width: 0;
     }
     .today-feed-title {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--gray-900);
       line-height: 1.45;
@@ -555,7 +555,7 @@
       margin-top: 2px;
     }
     .today-feed-meta {
-      font-size: 10px;
+      font-size: 12px;
       color: var(--gray-400);
       display: flex;
       align-items: center;
@@ -564,7 +564,7 @@
     .today-feed-meta svg { width: 10px; height: 10px; flex-shrink: 0; }
     .today-feed-right { display: flex; align-items: center; gap: 6px; }
     .today-feed-pay {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       padding: 3px 7px;
       border-radius: 6px;
@@ -577,7 +577,7 @@
     .today-feed-pay.unpaid     { background: var(--gray-100);     color: var(--gray-500); }
     .today-feed-pay.negotiable { background: var(--orange-light); color: var(--orange); }
     .today-feed-dday {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       padding: 3px 7px;
       border-radius: 6px;
@@ -645,7 +645,9 @@
     .peer-item-num.gold { color: rgba(210,140,10,0.15); }
     .peer-card {
       flex-shrink: 0;
-      width: 200px;
+      width: 220px;
+      height: 178px;
+      overflow: hidden;
       background: rgba(255, 255, 255, 0.80);
       border-radius: var(--radius);
       padding: 14px;
@@ -656,10 +658,14 @@
       position: relative;
       z-index: 1;
       margin-left: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .peer-card:active { transform: scale(0.98); }
     .peer-rank {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--gray-400);
       letter-spacing: 0.5px;
@@ -669,7 +675,7 @@
       gap: 5px;
     }
     .peer-rank-num {
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 900;
       color: var(--navy);
     }
@@ -682,7 +688,7 @@
       margin-left: 4px;
     }
     .peer-card-title {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--gray-900);
       line-height: 1.4;
@@ -693,7 +699,7 @@
       overflow: hidden;
     }
     .peer-card-meta {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--gray-400);
       margin-bottom: 8px;
       display: flex;
@@ -707,7 +713,7 @@
       justify-content: space-between;
     }
     .peer-hot-badge {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       background: #FEF3E2;
       color: #C07000;
@@ -715,7 +721,7 @@
       padding: 3px 7px;
     }
     .peer-apply-count {
-      font-size: 10px;
+      font-size: 12px;
       color: var(--gray-400);
     }
 
@@ -870,7 +876,7 @@
     .recommend-scroll::-webkit-scrollbar { display: none; }
     .recommend-card {
       flex-shrink: 0;
-      width: calc(25vw - 5px);
+      width: min(72vw, 300px);
       scroll-snap-align: start;
       background: #fff;
       border: 1px solid rgba(255,255,255,0.9);
@@ -904,8 +910,8 @@
       padding: 4px 10px;
       border-radius: 100px;
     }
-    .pay-badge.paid { background: var(--blue-light); color: var(--blue); }
-    .pay-badge.unpaid { background: var(--gray-100); color: var(--gray-500); }
+    .pay-badge.paid { background: var(--green-light); color: var(--green); }
+    .pay-badge.unpaid { background: var(--green-light); color: var(--green); }
     .pay-badge.negotiable { background: var(--orange-light); color: var(--orange); }
     .recommend-title {
       font-size: 14px;
@@ -919,7 +925,7 @@
       overflow: hidden;
     }
     .recommend-meta {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--gray-400);
       display: flex;
       align-items: center;
@@ -1057,7 +1063,7 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--gray-500);
       font-weight: 500;
     }
@@ -1389,7 +1395,7 @@
       display: flex; align-items: center; justify-content: center;
     }
     .ob-logo-icon svg { width: 16px; height: 16px; }
-    .ob-logo-text { font-size: 18px; font-weight: 900; color: var(--navy); letter-spacing: -0.8px; }
+    .ob-logo-text { font-size: 20px; font-weight: 900; color: #1A2B48; letter-spacing: -0.5px; font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; }
     .ob-skip {
       font-size: 13px;
       font-weight: 600;
@@ -1724,7 +1730,7 @@
       <div class="ob-logo">
         <span class="ob-logo-text">Filmmakers</span>
       </div>
-      <button class="ob-skip" onclick="obSkip()">건너뛰기</button>
+      <button class="ob-skip" onclick="obSkip()" style="display:none">건너뛰기</button>
     </div>
 
     <!-- 진행 바 -->
@@ -1741,7 +1747,7 @@
       <div class="ob-step visible" id="obStep1">
         <div class="ob-step-label">Step 1 / 3</div>
         <h2 class="ob-step-title">나는 어떤<br>사람인가요?</h2>
-        <p class="ob-step-desc">역할을 선택하면 <strong>맞춤 공고</strong>를 바로 볼 수 있어요.<br>여러 개 선택해도 괜찮아요.</p>
+        <p class="ob-step-desc">역할을 선택하면 <strong>맞춤 공고</strong>를 바로 볼 수 있어요.</p>
 
         <div class="ob-role-list">
           <div class="ob-role-item" onclick="obToggleRole(this, 'staff')">
@@ -1839,12 +1845,11 @@
       <div class="ob-step hidden-right" id="obStep2">
         <div class="ob-step-label">Step 2 / 3</div>
         <h2 class="ob-step-title">관심 있는<br>직군을 골라요</h2>
-        <p class="ob-step-desc">최대 3개 추천이에요. <strong>나중에 언제든</strong> 바꿀 수 있어요.</p>
+        <p class="ob-step-desc">하나를 골라요. <strong>나중에 언제든</strong> 바꿀 수 있어요.</p>
 
         <div class="ob-genre-grid" id="obGenreGrid">
           <!-- JS로 동적 렌더링 -->
         </div>
-        <p class="ob-max-hint" id="obGenreHint">최대 3개까지 선택할 수 있어요</p>
       </div>
 
       <!-- Step 3 · 활동 지역 선택 -->
@@ -1926,8 +1931,11 @@
   <!-- ── 사이드 드로어 ── -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
   <div class="drawer" id="drawer">
-    <div class="drawer-header">
+    <div class="drawer-header" style="display:flex;align-items:center;justify-content:space-between;">
       <div class="drawer-logo">Filmmakers</div>
+      <button onclick="closeDrawer()" style="background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;" aria-label="닫기">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
     <div class="cat-wrap">
       <!-- 왼쪽: 대분류 -->
@@ -2331,9 +2339,15 @@
     </section>
 
     <!-- 같은 직군 인기 공고 -->
-    <section class="section-colored section-bg-amber">
+    <section class="section-colored section-bg-amber" style="position:relative">
       <div class="section-header">
-        <h2 class="section-title"><span class="section-chip chip-amber">HOT</span>촬영부들이 많이 본 공고</h2>
+        <h2 class="section-title">
+          <span class="section-chip chip-amber">HOT</span>
+          <button id="hotPickBtn" onclick="toggleHotDropdown()" style="background:none;border:none;padding:0;cursor:pointer;font:inherit;font-size:inherit;font-weight:inherit;color:inherit;display:inline-flex;align-items:center;gap:4px;">
+            <span id="peerSectionLabel">촬영부</span> PICK!
+            <svg id="hotPickArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;transition:transform 0.2s"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </h2>
         <button class="section-more" onclick="window.location.href='filmmakers_explore_v1.html'">
           전체
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -2341,7 +2355,12 @@
           </svg>
         </button>
       </div>
-      <div class="peer-scroll">
+      <!-- HOT PICK 드롭다운 -->
+      <div id="hotDropdown" style="display:none;position:absolute;left:16px;right:16px;top:52px;background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.13);z-index:100;padding:12px;display:none;">
+        <p style="font-size:11px;color:#999;margin:0 0 8px 2px;font-weight:600;">직군 선택</p>
+        <div id="hotDropdownChips" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+      </div>
+      <div class="peer-scroll" id="peerScroll">
 
         <!-- 1위 -->
         <div class="peer-item">
@@ -2434,15 +2453,9 @@
     <!-- AI 추천 공고 (가로 스크롤) -->
     <section class="section-colored section-bg-lavender">
       <div class="section-header">
-        <h2 class="section-title"><span class="section-chip chip-violet">AI</span>나에게 맞춤 공고</h2>
-        <button class="section-more">
-          전체
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
+        <h2 class="section-title"><span class="section-chip chip-violet">AI</span> 추천 공고</h2>
       </div>
-      <div class="recommend-scroll">
+      <div class="recommend-scroll" id="recommendScroll">
         <div class="recommend-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=101')" style="cursor:pointer">
           <div class="recommend-card-top">
             <div class="recommend-thumb">
@@ -2592,7 +2605,7 @@
             <div class="today-feed-tags"><span class="tag blue">촬영부</span><span class="tag">단편</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 마포구 · 6월 10~14일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 130,000원</span><span class="today-feed-dday normal">D-13</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 130,000원</span><span class="today-feed-dday normal">D-13</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2603,7 +2616,7 @@
             <div class="today-feed-tags"><span class="tag blue">연출부</span><span class="tag">조감독</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 강남구 · 5월 30~31일</div>
-              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday urgent">D-2</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday urgent">D-2</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2614,7 +2627,7 @@
             <div class="today-feed-tags"><span class="tag blue">조명부</span><span class="tag">경력무관</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 종로구 · 6월 3일~7월 2일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 90,000원</span><span class="today-feed-dday normal">D-6</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 90,000원</span><span class="today-feed-dday normal">D-6</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2625,7 +2638,7 @@
             <div class="today-feed-tags"><span class="tag blue">배우</span><span class="tag">단역</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>경기 수원시 · 6월 1~2일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 80,000원</span><span class="today-feed-dday normal">D-4</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 80,000원</span><span class="today-feed-dday normal">D-4</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2636,7 +2649,7 @@
             <div class="today-feed-tags"><span class="tag blue">편집·색보정</span><span class="tag">원격가능</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>전국 (원격) · 6월 내</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 120,000원</span><span class="today-feed-dday normal">D-20</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 120,000원</span><span class="today-feed-dday normal">D-20</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2647,7 +2660,7 @@
             <div class="today-feed-tags"><span class="tag blue">사운드</span><span class="tag">다큐</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>부산 · 6월 15일~7월 10일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 130,000원</span><span class="today-feed-dday normal">D-18</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 130,000원</span><span class="today-feed-dday normal">D-18</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2662,7 +2675,7 @@
             <div class="today-feed-tags"><span class="tag blue">촬영부</span><span class="tag">웹드라마</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 성동구 · 6월 8~20일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 90,000원</span><span class="today-feed-dday normal">D-11</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 90,000원</span><span class="today-feed-dday normal">D-11</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2673,7 +2686,7 @@
             <div class="today-feed-tags"><span class="tag blue">조명부</span><span class="tag">광고</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 강서구 · 5월 29~30일</div>
-              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday urgent">D-1</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday urgent">D-1</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2684,7 +2697,7 @@
             <div class="today-feed-tags"><span class="tag blue">제작부</span><span class="tag">독립영화</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>경기 고양시 · 6월 1~10일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 60,000원</span><span class="today-feed-dday normal">D-4</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 60,000원</span><span class="today-feed-dday normal">D-4</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2695,7 +2708,7 @@
             <div class="today-feed-tags"><span class="tag blue">연출부</span><span class="tag">뮤직비디오</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 마포구 · 6월 3~5일</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 80,000원</span><span class="today-feed-dday normal">D-6</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 80,000원</span><span class="today-feed-dday normal">D-6</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2706,7 +2719,7 @@
             <div class="today-feed-tags"><span class="tag blue">DIT</span><span class="tag">장편</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>서울 전체 · 6월~8월</div>
-              <div class="today-feed-right"><span class="today-feed-pay paid">일급 150,000원</span><span class="today-feed-dday normal">D-15</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay paid">일급 150,000원</span><span class="today-feed-dday normal">D-15</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2717,7 +2730,7 @@
             <div class="today-feed-tags"><span class="tag blue">사운드</span><span class="tag">단편</span></div>
             <div class="today-feed-bottom">
               <div class="today-feed-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>인천 · 6월 7~9일</div>
-              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday normal">D-10</span><button class="today-feed-bm" onclick="event.stopPropagation();this.classList.toggle('saved')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+              <div class="today-feed-right"><span class="today-feed-pay negotiable">협의</span><span class="today-feed-dday normal">D-10</span><button class="today-feed-bm" onclick="toggleBookmark(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -2734,7 +2747,7 @@
 
   <!-- ── 하단 내비게이션 ── -->
   <nav class="bottom-nav">
-    <button class="nav-item active">
+    <button class="nav-item active" onclick="window.location.href='index_0603.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
         <polyline points="9 22 9 12 15 12 15 22"/>
@@ -2762,6 +2775,14 @@
       </svg>마이페이지
     </button>
   </nav>
+
+  <!-- ── 폴더 저장 바텀시트 ── -->
+  <div class="sheet" id="folderSheet" style="z-index:1002;padding:0 20px 40px;">
+    <div style="width:36px;height:4px;background:#e5e7eb;border-radius:2px;margin:12px auto 20px;"></div>
+    <div style="font-size:17px;font-weight:800;color:#1A2B48;letter-spacing:-0.3px;margin-bottom:6px;">폴더에 저장</div>
+    <div style="font-size:13px;color:#9ca3af;margin-bottom:20px;">저장할 폴더를 선택해주세요</div>
+    <div id="folderSheetList" style="display:flex;flex-direction:column;gap:4px;"></div>
+  </div>
 
   <!-- ── 바텀 시트 (확장 필터) ── -->
   <div class="sheet-overlay" id="overlay" onclick="closeSheet()"></div>
@@ -2838,6 +2859,342 @@
 </div><!-- /app -->
 
 <script>
+  // ── 직군별 맞춤 공고 데이터 ──
+  const JOB_DB = {
+    '촬영부': [
+      { title:'단편영화 〈밤의 끝〉 촬영부 스태프 모집', loc:'서울 마포구 · 6월 10~17일', tags:['촬영부','단편'], pay:'일급 120,000원', payClass:'paid', match:'✦ 직군 일치 · 93%' },
+      { title:'OTT 드라마 B캠 오퍼레이터 급모집', loc:'서울 종로구 · 6월 5~30일', tags:['촬영부','드라마'], pay:'일급 150,000원', payClass:'paid', match:'✦ 직군 일치 · 88%' },
+      { title:'뮤직비디오 촬영감독 — 경력 2년 이상', loc:'경기 성남 · 6월 8일(1일)', tags:['촬영부','MV'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'광고 촬영 어시스턴트 즉시 구함', loc:'서울 강남구 · 6월 3~5일', tags:['촬영부','광고'], pay:'일급 80,000원', payClass:'paid', match:'✦ 경력 무관' },
+    ],
+    '편집·색보정': [
+      { title:'장편 독립영화 색보정(DI) 담당자 모집', loc:'서울 전체 · 6월 1~20일', tags:['편집·색보정','DaVinci'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 직군 일치 · 95%' },
+      { title:'웹드라마 편집 스태프 (경력 무관)', loc:'경기 수원 · 6월 5~20일', tags:['편집·색보정','드라마'], pay:'일급 100,000원', payClass:'paid', match:'✦ 경력 무관' },
+      { title:'유튜브 채널 영상 편집자 장기 협업', loc:'서울 성동구 · 상시', tags:['편집·색보정','유튜브'], pay:'월정액 협의', payClass:'negotiable', match:'✦ 경력 무관' },
+      { title:'단편 애니메이션 포스트 프로덕션 편집', loc:'서울 마포구 · 6월 10~7월10일', tags:['편집·색보정','애니'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 직군 일치 · 82%' },
+      { title:'부산 웹드라마 편집 스태프 모집', loc:'부산 전체 · 6월~7월', tags:['편집·색보정','드라마'], pay:'일급 100,000원', payClass:'paid', match:'✦ 지역 일치' },
+    ],
+    '연출부': [
+      { title:'광고 영상 조감독 — 즉시 합류 가능자', loc:'서울 강남구 · 6월 2~10일', tags:['연출부','광고'], pay:'협의', payClass:'negotiable', match:'✦ 직군 일치 · 90%' },
+      { title:'독립 단편영화 연출부 스태프 모집', loc:'서울 마포구 · 6월 15~25일', tags:['연출부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 경력 무관' },
+      { title:'OTT 드라마 연출부 (2부 이상)', loc:'서울 전체 · 6월~8월', tags:['연출부','드라마'], pay:'일급 130,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'뮤직비디오 연출부 팀장급 급구', loc:'경기 일산 · 6월 7~9일', tags:['연출부','MV'], pay:'일급 150,000원', payClass:'paid', match:'✦ 직군 일치 · 85%' },
+      { title:'부산 독립영화 연출부 스태프 모집', loc:'부산 전체 · 6월 20일~', tags:['연출부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '조명부': [
+      { title:'뮤직비디오 조명팀 어시스턴트 모집', loc:'경기 성남 · 6월 18일(1일)', tags:['조명부','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 직군 일치 · 91%' },
+      { title:'장편 상업영화 조명부 가오퍼 모집', loc:'서울 전체 · 6월~8월', tags:['조명부','영화'], pay:'일급 120,000원', payClass:'paid', match:'✦ 경력 무관' },
+      { title:'광고 촬영 조명 어시스턴트 — 1일 촬영', loc:'서울 마포구 · 6월 5일', tags:['조명부','광고'], pay:'일급 90,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'독립영화 조명감독 모집 (경력 3년 이상)', loc:'부산 전체 · 7월', tags:['조명부','독립영화'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 직군 일치 · 88%' },
+    ],
+    '배우(연기)': [
+      { title:'단편영화 주인공 배우 오디션 — 20대 여성', loc:'서울 마포구 · 6월 15~20일', tags:['배우(연기)','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 역할 일치 · 94%' },
+      { title:'웹드라마 조연 배우 모집 (즉시 섭외)', loc:'서울 강남구 · 6월 10일~', tags:['배우(연기)','드라마'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'광고 촬영 모델/배우 모집 — 경력 무관', loc:'서울 전체 · 6월 중', tags:['배우(연기)','광고'], pay:'협의', payClass:'negotiable', match:'✦ 경력 무관' },
+      { title:'독립 장편영화 조연 오디션 공개 모집', loc:'서울 종로구 · 6월 20일 오디션', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 역할 일치 · 88%' },
+    ],
+    '사운드': [
+      { title:'독립영화 동시 녹음 기사 모집', loc:'서울 마포구 · 6월 10~20일', tags:['사운드','독립영화'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 직군 일치 · 90%' },
+      { title:'웹예능 사운드 믹서 — 경력 2년 이상', loc:'서울 강남구 · 상시', tags:['사운드','예능'], pay:'월정액 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'뮤직비디오 사운드 어시스턴트 급구', loc:'경기 성남 · 6월 8일', tags:['사운드','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 경력 무관' },
+      { title:'다큐멘터리 현장 사운드 스태프 모집', loc:'전국 · 6월~7월', tags:['사운드','다큐'], pay:'일급 100,000원', payClass:'paid', match:'✦ 직군 일치 · 85%' },
+    ],
+    '제작부': [
+      { title:'장편 독립영화 제작부 스태프 모집', loc:'서울 전체 · 6월~8월', tags:['제작부','독립영화'], pay:'일급 80,000원', payClass:'paid', match:'✦ 직군 일치 · 89%' },
+      { title:'광고 영상 프로덕션 매니저 모집', loc:'서울 강남구 · 상시', tags:['제작부','광고'], pay:'월정액 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'웹드라마 현장 로케이션 매니저 급구', loc:'경기 수원 · 6월 5~25일', tags:['제작부','드라마'], pay:'일급 100,000원', payClass:'paid', match:'✦ 경력 무관' },
+      { title:'OTT 예능 제작부 스태프 (1년 계약)', loc:'서울 마포구 · 즉시', tags:['제작부','예능'], pay:'월정액 협의', payClass:'negotiable', match:'✦ 직군 일치 · 84%' },
+    ],
+    'DIT': [
+      { title:'상업영화 DIT — 경력 3년 이상 필수', loc:'서울 전체 · 6월~8월', tags:['DIT','영화'], pay:'일급 200,000원', payClass:'paid', match:'✦ 직군 일치 · 92%' },
+      { title:'OTT 드라마 DIT 스태프 모집', loc:'서울 종로구 · 6월 10일~', tags:['DIT','드라마'], pay:'일급 180,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'광고 촬영 데이터 매니저 급구', loc:'서울 강남구 · 6월 5~7일', tags:['DIT','광고'], pay:'일급 120,000원', payClass:'paid', match:'✦ 경력 무관' },
+      { title:'뮤직비디오 DIT 겸 촬영 어시 모집', loc:'경기 성남 · 6월 8~9일', tags:['DIT','MV'], pay:'일급 100,000원', payClass:'paid', match:'✦ 직군 일치 · 86%' },
+    ],
+  };
+
+  const HOT_DB = {
+    '연출부': [
+      { title:'단편영화 연출부 스태프 (조감독 1명)', meta:'서울 은평구 · 6월 5~7일', views:'312', applies:'38' },
+      { title:'OTT 드라마 연출부 — 즉시 합류 가능자', meta:'서울 전체 · 6월~8월', views:'245', applies:'29' },
+      { title:'광고 영상 조감독 모집', meta:'서울 강남구 · 6월 2~10일', views:'178', applies:'21' },
+      { title:'독립 단편영화 연출부 스태프', meta:'서울 마포구 · 6월 15~25일', views:'132', applies:'14' },
+      { title:'뮤직비디오 연출부 팀장급 급구', meta:'경기 일산 · 6월 7~9일', views:'98', applies:'8' },
+    ],
+    '편집·색보정': [
+      { title:'장편 독립영화 색보정(DI) 담당자 모집', meta:'서울 전체 · 6월 1~20일', views:'289', applies:'34' },
+      { title:'웹드라마 편집 스태프 (경력 무관)', meta:'경기 수원 · 6월 5~20일', views:'213', applies:'25' },
+      { title:'유튜브 채널 영상 편집자 장기 협업', meta:'서울 성동구 · 상시', views:'167', applies:'19' },
+      { title:'단편 애니메이션 포스트 프로덕션', meta:'서울 마포구 · 6월 10~7월10일', views:'121', applies:'11' },
+      { title:'뮤직비디오 편집 및 색보정 스태프', meta:'부산 전체 · 6월 중', views:'87', applies:'6' },
+    ],
+    '촬영부': [
+      { title:'장편 독립영화 〈새벽〉 촬영감독 모집', meta:'서울 마포구 · 6월 10~25일', views:'284', applies:'32' },
+      { title:'뮤직비디오 B캠 오퍼레이터 — 경력무관', meta:'서울 강남구 · 5월 30일 (1일)', views:'197', applies:'18' },
+      { title:'광고 영상 촬영 어시스턴트 1명 급구', meta:'경기 성남시 · 6월 3~5일', views:'143', applies:'11' },
+      { title:'다큐멘터리 촬영팀 스태프 (전국 이동 가능)', meta:'전국 · 6월 15일~7월 20일', views:'98', applies:'7' },
+      { title:'웹드라마 촬영부 팀장급 모집', meta:'서울 종로구 · 6월 8~30일', views:'76', applies:'5' },
+    ],
+    '조명부': [
+      { title:'뮤직비디오 조명팀 어시스턴트 모집', meta:'경기 성남 · 6월 18일(1일)', views:'256', applies:'28' },
+      { title:'장편 상업영화 조명부 가오퍼 모집', meta:'서울 전체 · 6월~8월', views:'189', applies:'22' },
+      { title:'광고 촬영 조명 어시스턴트', meta:'서울 마포구 · 6월 5일', views:'145', applies:'16' },
+      { title:'독립영화 조명감독 모집', meta:'부산 전체 · 7월', views:'112', applies:'10' },
+      { title:'웹드라마 조명부 스태프 (2인)', meta:'서울 강남구 · 6월 10~30일', views:'78', applies:'5' },
+    ],
+    '사운드': [
+      { title:'독립영화 동시 녹음 기사 모집', meta:'서울 마포구 · 6월 10~20일', views:'231', applies:'26' },
+      { title:'웹예능 사운드 믹서 — 경력 2년 이상', meta:'서울 강남구 · 상시', views:'178', applies:'20' },
+      { title:'뮤직비디오 사운드 어시스턴트 급구', meta:'경기 성남 · 6월 8일', views:'134', applies:'13' },
+      { title:'다큐멘터리 현장 사운드 스태프', meta:'전국 · 6월~7월', views:'95', applies:'8' },
+      { title:'단편영화 사운드 디자이너 모집', meta:'서울 전체 · 6월 중', views:'67', applies:'4' },
+    ],
+    '제작부': [
+      { title:'장편 독립영화 제작부 스태프 모집', meta:'서울 전체 · 6월~8월', views:'198', applies:'23' },
+      { title:'광고 영상 프로덕션 매니저 모집', meta:'서울 강남구 · 상시', views:'156', applies:'17' },
+      { title:'웹드라마 현장 로케이션 매니저', meta:'경기 수원 · 6월 5~25일', views:'118', applies:'12' },
+      { title:'OTT 예능 제작부 스태프 (1년 계약)', meta:'서울 마포구 · 즉시', views:'87', applies:'7' },
+      { title:'뮤직비디오 제작 스태프 급구', meta:'부산 해운대구 · 6월 15일', views:'62', applies:'4' },
+    ],
+    '미술부': [
+      { title:'단편영화 미술팀 스태프 모집', meta:'서울 전체 · 6월 10~20일', views:'187', applies:'21' },
+      { title:'OTT 드라마 세트 미술 어시스턴트', meta:'서울 강남구 · 6월~8월', views:'145', applies:'16' },
+      { title:'광고 촬영 소품 담당자 모집', meta:'서울 마포구 · 6월 중', views:'112', applies:'11' },
+      { title:'독립영화 의상팀 스태프', meta:'경기 전체 · 6월 5~25일', views:'89', applies:'7' },
+      { title:'뮤직비디오 미술 감독 모집', meta:'부산 전체 · 7월', views:'67', applies:'4' },
+    ],
+    'DIT': [
+      { title:'상업영화 DIT — 경력 3년 이상 필수', meta:'서울 전체 · 6월~8월', views:'267', applies:'31' },
+      { title:'OTT 드라마 DIT 스태프 모집', meta:'서울 종로구 · 6월 10일~', views:'198', applies:'23' },
+      { title:'광고 촬영 데이터 매니저 급구', meta:'서울 강남구 · 6월 5~7일', views:'145', applies:'15' },
+      { title:'뮤직비디오 DIT 겸 촬영 어시', meta:'경기 성남 · 6월 8~9일', views:'98', applies:'8' },
+      { title:'독립 장편영화 DIT 모집', meta:'부산 전체 · 7월~8월', views:'72', applies:'5' },
+    ],
+    '배우(연기)': [
+      { title:'단편영화 주인공 배우 오디션 — 20대 여성', meta:'서울 마포구 · 6월 15~20일', views:'342', applies:'45' },
+      { title:'웹드라마 조연 배우 모집 (즉시 섭외)', meta:'서울 강남구 · 6월 10일~', views:'267', applies:'33' },
+      { title:'광고 촬영 모델/배우 모집', meta:'서울 전체 · 6월 중', views:'198', applies:'24' },
+      { title:'독립 장편영화 조연 오디션 공개 모집', meta:'서울 종로구 · 6월 20일 오디션', views:'156', applies:'18' },
+      { title:'유튜브 웹예능 고정 출연자 모집', meta:'부산 전체 · 6월 중', views:'112', applies:'12' },
+    ],
+    '모델': [
+      { title:'뷰티 브랜드 화보 촬영 모델 모집', meta:'서울 강남구 · 6월 10일(1일)', views:'389', applies:'52' },
+      { title:'패션 스냅 모델 — 경력 무관', meta:'서울 홍대 · 6월 5~20일', views:'312', applies:'41' },
+      { title:'광고 영상 일반인 모델 모집', meta:'서울 전체 · 6월 중', views:'234', applies:'29' },
+      { title:'웹드라마 단역/보조 출연자 모집', meta:'경기 전체 · 6월~7월', views:'178', applies:'21' },
+      { title:'부산 지역 패션 화보 모델 급구', meta:'부산 해운대구 · 6월 15일', views:'134', applies:'15' },
+    ],
+  };
+
+  const PAY_ICON = `<svg viewBox="0 0 26 26" fill="none"><rect x="3" y="6" width="20" height="14" rx="3" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><circle cx="13" cy="13" r="4" fill="none" stroke="#2D4A7A" stroke-width="1.5"/><circle cx="13" cy="13" r="2" fill="#2D4A7A"/></svg>`;
+
+  function buildRecommendCard(job, idx) {
+    const payClass = job.payClass;
+    const tagsHtml = job.tags.map((t,i)=>`<span class="tag${i===0?' blue':''}">${t}</span>`).join('');
+    return `
+      <div class="recommend-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=${200+idx}')" style="cursor:pointer">
+        <div class="recommend-card-top">
+          <div class="recommend-thumb">${PAY_ICON}</div>
+          <span class="pay-badge ${payClass}">${job.pay}</span>
+        </div>
+        <div class="recommend-title">${job.title}</div>
+        <div class="recommend-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${job.loc}
+        </div>
+        <div class="recommend-tags">${tagsHtml}</div>
+        <div class="recommend-footer"><span class="ai-match-badge">${job.match}</span></div>
+      </div>`;
+  }
+
+  const REGION_JOB_DB = {
+    '대구': [
+      { title:'대구 독립영화 촬영부 스태프 모집', loc:'대구 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'대구 웹드라마 편집 스태프 모집', loc:'대구 전체 · 6월~7월', tags:['편집·색보정','드라마'], pay:'일급 90,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'대구 뮤직비디오 연출부 모집', loc:'대구 전체 · 6월 10~15일', tags:['연출부','MV'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'대구 단편영화 사운드 스태프', loc:'대구 전체 · 6월 말', tags:['사운드','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'대구 광고 영상 제작부 스태프', loc:'대구 전체 · 7월 초', tags:['제작부','광고'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+    ],
+    '인천': [
+      { title:'인천 단편영화 촬영팀 스태프', loc:'인천 전체 · 6월 중', tags:['촬영부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'인천 뮤직비디오 조명 어시스턴트', loc:'인천 부평구 · 6월 10일(1일)', tags:['조명부','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'인천 웹드라마 연출부 스태프 모집', loc:'인천 전체 · 6월~7월', tags:['연출부','드라마'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'인천 독립영화 배우 캐스팅', loc:'인천 전체 · 6월 말', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'인천 광고 편집 스태프 모집', loc:'인천 전체 · 7월 초', tags:['편집·색보정','광고'], pay:'일급 90,000원', payClass:'paid', match:'✦ 지역 일치' },
+    ],
+    '대전': [
+      { title:'대전 단편영화 연출부 스태프 모집', loc:'대전 전체 · 6월 중', tags:['연출부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'대전 독립영화 촬영감독 모집', loc:'대전 전체 · 6월~7월', tags:['촬영부','독립영화'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'대전 웹드라마 사운드 스태프', loc:'대전 전체 · 6월 말', tags:['사운드','드라마'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'대전 광고 영상 편집자 모집', loc:'대전 전체 · 7월 초', tags:['편집·색보정','광고'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'대전 뮤직비디오 배우 캐스팅', loc:'대전 전체 · 6월 15일', tags:['배우(연기)','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+    ],
+    '광주': [
+      { title:'광주 독립영화 촬영부 스태프', loc:'광주 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'광주 단편영화 연출부 모집', loc:'광주 전체 · 6월~7월', tags:['연출부','단편'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'광주 뮤직비디오 편집 스태프', loc:'광주 전체 · 6월 말', tags:['편집·색보정','MV'], pay:'일급 90,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'광주 웹드라마 조명팀 모집', loc:'광주 전체 · 7월 초', tags:['조명부','드라마'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'광주 독립영화 배우 오디션', loc:'광주 전체 · 6월 20일', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '울산': [
+      { title:'울산 단편영화 촬영팀 모집', loc:'울산 전체 · 6월 중', tags:['촬영부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'울산 산업 홍보 영상 편집자', loc:'울산 전체 · 6월~7월', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'울산 뮤직비디오 연출부 스태프', loc:'울산 전체 · 6월 말', tags:['연출부','MV'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'울산 광고 촬영 사운드 스태프', loc:'울산 전체 · 7월 초', tags:['사운드','광고'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'울산 독립영화 제작부 모집', loc:'울산 전체 · 6월 15일~', tags:['제작부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '제주': [
+      { title:'제주 독립영화 올로케 촬영팀 모집', loc:'제주 전체 · 7월 중', tags:['촬영부','독립영화'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'제주 배경 단편영화 연출부 스태프', loc:'제주 전체 · 7월~8월', tags:['연출부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'제주 관광 홍보 영상 편집자', loc:'제주 전체 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'제주 뮤직비디오 배우/모델 모집', loc:'제주 전체 · 7월 초', tags:['배우(연기)','MV'], pay:'일급 100,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'제주 다큐멘터리 사운드 스태프', loc:'제주 전체 · 7월 중', tags:['사운드','다큐'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+    ],
+    '강원': [
+      { title:'강원 자연 다큐 촬영팀 스태프 모집', loc:'강원 전체 · 6월~7월', tags:['촬영부','다큐'], pay:'일급 100,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'강원 배경 단편영화 연출부 모집', loc:'강원 전체 · 7월 중', tags:['연출부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'강원 독립영화 사운드 스태프', loc:'강원 전체 · 6월 말', tags:['사운드','독립영화'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'강원 관광 홍보 영상 편집자', loc:'강원 춘천 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'강원 뮤직비디오 제작부 스태프', loc:'강원 전체 · 7월 초', tags:['제작부','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+    ],
+    '경남': [
+      { title:'경남 독립영화 촬영부 스태프 모집', loc:'경남 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'경남 단편영화 연출부 모집', loc:'경남 전체 · 6월~7월', tags:['연출부','단편'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'경남 웹드라마 편집 스태프', loc:'경남 창원 · 6월 말', tags:['편집·색보정','드라마'], pay:'일급 90,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'경남 광고 촬영 조명 어시스턴트', loc:'경남 전체 · 7월 초', tags:['조명부','광고'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'경남 독립영화 배우 캐스팅', loc:'경남 전체 · 6월 25일', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '경북': [
+      { title:'경북 독립영화 촬영팀 모집', loc:'경북 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'경북 단편영화 연출부 스태프', loc:'경북 전체 · 7월 초', tags:['연출부','단편'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'경북 홍보 영상 편집자 모집', loc:'경북 포항 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'경북 뮤직비디오 사운드 스태프', loc:'경북 전체 · 6월 말', tags:['사운드','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'경북 독립영화 배우 오디션', loc:'경북 전체 · 6월 20일', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '전북': [
+      { title:'전북 독립영화 촬영부 모집', loc:'전북 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'전주 국제영화제 연출부 스태프', loc:'전북 전주 · 6월~7월', tags:['연출부','독립영화'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'전북 단편영화 편집 스태프 모집', loc:'전북 전체 · 7월 초', tags:['편집·색보정','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'전북 홍보 영상 사운드 스태프', loc:'전북 전주 · 6월 말', tags:['사운드','홍보'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'전북 독립영화 배우 오디션', loc:'전북 전체 · 6월 25일', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '전남': [
+      { title:'전남 자연 다큐 촬영팀 모집', loc:'전남 전체 · 7월 중', tags:['촬영부','다큐'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'전남 독립영화 연출부 스태프', loc:'전남 전체 · 6월~7월', tags:['연출부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'전남 홍보 영상 편집자 모집', loc:'전남 목포 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'전남 단편영화 배우 캐스팅', loc:'전남 전체 · 6월 말', tags:['배우(연기)','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'전남 관광 영상 사운드 스태프', loc:'전남 전체 · 7월 초', tags:['사운드','홍보'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+    ],
+    '충남': [
+      { title:'충남 독립영화 촬영부 스태프', loc:'충남 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'충남 단편영화 연출부 모집', loc:'충남 전체 · 6월~7월', tags:['연출부','단편'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'충남 기업 홍보 영상 편집자', loc:'충남 천안 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'충남 뮤직비디오 사운드 스태프', loc:'충남 전체 · 6월 말', tags:['사운드','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'충남 독립영화 배우 오디션', loc:'충남 전체 · 6월 25일', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '충북': [
+      { title:'충북 독립영화 촬영팀 모집', loc:'충북 전체 · 6월 중', tags:['촬영부','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'충북 단편영화 연출부 스태프', loc:'충북 전체 · 7월 초', tags:['연출부','단편'], pay:'협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'충북 기업 영상 편집자 모집', loc:'충북 청주 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'충북 뮤직비디오 배우/모델 모집', loc:'충북 전체 · 6월 말', tags:['배우(연기)','MV'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'충북 독립영화 사운드 스태프', loc:'충북 전체 · 6월 25일~', tags:['사운드','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+    '세종': [
+      { title:'세종 정부 홍보 영상 촬영팀 모집', loc:'세종 전체 · 6월 중', tags:['촬영부','홍보'], pay:'일급 100,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'세종 단편영화 연출부 스태프', loc:'세종 전체 · 7월 초', tags:['연출부','단편'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+      { title:'세종 홍보 영상 편집자 모집', loc:'세종 전체 · 상시', tags:['편집·색보정','홍보'], pay:'작업비 협의', payClass:'negotiable', match:'✦ 지역 일치' },
+      { title:'세종 다큐멘터리 사운드 스태프', loc:'세종 전체 · 6월 말', tags:['사운드','다큐'], pay:'일급 80,000원', payClass:'paid', match:'✦ 지역 일치' },
+      { title:'세종 독립영화 배우 오디션', loc:'세종 전체 · 6월 25일', tags:['배우(연기)','독립영화'], pay:'일급 70,000원', payClass:'unpaid', match:'✦ 지역 일치' },
+    ],
+  };
+
+  // 온보딩/마이페이지 선택에 따라 HOT·AI 섹션 동적 렌더링
+  function renderHomeSections() {
+    try {
+      const raw = localStorage.getItem('fm_user_prefs');
+      const prefs = raw ? JSON.parse(raw) : null;
+      const genres  = (prefs && prefs.genres)  ? prefs.genres  : [];
+      const regions = (prefs && prefs.regions) ? prefs.regions : [];
+      const roles   = (prefs && prefs.roles)   ? prefs.roles   : [];
+
+      // 대표 직군: 선택한 직군 중 첫 번째, 없으면 역할로 추론
+      const dept = genres.length > 0 ? genres[0]
+                 : (roles.includes('actor') ? '배우(연기)' : '촬영부');
+
+      // ── HOT 섹션 ──
+      const peerLabel = document.getElementById('peerSectionLabel');
+      if (peerLabel) peerLabel.textContent = dept;
+
+      const peerScroll = document.getElementById('peerScroll');
+      if (peerScroll) {
+        const hotJobs = HOT_DB[dept] || HOT_DB['촬영부'];
+        peerScroll.innerHTML = hotJobs.map((j, i) => {
+          const rank = i + 1;
+          const numClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : '';
+          const rankNumClass = rank <= 2 ? 'top' : '';
+          const hotLabel = rank === 1 ? ' <span class="peer-hot-label">🔥 오늘 가장 인기</span>' : '';
+          return `<div class="peer-item">
+            <span class="peer-item-num ${numClass}" style="left:0px">${rank}</span>
+            <div class="peer-card" onclick="openDetailOverlay('filmmakers_detail_v1.html?job=${rank}')">
+              <div class="peer-rank"><span class="peer-rank-num ${rankNumClass}">${rank}</span> 위${hotLabel}</div>
+              <div class="peer-card-title">${j.title}</div>
+              <div class="peer-card-meta">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                ${j.meta}
+              </div>
+              <div class="peer-card-footer">
+                <span class="peer-hot-badge">${rank <= 2 ? '🔥 ' : ''}조회 ${j.views}회</span>
+                <span class="peer-apply-count">지원 ${j.applies}명</span>
+              </div>
+            </div>
+          </div>`;
+        }).join('');
+      }
+
+      // ── AI 추천 카드 ──
+      const scroll = document.getElementById('recommendScroll');
+      if (!scroll) return;
+
+      let jobs = [];
+      const targetGenres = genres.length > 0 ? genres : [dept];
+      targetGenres.forEach(g => {
+        (JOB_DB[g] || []).forEach(j => {
+          if (!jobs.find(x => x.title === j.title)) jobs.push(Object.assign({}, j));
+        });
+      });
+      if (jobs.length === 0) jobs = (JOB_DB['촬영부'] || []).map(j => Object.assign({}, j));
+
+      // 지역 선택 시: REGION_JOB_DB에서 지역 공고 가져와 직군 매칭 우선 정렬
+      if (regions.length > 0 && !regions.includes('전국')) {
+        let regionJobs = [];
+        regions.forEach(r => {
+          (REGION_JOB_DB[r] || []).forEach(j => {
+            if (!regionJobs.find(x => x.title === j.title))
+              regionJobs.push(Object.assign({}, j, { _regionMatch: true }));
+          });
+        });
+
+        // 지역 공고 중 선택 직군 태그 포함된 것 우선
+        const regionDeptMatch = regionJobs.filter(j => targetGenres.some(g => j.tags.includes(g)));
+        const regionOther = regionJobs.filter(j => !targetGenres.some(g => j.tags.includes(g)));
+
+        // 직군 공고 중 지역 텍스트 포함된 것도 유지
+        const deptRegionMatch = jobs.filter(j => regions.some(r => j.loc.includes(r)))
+          .map(j => Object.assign({}, j, { match: '✦ ' + regions[0] + ' · 직군 일치', _regionMatch: true }));
+        const deptOnly = jobs.filter(j => !regions.some(r => j.loc.includes(r)));
+
+        // 우선순위: ①지역+직군 ②직군내 지역 ③지역만 ④직군만
+        const merged = [];
+        [...regionDeptMatch, ...deptRegionMatch, ...regionOther, ...deptOnly].forEach(j => {
+          if (!merged.find(x => x.title === j.title)) merged.push(j);
+        });
+        jobs = merged;
+      }
+
+      scroll.innerHTML = jobs.slice(0, 5).map((j, i) => buildRecommendCard(j, i)).join('');
+    } catch(e) { console.error(e); }
+  }
+
   /* ══════════════════════════════
      온보딩 로직
   ══════════════════════════════ */
@@ -2854,13 +3211,11 @@
 
   // 역할 토글
   function obToggleRole(el, key) {
-    el.classList.toggle('selected');
-    if (obRoles.includes(key)) {
-      obRoles = obRoles.filter(r => r !== key);
-    } else {
-      obRoles.push(key);
-    }
-    document.getElementById('obNextBtn').disabled = obRoles.length === 0;
+    // 단일 선택: 다른 항목 해제 후 선택
+    document.querySelectorAll('.ob-role-item').forEach(i => i.classList.remove('selected'));
+    obRoles = [key];
+    el.classList.add('selected');
+    document.getElementById('obNextBtn').disabled = false;
   }
 
   // 직군 그리드 렌더링 (역할에 따라 동적)
@@ -2874,23 +3229,11 @@
     document.getElementById('obNextBtn').disabled = false; // step2는 선택 없어도 OK
   }
 
-  // 직군 토글 (최대 3개)
+  // 직군 단일 선택
   function obToggleGenre(el, name) {
-    if (el.classList.contains('selected')) {
-      el.classList.remove('selected');
-      obGenres = obGenres.filter(g => g !== name);
-    } else {
-      if (obGenres.length >= 3) {
-        showToast('최대 3개까지 선택할 수 있어요');
-        return;
-      }
-      el.classList.add('selected');
-      obGenres.push(name);
-    }
-    const hint = document.getElementById('obGenreHint');
-    hint.textContent = obGenres.length > 0
-      ? `${obGenres.length}개 선택됨`
-      : '최대 3개까지 선택할 수 있어요';
+    document.querySelectorAll('.ob-genre-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    obGenres = [name];
   }
 
   // 지역 선택 (최대 2개)
@@ -3013,15 +3356,16 @@
 
   function exitOnboarding() {
     localStorage.setItem('fm_onboarding_done', '1');
-    localStorage.setItem('fm_user_prefs', JSON.stringify({ genres: obGenres, regions: obRegions }));
+    localStorage.setItem('fm_user_prefs', JSON.stringify({ roles: obRoles, genres: obGenres, regions: obRegions }));
     const wrap = document.getElementById('obWrap');
     wrap.classList.add('exit');
-    setTimeout(() => { wrap.style.display = 'none'; renderRecommendCards(); }, 400);
+    setTimeout(() => { wrap.style.display = 'none'; renderHomeSections(); }, 400);
   }
 
-  // 이미 온보딩을 완료한 경우 즉시 숨김
+  // 최초 접속 시에만 온보딩 표시
   if (localStorage.getItem('fm_onboarding_done')) {
     document.getElementById('obWrap').style.display = 'none';
+    renderHomeSections();
   }
 
   /* ══════════════════════════════
@@ -3052,13 +3396,78 @@
   }
 
   // ── 북마크 ──
+  let _pendingBookmarkBtn = null;
+
   function toggleBookmark(btn) {
-    btn.classList.toggle('saved');
-    const isSaved = btn.classList.contains('saved');
-    btn.innerHTML = isSaved
-      ? `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`
-      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-    showToast(isSaved ? '공고를 저장했어요' : '저장을 취소했어요');
+    event.stopPropagation();
+    if (btn.classList.contains('saved')) {
+      btn.classList.remove('saved');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+      showToast('저장을 취소했어요');
+    } else {
+      _pendingBookmarkBtn = btn;
+      openFolderSheet();
+    }
+  }
+
+  function openFolderSheet() {
+    const list = document.getElementById('folderSheetList');
+    list.innerHTML = '';
+    const folderSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;flex-shrink:0;color:#6b7280"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>`;
+    const btnStyle = 'display:flex;align-items:center;gap:12px;padding:14px 12px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;color:#374151;font-family:inherit;text-align:left;width:100%;';
+    // 전체
+    const allBtn = document.createElement('button');
+    allBtn.style.cssText = btnStyle;
+    allBtn.onmouseover = () => allBtn.style.background = '#f3f4f6';
+    allBtn.onmouseout  = () => allBtn.style.background = 'none';
+    allBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;flex-shrink:0;color:#6b7280"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>전체 저장`;
+    allBtn.onclick = () => saveToFolderHome('전체');
+    list.appendChild(allBtn);
+    // 기본 폴더
+    ['단편 프로젝트', '광고·CF'].forEach(name => {
+      const b = document.createElement('button');
+      b.style.cssText = btnStyle;
+      b.onmouseover = () => b.style.background = '#f3f4f6';
+      b.onmouseout  = () => b.style.background = 'none';
+      b.innerHTML = folderSVG + name;
+      b.onclick = () => saveToFolderHome(name);
+      list.appendChild(b);
+    });
+    // 커스텀 폴더
+    (JSON.parse(localStorage.getItem('fm_folders') || '[]')).forEach(name => {
+      const b = document.createElement('button');
+      b.style.cssText = btnStyle;
+      b.onmouseover = () => b.style.background = '#f3f4f6';
+      b.onmouseout  = () => b.style.background = 'none';
+      b.innerHTML = folderSVG + name;
+      b.onclick = () => saveToFolderHome(name);
+      list.appendChild(b);
+    });
+    // 새 폴더
+    const newBtn = document.createElement('button');
+    newBtn.style.cssText = 'display:flex;align-items:center;gap:12px;padding:14px 12px;border:1.5px dashed rgba(45,74,122,0.4);background:#EFF6FF;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;color:#2D4A7A;font-family:inherit;text-align:left;width:100%;';
+    newBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;flex-shrink:0;color:#2D4A7A"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>새 폴더 만들기`;
+    newBtn.onclick = () => {
+      const name = prompt('새 폴더 이름을 입력해주세요');
+      if (!name || !name.trim()) return;
+      const folders = JSON.parse(localStorage.getItem('fm_folders') || '[]');
+      if (!folders.includes(name.trim())) { folders.push(name.trim()); localStorage.setItem('fm_folders', JSON.stringify(folders)); }
+      saveToFolderHome(name.trim());
+    };
+    list.appendChild(newBtn);
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('folderSheet').classList.add('open');
+  }
+
+  function saveToFolderHome(folder) {
+    if (_pendingBookmarkBtn) {
+      _pendingBookmarkBtn.classList.add('saved');
+      _pendingBookmarkBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+      _pendingBookmarkBtn = null;
+    }
+    closeSheet();
+    const label = folder === '전체' ? '저장 목록' : folder;
+    showToast(`"${label}"에 저장됐어요`);
   }
 
   // ── 바텀 시트 ──
@@ -3069,6 +3478,7 @@
   function closeSheet() {
     document.getElementById('overlay').classList.remove('open');
     document.getElementById('filterSheet').classList.remove('open');
+    document.getElementById('folderSheet').classList.remove('open');
   }
 
   function toggleChip(el) {
@@ -3215,52 +3625,48 @@
     actor: `<svg viewBox="0 0 26 26" fill="none"><circle cx="13" cy="8" r="5" fill="#1A2B48" stroke="#2D4A7A" stroke-width="1.5"/><path d="M4 24c0-5 4-8 9-8s9 3 9 8" stroke="#2D4A7A" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>`,
   };
 
-  function renderRecommendCards() {
+  renderHomeSections();
+
+  // ── HOT PICK 드롭다운 ──
+  const HOT_DEPTS = ['연출부','촬영부','조명부','편집·색보정','사운드','제작부','미술부','DIT','배우(연기)','모델'];
+
+  function initHotDropdown() {
+    const wrap = document.getElementById('hotDropdownChips');
+    if (!wrap) return;
     const raw = localStorage.getItem('fm_user_prefs');
-    const prefs = raw ? JSON.parse(raw) : null;
-    const scroll = document.querySelector('.recommend-scroll');
-    if (!scroll) return;
-
-    let cards = [];
-    if (prefs && prefs.genres && prefs.genres.length > 0) {
-      for (const genre of prefs.genres) {
-        const pool = RECOMMEND_DB[genre] || [];
-        for (const card of pool) {
-          if (!cards.find(c => c.title === card.title)) cards.push(card);
-          if (cards.length >= 5) break;
-        }
-        if (cards.length >= 5) break;
-      }
-    }
-    if (cards.length === 0) {
-      cards = [
-        RECOMMEND_DB['촬영부'][0],
-        RECOMMEND_DB['촬영부'][1],
-        RECOMMEND_DB['편집·색보정'][0],
-        RECOMMEND_DB['조명부'][0],
-        RECOMMEND_DB['연출부'][0],
-      ];
-    }
-
-    scroll.innerHTML = cards.map(c => {
-      const payClass = c.pay === '유료' ? ' paid' : c.pay === '협의' ? ' negotiable' : '';
-      return `<div class="recommend-card" style="cursor:pointer" onclick="openDetailOverlay('filmmakers_detail_v1.html')">
-        <div class="recommend-card-top">
-          <div class="recommend-thumb">${REC_ICONS[c.icon]}</div>
-          <span class="pay-badge${payClass}">${c.pay}</span>
-        </div>
-        <div class="recommend-title">${c.title}</div>
-        <div class="recommend-meta">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          ${c.meta}
-        </div>
-        <div class="recommend-tags">${c.tags.map((t, i) => `<span class="tag${i === 0 ? ' blue' : ''}">${t}</span>`).join('')}</div>
-        <div class="recommend-footer"><span class="ai-match-badge">${c.match}</span></div>
-      </div>`;
+    const current = raw ? (JSON.parse(raw).genres || [])[0] : null;
+    wrap.innerHTML = HOT_DEPTS.map(d => {
+      const sel = d === (current || '촬영부');
+      return `<button onclick="selectHotDept('${d}')" style="padding:6px 12px;border-radius:20px;border:1.5px solid ${sel ? '#1A2B48' : '#e5e7eb'};background:${sel ? '#1A2B48' : '#fff'};color:${sel ? '#fff' : '#374151'};font-size:12px;font-weight:600;cursor:pointer;">${d}</button>`;
     }).join('');
   }
 
-  renderRecommendCards();
+  function toggleHotDropdown() {
+    const dd = document.getElementById('hotDropdown');
+    const arrow = document.getElementById('hotPickArrow');
+    const isOpen = dd.style.display === 'block';
+    dd.style.display = isOpen ? 'none' : 'block';
+    arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    if (!isOpen) initHotDropdown();
+  }
+
+  function selectHotDept(dept) {
+    const raw = localStorage.getItem('fm_user_prefs');
+    const prefs = raw ? JSON.parse(raw) : { roles:[], genres:[], regions:[] };
+    prefs.genres = [dept];
+    localStorage.setItem('fm_user_prefs', JSON.stringify(prefs));
+    document.getElementById('hotDropdown').style.display = 'none';
+    document.getElementById('hotPickArrow').style.transform = 'rotate(0deg)';
+    renderHomeSections();
+  }
+
+  // 드롭다운 외부 클릭 시 닫기
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#hotPickBtn') && !e.target.closest('#hotDropdown')) {
+      const dd = document.getElementById('hotDropdown');
+      if (dd) { dd.style.display = 'none'; document.getElementById('hotPickArrow').style.transform = 'rotate(0deg)'; }
+    }
+  });
 
   // ── 공고 카드 클릭 → 상세 페이지 ──
   document.querySelectorAll('.job-card').forEach(card => {
@@ -3295,6 +3701,7 @@
   }
   window.addEventListener('message', e => {
     if (e.data === 'closeDetailOverlay') closeDetailOverlay();
+    if (e.data === 'closeNotifOverlay') closeNotifOverlay();
   });
 </script>
 </body>
